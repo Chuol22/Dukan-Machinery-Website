@@ -1,0 +1,103 @@
+{
+  "testimonials": [
+    {
+      "id": 1,
+      "name": "Ahmed Hassan",
+      "company": "Al-Rajhi Manufacturing",
+      "position": "Operations Manager",
+      "avatar": "/images/testimonials/ahmed.jpg",
+      "rating": 5,
+      "date": "2024-03-15",
+      "testimonial": "Dukan Machinery transformed our production line with their state-of-the-art poultry feed machines. The efficiency improvement has been remarkable - we've increased output by 40% while reducing energy costs.",
+      "project": "Poultry Feed Processing Plant - 50 tons/hour"
+    },
+    {
+      "id": 2,
+      "name": "Sarah Johnson",
+      "company": "Global Feed Solutions",
+      "position": "CEO",
+      "avatar": "/images/testimonials/sarah.jpg",
+      "rating": 5,
+      "date": "2024-02-28",
+      "testimonial": "The custom machinery solution Dukan provided exceeded our expectations. Their team understood our unique requirements and delivered a perfect solution that integrates seamlessly with our existing systems.",
+      "project": "Custom Animal Feed Mill - 30 tons/hour"
+    },
+    {
+      "id": 3,
+      "name": "Mohammed Al-Fahad",
+      "company": "Fahad Industries",
+      "position": "Technical Director",
+      "avatar": "/images/testimonials/mohammed.jpg",
+      "rating": 5,
+      "date": "2024-01-20",
+      "testimonial": "Outstanding quality and reliability. We've been running Dukan's hammer mills 24/7 for over two years without any major issues. Their after-sales support is exceptional.",
+      "project": "Hammer Mill Installation - 100 tons/hour"
+    },
+    {
+      "id": 4,
+      "name": "Emily Chen",
+      "company": "Pacific Agro Industries",
+      "position": "Production Manager",
+      "avatar": "/images/testimonials/emily.jpg",
+      "rating": 5,
+      "date": "2023-12-10",
+      "testimonial": "The pellet mills we purchased have revolutionized our production process. The quality of pellets and the consistency are unmatched. Highly recommend Dukan Machinery!",
+      "project": "Pellet Mill System - 25 tons/hour"
+    },
+    {
+      "id": 5,
+      "name": "Raj Patel",
+      "company": "Patel Feeds Corporation",
+      "position": "Managing Director",
+      "avatar": "/images/testimonials/raj.jpg",
+      "rating": 5,
+      "date": "2023-11-05",
+      "testimonial": "From initial consultation to final installation, the entire process was smooth and professional. The team's expertise and attention to detail made all the difference.",
+      "project": "Complete Turnkey Plant - 75 tons/hour"
+    },
+    {
+      "id": 6,
+      "name": "Fatima Al-Rashid",
+      "company": "Desert Harvest Co.",
+      "position": "Quality Control Manager",
+      "avatar": "/images/testimonials/fatima.jpg",
+      "rating": 5,
+      "date": "2023-10-18",
+      "testimonial": "The vertical mixers from Dukan have improved our feed consistency dramatically. Our livestock health metrics have shown significant improvement since installation.",
+      "project": "Vertical Mixer System - 8 tons/batch"
+    },
+    {
+      "id": 7,
+      "name": "David Thompson",
+      "company": "Midwest Feed Co.",
+      "position": "Plant Manager",
+      "avatar": "/images/testimonials/david.jpg",
+      "rating": 5,
+      "date": "2023-09-22",
+      "testimonial": "Investing in Dukan's custom machinery was the best decision we made. The ROI was achieved within 18 months, and the reliability has been exceptional.",
+      "project": "Custom Extruder System - 40 tons/hour"
+    },
+    {
+      "id": 8,
+      "name": "Liu Wei",
+      "company": "Eastern Feed Technologies",
+      "position": "Engineering Director",
+      "avatar": "/images/testimonials/liu.jpg",
+      "rating": 5,
+      "date": "2023-08-30",
+      "testimonial": "The technical expertise and support provided by Dukan's team is unparalleled. They helped us optimize our entire production line for maximum efficiency.",
+      "project": "Production Line Optimization - 60 tons/hour"
+    },
+    {
+      "id": 9,
+      "name": "Maria Rodriguez",
+      "company": "AgroMax Solutions",
+      "position": "Operations Director",
+      "avatar": "/images/testimonials/maria.jpg",
+      "rating": 5,
+      "date": "2023-07-15",
+      "testimonial": "Dukan Machinery's commitment to quality is evident in every aspect of their products. The cooling and drying units we purchased have been game-changers for our operation.",
+      "project": "Cooling & Drying System - 45 tons/hour"
+    }
+  ]
+}
