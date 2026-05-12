@@ -1,11 +1,9 @@
-// app/page.tsx
+// app/order/page.tsx
 'use client';
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ShoppingCart, Settings } from 'lucide-react';
-import Header from '@/components/layout/Header';
-import ChatbotWidget from '@/components/chatbot/ChatbotWidget';
 import StandardOrderForm from '@/components/order/StandardOrderForm';
 import CustomRequestForm from '@/components/order/CustomRequestForm';
 import OrderSummary from '@/components/order/OrderSummary';
@@ -33,8 +31,6 @@ export default function OrderPage() {
   if (showSummary && orderData) {
     return (
       <div className="bg-white dark:bg-gray-900 min-h-screen flex flex-col">
-        <Header />
-        <ChatbotWidget />
         <main className="flex-grow">
           <section className="py-20 bg-white dark:bg-gray-800">
             <div className="max-w-4xl mx-auto px-6">
@@ -63,8 +59,6 @@ export default function OrderPage() {
 
   return (
     <div className="bg-white dark:bg-gray-900 min-h-screen flex flex-col">
-      <Header />
-      <ChatbotWidget />
       <main className="flex-grow">
         <section className="py-20 bg-green-50 dark:bg-gray-800">
           <div className="max-w-4xl mx-auto px-6">
@@ -74,10 +68,10 @@ export default function OrderPage() {
               transition={{ duration: 0.6 }}
               className="text-center mb-12"
             >
-              <h2 className="text-3xl font-black text-primary dark:text-white uppercase tracking-tight">
-                Order & <span className="text-secondary-dark">Custom Request</span>
+              <h2 className="text-3xl font-black text-green-800 dark:text-white uppercase tracking-tight">
+                Order & <span className="text-orange-600">Custom Request</span>
               </h2>
-              <div className="w-20 h-2 bg-primary-dark mx-auto mt-4 rounded-full"></div>
+              <div className="w-20 h-2 bg-orange-400 mx-auto mt-4 rounded-full"></div>
             </motion.div>
 
             <motion.div
@@ -86,13 +80,13 @@ export default function OrderPage() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="flex justify-center mb-8"
             >
-              <div className="inline-flex bg-gray-100 dark:bg-gray-700 p-1 rounded-full">
+              <div className="inline-flex bg-gray-200 dark:bg-gray-800 p-1 rounded-full">
                 <button
                   onClick={() => setOrderType('standard')}
                   className={`flex items-center gap-2 px-6 py-3 rounded-full font-black text-sm uppercase tracking-wider transition-all duration-300 hover:scale-105 ${
                     orderType === 'standard'
-                      ? 'bg-secondary-dark text-white'
-                      : 'text-gray-600 dark:text-gray-300 hover:text-primary'
+                      ? 'bg-orange-500 text-white shadow-md'
+                      : 'text-green-700 dark:text-gray-300 hover:text-orange-500'
                   }`}
                   aria-label="Switch to Standard Order Form"
                 >
@@ -103,7 +97,7 @@ export default function OrderPage() {
                   onClick={() => setOrderType('custom')}
                   className={`flex items-center gap-2 px-6 py-3 rounded-full font-black text-sm uppercase tracking-wider transition-all duration-300 hover:scale-105 ${
                     orderType === 'custom'
-                      ? 'bg-secondary-dark text-white'
+                      ? 'bg-green-800 text-white shadow-md'
                       : 'text-gray-600 dark:text-gray-300 hover:text-primary'
                   }`}
                   aria-label="Switch to Custom Request Form"

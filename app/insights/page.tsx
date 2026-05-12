@@ -2,9 +2,7 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Sparkles, TrendingUp, Clock, Eye, Calendar, ArrowRight } from 'lucide-react'
-import Header from '@/components/layout/Header'
-import ChatbotWidget from '@/components/chatbot/ChatbotWidget'
+import { TrendingUp, Clock, Eye } from 'lucide-react'
 import BlogCard from '@/components/blog/BlogCard'
 import BlogFilters from '@/components/blog/BlogFilters'
 import NewsletterSignup from '@/components/blog/NewsletterSignup'
@@ -49,7 +47,7 @@ const rawBlogPosts = [
     title: '5 Ways to Reduce Energy Costs in Feed Processing',
     excerpt: 'Practical tips to lower your electricity bills without compromising output quality. Discover energy-efficient motors and optimal scheduling.',
     content: 'Full content here...',
-    featuredImage: '/images/insight/jpg',
+    featuredImage: '/images/insight/Feed machinary for insight2.jpg',
     author: {
       name: 'Samuel Kebede',
       avatar: '',
@@ -69,7 +67,7 @@ const rawBlogPosts = [
     title: 'Maintenance Schedule for Hammer Mills',
     excerpt: 'A comprehensive guide to keeping your grinding equipment in top condition. Daily, weekly, and monthly checklists included.',
     content: 'Full content here...',
-    featuredImage: '/images/insight/Feed machinery for insight2.jpg',
+    featuredImage: '/images/insight/Feed machinary for insight1.jpg',
     author: {
       name: 'Tekle Berhan',
       avatar: '',
@@ -89,7 +87,7 @@ const rawBlogPosts = [
     title: 'The Future of Organic Fertilizer Production',
     excerpt: 'How automation is transforming the composting and drying process. Emerging technologies and market trends for 2026.',
     content: 'Full content here...',
-    featuredImage: '/images/insight/Feed machinery for insight1.jpg',
+    featuredImage: '/images/insight/feed machinery insight3.jpg',
     author: {
       name: 'Melat Alemayew',
       avatar: '',
@@ -210,12 +208,9 @@ export default function InsightsPage() {
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 flex flex-col">
-      <Header />
-      <ChatbotWidget />
-
       <main className="flex-grow pt-24">
         {/* Hero Section */}
-      <section className="relative overflow-hidden bg-white dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 py-16">
+      <section className="relative overflow-hidden bg-white dark:bg-gray-900 py-16">
           
           
           <div className="container mx-auto px-2 sm:px-4 lg:px-6 relative">
@@ -225,7 +220,7 @@ export default function InsightsPage() {
               transition={{ duration: 0.6 }}
               className="text-center max-w-3xl mx-auto"
             >
-              <h1 className="text-3xl md:text-4xl lg:text-6xl font-black text-secondary-dark dark:text-white mb-4">
+              <h1 className="text-3xl md:text-4xl lg:text-6xl font-black text-green-800 dark:text-white mb-4">
                 Expert{' '}
                 <span className="text-orange-500">Insights & Blog</span>
               </h1>
@@ -282,7 +277,7 @@ export default function InsightsPage() {
               viewport={{ once: true }}
               className="text-center mb-12"
             >
-              <h2 className="text-2xl md:text-3xl font-black text-secondary-dark dark:text-white mb-4">
+              <h2 className="text-2xl md:text-3xl font-black text-green-800 dark:text-white mb-4">
                 Industry <span className="text-orange-500">Insights</span>
               </h2>
               <div className="w-20 h-1 bg-orange-500 mx-auto rounded-full" />

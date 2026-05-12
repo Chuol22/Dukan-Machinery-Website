@@ -27,7 +27,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     disabled,
     ...props 
   }, ref) => {
-    const baseStyles = 'inline-flex items-center justify-center font-semibold transition-all duration-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed'
+    const baseStyles = 'inline-flex items-center justify-center font-semibold transition-all duration-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] min-w-[44px]'
     
     const variants = {
       primary: 'bg-primary text-white hover:bg-primary-dark focus:ring-primary',
@@ -39,8 +39,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     }
     
     const sizes = {
-      xs: 'px-2 py-1 text-xs gap-1',
-      sm: 'px-3 py-1.5 text-sm gap-1.5',
+      xs: 'px-2 py-1 text-xs gap-1 min-h-[36px] min-w-[36px]',
+      sm: 'px-3 py-1.5 text-sm gap-1.5 min-h-[40px] min-w-[40px]',
       md: 'px-4 py-2 text-base gap-2',
       lg: 'px-6 py-3 text-lg gap-2',
       xl: 'px-8 py-4 text-xl gap-3',

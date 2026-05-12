@@ -1,0 +1,13 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://dukanmachinery.com/sitemap.xml
+
+# Disallow admin or private areas if any
+# Disallow: /admin/
+# Disallow: /private/
+
+# Crawl-delay (optional, if needed)
+# Crawl-delay: 1

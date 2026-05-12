@@ -30,7 +30,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
     value,
     ...props 
   }, ref) => {
-    const baseStyles = 'w-full px-4 py-2 bg-neutral-50 dark:bg-neutral-900 border rounded-lg focus:outline-none focus:ring-2 transition-all duration-200 appearance-none cursor-pointer'
+    const baseStyles = 'w-full px-4 py-2 text-base bg-neutral-50 dark:bg-neutral-900 border rounded-lg focus:outline-none focus:ring-2 transition-all duration-200 appearance-none cursor-pointer'
     
     const stateStyles = error
       ? 'border-red-500 focus:ring-red-500'

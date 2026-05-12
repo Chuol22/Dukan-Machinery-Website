@@ -1,22 +1,19 @@
 'use client'
 
 import { motion, useInView } from 'framer-motion'
-import { useRef, useState } from 'react'
+import { useRef } from 'react'
 import {
   CheckCircle,
-  Award,
-  Clock,
   Shield,
   Globe,
   Headphones,
-  TrendingUp,
   Zap,
   BarChart3,
-  Truck,
   Settings,
   Users,
 } from 'lucide-react'
 import { AnimatedCounter } from '@/components/shared/AnimatedCounter'
+import { useTranslation } from '@/hooks/useTranslation'
 
 const advantages = [
   {
@@ -25,7 +22,6 @@ const advantages = [
     description: '±5% guaranteed capacity accuracy with real-world testing',
     stat: '97.5%',
     statLabel: 'Accuracy Rate',
-    color: 'from-green-400 to-emerald-500',
   },
   {
     icon: Shield,
@@ -33,7 +29,6 @@ const advantages = [
     description: '304/316 stainless steel and HARDOX wear plates',
     stat: '15+',
     statLabel: 'Years Lifespan',
-    color: 'from-blue-400 to-cyan-500',
   },
   {
     icon: Globe,
@@ -41,7 +36,6 @@ const advantages = [
     description: 'ISO, CE, GMP+ certified machinery',
     stat: '4+',
     statLabel: 'Countries Served',
-    color: 'from-purple-400 to-pink-500',
   },
   {
     icon: Headphones,
@@ -49,47 +43,66 @@ const advantages = [
     description: '24/7 technical support and spare parts availability',
     stat: '2hr',
     statLabel: 'Response Time',
-    color: 'from-orange-400 to-red-500',
   },
-]
-
-const stats = [
-  { value: 50, suffix: '+', label: 'Machines Installed', icon: Settings },
-  { value: 96, suffix: '%', label: 'Customer Satisfaction', icon: Users },
-  { value: 20, suffix: '%', label: 'Energy Efficiency', icon: Zap },
-  { value: 30, suffix: '%', label: 'Less Downtime', icon: BarChart3 },
 ]
 
 export default function WhyDukan() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, amount: 0.2 })
 
+  // All strings that need translation — one hook call, one API request
+  const [
+    heading,
+    subheading,
+    bodyText,
+    stat1Label,
+    stat2Label,
+    stat3Label,
+    stat4Label,
+    trustBadge,
+  ] = useTranslation([
+    'Why Choose',
+    'Engineered for Industrial Excellence',
+    'Five years of engineering excellence combined with cutting-edge technology to deliver the most reliable feed processing solutions.',
+    'Machines Installed',
+    'Customer Satisfaction',
+    'Energy Efficiency',
+    'Less Downtime',
+    'Trusted by over',
+  ])
+
+  const stats = [
+    { value: 50, suffix: '+', label: stat1Label, icon: Settings },
+    { value: 96, suffix: '%', label: stat2Label, icon: Users },
+    { value: 20, suffix: '%', label: stat3Label, icon: Zap },
+    { value: 30, suffix: '%', label: stat4Label, icon: BarChart3 },
+  ]
+
   return (
-    <section ref={ref} className="py-24 bg-white dark:bg-neutral-900">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <section ref={ref} className="py-16 sm:py-20 md:py-24 bg-white dark:bg-neutral-900">
+      <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center max-w-3xl mx-auto mb-16"
+          className="text-center max-w-3xl mx-auto mb-12 sm:mb-16"
         >
-          <h2 className="text-secondary-dark font-black text-4xl md:text-5xl lg:text-6xl  mb-2 tracking-wider">
-            Why Choose Us
+          <h2 className="text-green-800 dark:text-white font-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl mb-2 tracking-wider">
+            {heading} <span className="text-orange-600">US</span>
           </h2>
-          <div className="w-24 h-2 bg-primary mx-auto mb-4 rounded-full"></div>
-          <span className="text-sm sm:text-xl md:text-2xl lg:text-3xl font-bold text-neutral-900 dark:text-white mt-6 mb-12">
-            Engineered for{' '}
-            <span className="text-primary">Industrial Excellence</span>
+          <div className="w-16 sm:w-20 md:w-24 h-2 bg-orange-600 mx-auto mb-4 rounded-full" />
+          <span className="text-sm sm:text-base md:text-xl lg:text-2xl xl:text-3xl font-bold text-neutral-900 dark:text-white mt-6 mb-8 sm:mb-12">
+            {subheading}
           </span>
-          <p className="text-lg text-neutral-600 mt-2 dark:text-neutral-400">
-            Five years of engineering excellence combined with cutting-edge 
-            technology to deliver the most reliable feed processing solutions.
+          <p className="text-sm sm:text-base md:text-lg text-neutral-600 mt-2 dark:text-neutral-400">
+            {bodyText}
           </p>
         </motion.div>
 
         {/* Advantages Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-12 sm:mb-16 md:mb-20">
           {advantages.map((advantage, index) => (
             <motion.div
               key={index}
@@ -99,31 +112,20 @@ export default function WhyDukan() {
               whileHover={{ y: -5 }}
               className="relative group"
             >
-              <div className="absolute inset-0 bg-white dark:bg-neutral-800 rounded-2xl shadow-sm border border-neutral-100 dark:border-neutral-700 transition-all duration-300" />
-              <div className="relative p-6 border border-gray-100 dark:border-gray-800 rounded-2xl hover:border-primary/30 transition-all duration-300">
-                {/* Icon */}
-                <div className={`w-14 h-14 rounded-xl bg-gray-50 dark:bg-gray-800 flex items-center justify-center text-primary text-2xl group-hover:bg-primary group-hover:text-white transition-all duration-300 mb-4 animate-float`}>
-                  <advantage.icon className="w-7 h-7 text-primary" />
+              <div className="absolute inset-0 bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 transition-all duration-300" />
+              <div className="relative p-4 sm:p-6 border border-gray-100 dark:border-gray-800 rounded-2xl hover:border-orange-400/30 transition-all duration-300 cursor-pointer">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-xl bg-orange-300 dark:bg-gray-800 flex items-center justify-center mb-3 sm:mb-4 animate-float">
+                  <advantage.icon className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-primary" />
                 </div>
-
-                {/* Title */}
-                <h3 className="text-xl lg:text-2xl font-black text-secondary-dark dark:text-white leading-tight mb-4">
+                <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl font-black text-green-800 dark:text-white leading-tight mb-3 sm:mb-4">
                   {advantage.title}
                 </h3>
-
-                {/* Description */}
-                <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-4">
+                <p className="text-gray-600 dark:text-gray-200 text-xs sm:text-sm leading-relaxed mb-3 sm:mb-4">
                   {advantage.description}
                 </p>
-
-                {/* Stat */}
-                <div className="pt-4 border-t border-neutral-200 dark:border-neutral-700">
-                  <div className="text-2xl font-bold text-primary">
-                    {advantage.stat}
-                  </div>
-                  <div className="text-sm text-neutral-500 dark:text-neutral-400">
-                    {advantage.statLabel}
-                  </div>
+                <div className="pt-3 sm:pt-4 border-t border-neutral-200 dark:border-neutral-700">
+                  <div className="text-xl sm:text-2xl font-black text-primary">{advantage.stat}</div>
+                  <div className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400">{advantage.statLabel}</div>
                 </div>
               </div>
             </motion.div>
@@ -135,13 +137,13 @@ export default function WhyDukan() {
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.4, duration: 0.6 }}
-          className="bg-green-900 rounded-2xl p-8 md:p-12"
+          className="bg-green-900 rounded-2xl p-6 sm:p-8 md:p-10 lg:p-12"
         >
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
             {stats.map((stat, index) => (
               <div key={index} className="text-center text-white">
-                <stat.icon className="w-8 h-8 mx-auto mb-3 opacity-80" />
-                <div className="text-3xl md:text-4xl font-bold mb-1">
+                <stat.icon className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 mx-auto mb-2 sm:mb-3 opacity-80" />
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1">
                   <AnimatedCounter
                     end={stat.value}
                     suffix={stat.suffix}
@@ -149,20 +151,21 @@ export default function WhyDukan() {
                     startInView={isInView}
                   />
                 </div>
-                <div className="text-sm opacity-90">{stat.label}</div>
+                <div className="text-xs sm:text-sm opacity-90">{stat.label}</div>
               </div>
             ))}
           </div>
         </motion.div>
 
         {/* Trust badge */}
-        <div className="mt-16 text-center">
-          <p className="text-secondary-dark text-sm uppercase font-black tracking-[0.2em]">
-            Trusted by over{' '}
+        <div className="mt-12 sm:mt-16 text-center">
+          <p className="text-secondary-dark text-xs sm:text-sm uppercase font-black tracking-[0.1em] sm:tracking-[0.2em]">
+            {trustBadge}{' '}
             <span className="text-primary">100+</span>{' '}
             Countrywide Enterprises
           </p>
         </div>
+
       </div>
     </section>
   )

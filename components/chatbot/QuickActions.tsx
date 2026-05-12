@@ -19,45 +19,24 @@ interface QuickActionsProps {
 const quickActions = [
   {
     id: 'machines',
-    label: 'View Machines',
+    label: 'Products',
     icon: Package,
     query: 'What machines do you offer?',
-    color: 'from-primary to-primary-dark'
+    color: 'from-orange-500 to-orange-600'
   },
   {
     id: 'pricing',
     label: 'Pricing',
     icon: CreditCard,
     query: 'What are your price ranges?',
-    color: 'from-accent to-accent-dark'
-  },
-  {
-    id: 'custom',
-    label: 'Custom Order',
-    icon: Settings,
-    query: 'How can I order a custom machine?',
-    color: 'from-secondary to-secondary-dark'
+    color: 'from-orange-400 to-orange-500'
   },
   {
     id: 'support',
     label: 'Support',
     icon: Headphones,
-    query: 'What support do you offer?',
-    color: 'from-primary to-primary-dark'
-  },
-  {
-    id: 'delivery',
-    label: 'Delivery',
-    icon: Truck,
-    query: 'What is your delivery process?',
-    color: 'from-accent to-accent-dark'
-  },
-  {
-    id: 'catalog',
-    label: 'Catalog',
-    icon: FileText,
-    query: 'Send me your product catalog',
-    color: 'from-secondary to-secondary-dark'
+    query: 'How can I contact support?',
+    color: 'from-green-500 to-green-600'
   },
 ]
 
@@ -84,7 +63,7 @@ export default function QuickActions({ onActionClick }: QuickActionsProps) {
   return (
     <div className="space-y-2">
       <div className="flex items-center gap-2">
-        <HelpCircle className="w-4 h-4 text-primary" />
+        <HelpCircle className="w-4 h-4 text-orange-500" />
         <span className="text-xs font-black text-neutral-500 dark:text-neutral-400">
           Quick Questions
         </span>
@@ -94,7 +73,7 @@ export default function QuickActions({ onActionClick }: QuickActionsProps) {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="grid grid-cols-2 gap-2"
+        className="flex gap-2 justify-center"
       >
         {quickActions.map((action) => (
           <motion.button
@@ -111,7 +90,7 @@ export default function QuickActions({ onActionClick }: QuickActionsProps) {
               
               <div className="relative flex items-center gap-2">
                 <div className={`p-1.5 rounded-lg bg-gradient-to-r ${action.color} bg-opacity-10`}>
-                  <action.icon className="w-3.5 h-3.5 text-primary" />
+                  <action.icon className="w-3.5 h-3.5 text-orange-500" />
                 </div>
                 <span className="text-[11px] font-medium text-neutral-700 dark:text-neutral-300">
                   {action.label}

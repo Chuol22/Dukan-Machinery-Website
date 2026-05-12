@@ -5,9 +5,6 @@ import { useState } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { Star, Building2, Calendar, Quote, ChevronRight, Eye, Target, Factory, Award } from 'lucide-react'
-import Header from '@/components/layout/Header'
-import ChatbotWidget from '@/components/chatbot/ChatbotWidget'
-import { RiH6 } from 'react-icons/ri'
 
 const testimonials = [
   {
@@ -96,15 +93,12 @@ export default function TestimonialsPage() {
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 flex flex-col">
-      <Header />
-      <ChatbotWidget />
-      
       <main ref={ref} className="flex-grow">
         {/* Hero Section */}
-        <section className="relative bg-gray-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-900 pt-32 pb-16 overflow-hidden">
+        <section className="relative bg-gray-50 dark:bg-gray-900 pt-32 pb-16 overflow-hidden">
           <div className="absolute inset-0">
-            <div className="absolute top-20 right-10 w-72 h-72 bg-orange-100 rounded-full blur-3xl opacity-30" />
-            <div className="absolute bottom-20 left-10 w-72 h-72 bg-green-100 rounded-full blur-3xl opacity-30" />
+            <div className="absolute top-20 right-10 w-72 h-72 bg-orange-100 dark:bg-orange-900/20 rounded-full blur-3xl opacity-30" />
+            <div className="absolute bottom-20 left-10 w-72 h-72 bg-green-100 dark:bg-green-900/20 rounded-full blur-3xl opacity-30" />
           </div>
           
           <div className="container mx-auto px-2 sm:px-4 lg:px-4 relative">
@@ -114,12 +108,8 @@ export default function TestimonialsPage() {
               transition={{ duration: 0.6 }}
               className="text-center max-w-3xl mx-auto"
             >
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-100 dark:bg-orange-900/30 rounded-full mb-6">
-                <Quote className="w-4 h-4 text-orange-500" />
-                <span className="text-orange-700 dark:text-orange-400 font-semibold text-3xl">Testimonials</span>
-              </div>
               
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-gray-900 dark:text-white mb-4">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-green-800 dark:text-white mb-4">
                 What Our{' '}
                 <span className="text-orange-600">Clients Say</span>
               </h1>
@@ -262,10 +252,6 @@ export default function TestimonialsPage() {
               transition={{ duration: 0.6 }}
               className="text-center mb-12"
             >
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-100 dark:bg-orange-900/30 rounded-full mb-6">
-                <Building2 className="w-4 h-4 text-orange-500" />
-                <span className="text-orange-700 dark:text-orange-400 font-black text-sm">About Us</span>
-              </div>
               <h2 className="text-3xl md:text-3xl font-black text-gray-900 dark:text-white mb-4">
                 About <span className="text-orange-600">Dukan Machinery</span>
               </h2>
@@ -294,14 +280,14 @@ export default function TestimonialsPage() {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="overflow-hidden rounded-2xl shadow-lg group">
                     <img 
-                      src="/image/testimonials/Factor photo.jpg" 
+                      src="/images/testimonials/Factory photo.jpg" 
                       alt="Company Story" 
                       className="h-40 w-full object-cover transition-all duration-500 group-hover:scale-110 group-hover:rotate-1"
                     />
                   </div>
                   <div className="overflow-hidden rounded-2xl shadow-lg group">
                     <img 
-                      src="/images/testimonials/ Factor photos 1.jpg" 
+                      src="/images/testimonials/Factory photos 1.jpg" 
                       alt="Company Story" 
                       className="h-40 w-full object-cover transition-all duration-500 group-hover:scale-110 group-hover:rotate-1"
                     />
@@ -372,21 +358,21 @@ export default function TestimonialsPage() {
               <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
                 <div className="overflow-hidden rounded-2xl shadow-lg group">
                   <img 
-                    src="/images/testimonials/Company Story.jpg.jpg" 
+                    src="/images/testimonials/Company Story.jpg" 
                     alt="Inside Our Factory" 
                     className="h-56 w-full object-cover transition-all duration-500 group-hover:scale-110"
                   />
                 </div>
                 <div className="overflow-hidden rounded-2xl shadow-lg group">
                   <img 
-                    src="/images/testimonials/Factor photos 1.jpg" 
+                    src="/images/testimonials/factory-photos-1.jpg" 
                     alt="Inside Our Factory" 
                     className="h-56 w-full object-cover transition-all duration-500 group-hover:scale-110"
                   />
                 </div>
                 <div className="overflow-hidden rounded-2xl shadow-lg group md:col-span-2 max-w-md mx-auto">
                   <img 
-                    src="company story1.jpg" 
+                    src="/images/testimonials/Factory photos 1.jpg" 
                     alt="Inside Our Factory" 
                     className="h-56 w-full object-cover transition-all duration-500 group-hover:scale-110"
                   />
@@ -410,21 +396,21 @@ export default function TestimonialsPage() {
                     <span className="text-3xl font-bold text-orange-600">NATC</span>
                   </div>
                   <h4 className="font-bold text-gray-900 dark:text-white">National Agricultural Training Center</h4>
-                  <p className="text-sm text-gray-500 mt-2">Certified Partner</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">Certified Partner</p>
                 </div>
                 <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 text-center">
                   <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center">
                     <span className="text-3xl font-bold text-orange-600">ISO</span>
                   </div>
                   <h4 className="font-bold text-gray-900 dark:text-white">Certified Agro-Processing</h4>
-                  <p className="text-sm text-gray-500 mt-2">Quality Assured</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">Quality Assured</p>
                 </div>
                 <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 text-center">
                   <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center">
                     <span className="text-3xl font-bold text-orange-600">O&M</span>
                   </div>
                   <h4 className="font-bold text-gray-900 dark:text-white">Operations & Maintenance Certificate</h4>
-                  <p className="text-sm text-gray-500 mt-2">Industry Standard</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">Industry Standard</p>
                 </div>
               </div>
             </motion.div>

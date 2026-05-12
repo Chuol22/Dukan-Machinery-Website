@@ -66,7 +66,7 @@ export default function MobileMenu({ isOpen, onClose, navItems }: MobileMenuProp
                       key={item.name}
                       href={item.href}
                       onClick={onClose}
-                      className={`block px-6 py-3 text-base font-medium transition-colors ${
+                      className={`block px-6 py-3 text-base font-medium transition-colors min-h-[44px] flex items-center ${
                         isActive
                           ? 'bg-primary/10 text-primary border-r-4 border-primary'
                           : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'

@@ -43,13 +43,13 @@ export default function MachinesPage() {
   return (
     <div className="min-h-screen bg-white dark:bg-neutral-800">
       {/* Hero Section */}
-      <section className="relative bg-green-50 text-gray-900 py-16 overflow-hidden">
-        <div className="absolute inset-0 bg-white"></div>
+      <section className="relative bg-green-50 dark:bg-gray-900 text-gray-900 dark:text-white py-16 overflow-hidden">
+        <div className="absolute inset-0 bg-white dark:bg-gray-900"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-5xl lg:text-6xl text-secondary-dark font-black uppercase tracking-tight"
+            className="text-4xl md:text-5xl lg:text-6xl text-secondary-dark dark:text-white font-black uppercase tracking-tight"
           >
             Machinery <span className="text-orange-500">Catalogue</span>
           </motion.h1>
@@ -63,7 +63,7 @@ export default function MachinesPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="mt-6 text-gray-900 max-w-2xl mx-auto"
+            className="mt-6 text-gray-700 dark:text-gray-300 max-w-2xl mx-auto"
           >
             Explore our range of high-performance agricultural and industrial machines with detailed specifications.
           </motion.p>

@@ -75,7 +75,7 @@ export default function PlatformButtons({
   return (
     <div className="space-y-2">
       <div className="flex items-center gap-2">
-        <div className="w-1 h-4 bg-secondary rounded-full" />
+        <div className="w-1 h-2 bg-secondary rounded-full" />
         <span className="text-xs font-medium text-neutral-500 dark:text-neutral-400">
           Connect with us on
         </span>

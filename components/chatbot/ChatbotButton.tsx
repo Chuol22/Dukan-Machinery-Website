@@ -50,7 +50,7 @@ export default function ChatbotButton({
           variants={pulseVariants}
           initial="initial"
           animate="animate"
-          className="absolute inset-0 rounded-full bg-primary"
+          className="absolute inset-0 rounded-full bg-orange-500"
           style={{ width: '100%', height: '100%' }}
         />
       )}
@@ -63,7 +63,7 @@ export default function ChatbotButton({
             initial="initial"
             animate="animate"
             exit="exit"
-            className="absolute -top-1 -right-1 w-5 h-5 bg-orange-200 rounded-full flex items-center justify-center z-10"
+            className="absolute -top-1 -right-1 w-5 h-5 bg-orange-500 rounded-full flex items-center justify-center z-10"
           >
             <span className="text-white text-xs font-black">!</span>
           </motion.div>
@@ -78,10 +78,10 @@ export default function ChatbotButton({
         whileHover="hover"
         whileTap="tap"
         onClick={onClick}
-        className={`relative w-16 h-16 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 ${
+        className={`relative w-12 h-12 rounded-full shadow-md flex items-center justify-center transition-all duration-300 ${
           isOpen
             ? 'bg-gray-600 dark:bg-gray-500 hover:bg-gray-500 dark:hover:bg-gray-400'
-            : 'bg-gradient-to-br from-primary to-primary-dark hover:from-primary-dark hover:to-primary'
+            : 'bg-gradient-to-br from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700'
         }`}
         aria-label="Chat with AI assistant"
       >
@@ -96,9 +96,9 @@ export default function ChatbotButton({
               className="flex items-center gap-1"
             >
               {onMinimizedRestore ? (
-                <ChevronUp className="w-7 h-7 text-white" />
+                <ChevronUp className="w-5 h-5 text-white" />
               ) : (
-                <X className="w-7 h-7 text-white" />
+                <X className="w-5 h-5 text-white" />
               )}
             </motion.div>
           ) : (
@@ -109,7 +109,7 @@ export default function ChatbotButton({
               exit={{ rotate: -90, opacity: 0 }}
               transition={{ duration: 0.2 }}
             >
-              <MessageCircle className="w-8 h-8 text-white" />
+              <MessageCircle className="w-6 h-6 text-white" />
             </motion.div>
           )}
         </AnimatePresence>

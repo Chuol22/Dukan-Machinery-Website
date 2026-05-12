@@ -33,70 +33,74 @@ export default function ChatMessage({ message }: ChatMessageProps) {
     
     return paragraphs.map((paragraph, idx) => {
       // Check if it's a list item
-      if (paragraph.startsWith('- ')) {
-        const items = paragraph.split('\n').filter(line => line.startsWith('- '))
+      if (paragraph.trim().startsWith('- ') || paragraph.trim().startsWith('* ')) {
+        const items = paragraph.split('\n').filter(line => line.trim().startsWith('- ') || line.trim().startsWith('* '))
         return (
-          <ul key={idx} className="space-y-1 mt-2">
-            {items.map((item, i) => (
-              <li key={i} className="flex items-start gap-2">
-                <span className="text-primary mt-1">•</span>
-                <span>{item.substring(2)}</span>
-              </li>
-            ))}
+          <ul key={idx} className="space-y-2 mt-2 mb-2">
+            {items.map((item, i) => {
+              const itemContent = item.trim().substring(2)
+              return (
+                <li key={i} className="flex items-start gap-2.5">
+                  <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-orange-500 mt-2" />
+                  <span className="flex-1">{formatBoldText(itemContent)}</span>
+                </li>
+              )
+            })}
           </ul>
         )
       }
       
-      // Check for bold text
-      const boldRegex = /\*\*(.*?)\*\*/g
-      const withBold = paragraph.split(boldRegex).map((part, i) => {
-        if (i % 2 === 1) {
-          return <strong key={i} className="font-semibold text-primary">{part}</strong>
-        }
-        return part
-      })
-      
       return (
-        <p key={idx} className={idx > 0 ? 'mt-2' : ''}>
-          {withBold}
+        <p key={idx} className={idx > 0 ? 'mt-3' : ''}>
+          {formatBoldText(paragraph)}
         </p>
       )
     })
   }
 
+  const formatBoldText = (text: string) => {
+    const boldRegex = /\*\*(.*?)\*\*/g
+    return text.split(boldRegex).map((part, i) => {
+      if (i % 2 === 1) {
+        return <strong key={i} className="font-bold text-inherit border-b border-orange-500/30">{part}</strong>
+      }
+      return part
+    })
+  }
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.25 }}
-      className={`flex gap-3 ${isBot ? 'justify-start' : 'justify-end'}`}
+      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.3, ease: 'easeOut' }}
+      className={`flex gap-3 group ${isBot ? 'justify-start' : 'justify-end'}`}
     >
       {/* Avatar */}
       {isBot && (
-        <div className="flex-shrink-0">
-          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-primary-dark flex items-center justify-center shadow-lg border-2 border-white/20">
+        <div className="flex-shrink-0 self-end mb-1">
+          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-orange-600 to-orange-500 flex items-center justify-center shadow-md border-2 border-white dark:border-neutral-800">
             <Bot className="w-5 h-5 text-white" />
           </div>
         </div>
       )}
 
       {/* Message Content */}
-      <div className={`max-w-[85%] ${isBot ? 'order-2' : 'order-1'}`}>
+      <div className={`max-w-[85%] flex flex-col ${isBot ? 'items-start' : 'items-end'}`}>
         <div
-          className={`relative px-5 py-3 rounded-2xl shadow-sm ${
+          className={`relative px-4 py-3 md:px-5 md:py-3.5 rounded-2xl shadow-sm transition-all ${
             isBot
-              ? 'bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 rounded-tl-none border border-neutral-200 dark:border-neutral-700'
-              : 'bg-gradient-to-br from-primary to-primary-dark text-white rounded-tr-none'
+              ? 'bg-white dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 rounded-bl-none border border-neutral-200/50 dark:border-neutral-700/50'
+              : 'bg-gradient-to-br from-orange-500 to-orange-600 text-white rounded-br-none shadow-orange-500/20'
           }`}
         >
-          <div className="text-sm leading-relaxed break-words pr-2">
+          <div className="text-[15px] md:text-base leading-relaxed break-words">
             {formatMessage(message.content)}
           </div>
 
           {/* Timestamp */}
           <div
-            className={`text-xs mt-1 ${
-              isBot ? 'text-gray-400' : 'text-white/70'
+            className={`text-[10px] mt-1.5 font-medium uppercase tracking-wider ${
+              isBot ? 'text-neutral-400' : 'text-white/60'
             }`}
           >
             {new Date(message.timestamp).toLocaleTimeString([], { 
@@ -104,53 +108,54 @@ export default function ChatMessage({ message }: ChatMessageProps) {
               minute: '2-digit' 
             })}
           </div>
-
-          {/* Action Buttons for Bot Messages */}
-          {isBot && (
-            <div className="absolute -bottom-6 right-0 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-              <button
-                onClick={handleCopy}
-                className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors"
-                aria-label="Copy message"
-              >
-                {isCopied ? (
-                  <CheckCheck className="w-3 h-3 text-green-500" />
-                ) : (
-                  <Copy className="w-3 h-3 text-gray-400" />
-                )}
-              </button>
-              <button
-                onClick={() => handleFeedback('like')}
-                className={`p-1 rounded transition-colors ${
-                  feedback === 'like'
-                    ? 'text-primary'
-                    : 'text-gray-400 hover:text-primary'
-                }`}
-                aria-label="Like"
-              >
-                <ThumbsUp className="w-3 h-3" />
-              </button>
-              <button
-                onClick={() => handleFeedback('dislike')}
-                className={`p-1 rounded transition-colors ${
-                  feedback === 'dislike'
-                    ? 'text-red-500'
-                    : 'text-gray-400 hover:text-red-500'
-                }`}
-                aria-label="Dislike"
-              >
-                <ThumbsDown className="w-3 h-3" />
-              </button>
-            </div>
-          )}
         </div>
+
+        {/* Action Buttons for Bot Messages */}
+        {isBot && (
+          <div className="flex gap-1.5 mt-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200 px-1">
+            <button
+              onClick={handleCopy}
+              className="p-1.5 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition-colors border border-transparent hover:border-neutral-200 dark:hover:border-neutral-700"
+              title="Copy message"
+            >
+              {isCopied ? (
+                <CheckCheck className="w-3.5 h-3.5 text-green-500" />
+              ) : (
+                <Copy className="w-3.5 h-3.5 text-neutral-400" />
+              )}
+            </button>
+            <div className="w-[1px] h-3 bg-neutral-200 dark:bg-neutral-700 self-center mx-0.5" />
+            <button
+              onClick={() => handleFeedback('like')}
+              className={`p-1.5 rounded-lg transition-colors border border-transparent hover:border-neutral-200 dark:hover:border-neutral-700 ${
+                feedback === 'like'
+                  ? 'text-orange-500 bg-orange-500/5'
+                  : 'text-neutral-400 hover:text-orange-500'
+              }`}
+              title="Helpful"
+            >
+              <ThumbsUp className="w-3.5 h-3.5" />
+            </button>
+            <button
+              onClick={() => handleFeedback('dislike')}
+              className={`p-1.5 rounded-lg transition-colors border border-transparent hover:border-neutral-200 dark:hover:border-neutral-700 ${
+                feedback === 'dislike'
+                  ? 'text-red-500 bg-red-500/5'
+                  : 'text-neutral-400 hover:text-red-500'
+              }`}
+              title="Not helpful"
+            >
+              <ThumbsDown className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        )}
       </div>
 
       {/* User Avatar */}
       {!isBot && (
-        <div className="flex-shrink-0 order-3">
-          <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center shadow-md">
-            <User className="w-4 h-4 text-white" />
+        <div className="flex-shrink-0 self-end mb-1">
+          <div className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center shadow-md border-2 border-white dark:border-neutral-800">
+            <User className="w-5 h-5 text-white" />
           </div>
         </div>
       )}

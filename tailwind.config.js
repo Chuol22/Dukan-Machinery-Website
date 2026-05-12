@@ -1,21 +1,19 @@
 // tailwind.config.js
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: 'class', // Important: Enable class-based dark mode
+  darkMode: 'class',
   content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/contexts/**/*.{js,ts,jsx,tsx,mdx}',
+    './app/**/*.{js,ts,jsx,tsx,mdx}',
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './contexts/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {
       colors: {
-        // Brand colors with dark mode support
-        'primary': {
-          DEFAULT: '#F97316', // Orange-500 for Dukan Machinery
-          dark: '#EA580C',    // Orange-600
-          light: '#FB923C',   // Orange-400
+        primary: {
+          DEFAULT: '#F97316',
+          dark: '#EA580C',
+          light: '#FB923C',
           50: '#FFF7ED',
           100: '#FFEDD5',
           200: '#FED7AA',
@@ -27,10 +25,10 @@ module.exports = {
           800: '#9A3412',
           900: '#7C2D12',
         },
-        'secondary': {
-          DEFAULT: '#8B5CF6', // purple-600
-          dark: '#7C3AED',    // purple-700
-          light: '#A78BFA',   // purple-400
+        secondary: {
+          DEFAULT: '#8B5CF6',
+          dark: '#7C3AED',
+          light: '#A78BFA',
           50: '#F5F3FF',
           100: '#EDE9FE',
           200: '#DDD6FE',
@@ -42,14 +40,14 @@ module.exports = {
           800: '#5B21B6',
           900: '#4C1D95',
         },
-        'accent': {
-          DEFAULT: '#10B981', // emerald-500
-          dark: '#059669',    // emerald-600
-          light: '#34D399',   // emerald-400
+        accent: {
+          DEFAULT: '#10B981',
+          dark: '#059669',
+          light: '#34D399',
         },
       },
       fontFamily: {
-        'changa': ['var(--font-changa-one)', 'sans-serif'],
+        gratelos: ['Gratelos', 'sans-serif'],
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',

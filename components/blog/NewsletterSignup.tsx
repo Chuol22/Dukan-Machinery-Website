@@ -134,7 +134,7 @@ export default function NewsletterSignup({ variant = 'default', className = '' }
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`relative overflow-hidden bg-white rounded-2xl ${className}`}
+      className={`relative overflow-hidden bg-white dark:bg-neutral-800 rounded-2xl border border-gray-100 dark:border-neutral-700 ${className}`}
     >
 
       {/* Content */}
@@ -147,18 +147,18 @@ export default function NewsletterSignup({ variant = 'default', className = '' }
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
-              className="inline-flex bg-green-200 items-center gap-2 px-3 py-1 rounded-full mb-4"
+              className="inline-flex bg-orange-100 dark:bg-orange-900/30 items-center gap-2 px-3 py-1 rounded-full mb-4"
             >
               <Sparkles className="w-4 h-4 text-orange-500" />
-              <span className="text-green-700  text-lg font-black">Stay Ahead</span>
+              <span className="text-orange-700 dark:text-orange-400 text-lg font-black">Stay Ahead</span>
             </motion.div>
 
             {/* Title */}
-            <h3 className="text-xl md:text-2xl font-black text-green-800 mb-4">
+            <h3 className="text-xl md:text-2xl font-black text-green-800 dark:text-white mb-4">
               Subscribe to Our Newsletter
             </h3>
             
-            <p className="text-orange-600 mb-6 leading-relaxed">
+            <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
               Join 1,00+ industry professionals who receive weekly updates on 
               feed processing technology, industry trends, and exclusive offers.
             </p>
@@ -173,16 +173,16 @@ export default function NewsletterSignup({ variant = 'default', className = '' }
                   transition={{ delay: 0.3 + idx * 0.1 }}
                   className="flex items-center gap-2"
                 >
-                  <div className="w-6 h-6 rounded-full bg-orange-400 flex items-center justify-center">
+                  <div className="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center">
                     <benefit.icon className="w-4 h-4 text-white" />
                   </div>
-                  <span className="text-green-600/80 text-sm">{benefit.text}</span>
+                  <span className="text-gray-600 dark:text-gray-400 text-sm">{benefit.text}</span>
                 </motion.div>
               ))}
             </div>
 
             {/* Social Proof */}
-            <div className="flex items-center gap-4 text-gray-600/60 text-sm">
+            <div className="flex items-center gap-4 text-gray-500 dark:text-gray-400 text-sm">
               <div className="flex items-center gap-1">
                 <CheckCircle className="w-4 h-4 text-orange-500" />
                 <span>No spam</span>
@@ -199,11 +199,11 @@ export default function NewsletterSignup({ variant = 'default', className = '' }
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4 }}
-            className="bg-green-600/10 backdrop-blur-sm rounded-xl p-6"
+            className="bg-gray-50 dark:bg-neutral-700/50 rounded-xl p-6"
           >
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-green-600 text-sm font-black mb-2">
+                <label className="block text-gray-700 dark:text-gray-300 text-sm font-black mb-2">
                   Full Name (Optional)
                 </label>
                 <input
@@ -211,12 +211,12 @@ export default function NewsletterSignup({ variant = 'default', className = '' }
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Name"
-                  className="w-full px-4 py-3 bg-green-600/10 border border-green-600/20 rounded-lg text-green-600 placeholder-green-600/60 focus:outline-none focus:ring-2 focus:ring-green-600/30 transition-all duration-300"
+                  className="w-full px-4 py-3 bg-white dark:bg-neutral-800 border border-gray-200 dark:border-neutral-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all duration-300"
                 />
               </div>
 
               <div>
-                <label className="block text-green-600 text-sm font-black mb-2">
+                <label className="block text-gray-700 dark:text-gray-300 text-sm font-black mb-2">
                   Email Address *
                 </label>
                 <div className="relative">
@@ -225,9 +225,9 @@ export default function NewsletterSignup({ variant = 'default', className = '' }
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="i@example.com"
-                    className="w-full px-4 py-3 pl-11 bg-green-600/10 border border-green-600/20 rounded-lg text-green-600 placeholder-green-600/60 focus:outline-none focus:ring-2 focus:ring-green-600/30 transition-all duration-300"
+                    className="w-full px-4 py-3 pl-11 bg-white dark:bg-neutral-800 border border-gray-200 dark:border-neutral-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all duration-300"
                   />
-                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-green-600/60" />
+                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500" />
                 </div>
               </div>
 
@@ -238,7 +238,7 @@ export default function NewsletterSignup({ variant = 'default', className = '' }
               >
                 {status === 'loading' ? (
                   <>
-                    <div className="w-5 h-5 border-2 border-green-600 border-t-transparent rounded-full animate-spin" />
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
                     Subscribing...
                   </>
                 ) : (
@@ -249,7 +249,7 @@ export default function NewsletterSignup({ variant = 'default', className = '' }
                 )}
               </button>
 
-              <p className="text-white/10 text-xs text-center">
+              <p className="text-gray-400 dark:text-gray-500 text-xs text-center">
                 By subscribing, you agree to our Privacy Policy and consent to receive updates.
               </p>
             </form>
@@ -263,8 +263,8 @@ export default function NewsletterSignup({ variant = 'default', className = '' }
                   exit={{ opacity: 0, y: -10 }}
                   className="mt-4 p-3 bg-green-500/20 rounded-lg flex items-center gap-2"
                 >
-                  <CheckCircle className="w-5 h-5 text-green-400" />
-                  <p className="text-green-400 text-sm">Thanks for subscribing! Check your inbox.</p>
+                  <CheckCircle className="w-5 h-5 text-green-500" />
+                  <p className="text-green-600 dark:text-green-400 text-sm">Thanks for subscribing! Check your inbox.</p>
                 </motion.div>
               )}
               {status === 'error' && (
@@ -274,8 +274,8 @@ export default function NewsletterSignup({ variant = 'default', className = '' }
                   exit={{ opacity: 0, y: -10 }}
                   className="mt-4 p-3 bg-red-500/20 rounded-lg flex items-center gap-2"
                 >
-                  <XCircle className="w-5 h-5 text-red-400" />
-                  <p className="text-red-400 text-sm">{errorMessage}</p>
+                  <XCircle className="w-5 h-5 text-red-500" />
+                  <p className="text-red-500 dark:text-red-400 text-sm">{errorMessage}</p>
                 </motion.div>
               )}
             </AnimatePresence>

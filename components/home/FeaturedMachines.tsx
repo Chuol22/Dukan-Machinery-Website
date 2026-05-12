@@ -94,23 +94,24 @@ export default function FeaturedMachines() {
   }
 
   return (
-    <section ref={ref} className="py-24 bg-gray-50 overflow-hidden">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <section ref={ref} className="py-16 sm:py-20 md:py-24 bg-gray-50 dark:bg-neutral-900 overflow-hidden">
+      <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center max-w-3xl mx-auto mb-16"
+          className="text-center max-w-3xl mx-auto mb-12 sm:mb-16"
         >
-          <h2 className="text-secondary-dark font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-wider">
-            Featured Products
+          <h2 className="text-green-800 dark:text-white font-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl uppercase tracking-wider">
+            Featured<span className='text-orange-600'>build</span>
           </h2>
-          <h5 className="text-xl sm:text-2xl md:text-3xl font-black text-neutral-900 dark:text-white mt-4 mb-6">
+          <div className='w-16 sm:w-20 h-2 bg-orange-600 mt-4 rounded-full mx-auto'></div>
+          <h5 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-black text-neutral-900 dark:text-white mt-4 mb-4 sm:mb-6">
             Our Most Popular{' '}
             <span className="text-primary">Industrial Machines</span>
           </h5>
-          <p className="text-lg text-neutral-600 font-black dark:text-neutral-400">
+          <p className="text-sm sm:text-base md:text-lg text-neutral-600 font-black dark:text-neutral-400">
             Discover our best-selling machinery trusted by feed manufacturers worldwide
           </p>
         </motion.div>
@@ -130,7 +131,7 @@ export default function FeaturedMachines() {
             >
               <div className="bg-white dark:bg-neutral-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300">
                 {/* Image Container */}
-                <div className="relative h-56 overflow-hidden bg-neutral-200 dark:bg-neutral-700">
+                <div className="relative h-48 sm:h-56 overflow-hidden bg-neutral-200 dark:bg-neutral-700">
                   <Image
                     src={machine.image}
                     alt={machine.name}
@@ -141,28 +142,28 @@ export default function FeaturedMachines() {
                 </div>
 
                 {/* Content */}
-                <div className="p-4">
-                  <h3 className="text-lg font-black text-green-900 dark:text-white mb-2">
+                <div className="p-3 sm:p-4">
+                  <h3 className="text-base sm:text-lg font-black text-green-900 dark:text-white mb-2">
                     {machine.name}
                   </h3>
-                  <p className="text-gray-700 dark:text-gray-600 text-sm mb-4 line-clamp-2">
+                  <p className="text-gray-600 dark:text-neutral-400 text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-2">
                     {machine.shortDescription}
                   </p>
                   
                   {/* Machine Specs */}
-                  <div className="flex items-center justify-between gap-2 pt-3 border-t border-neutral-200 dark:border-neutral-700">
+                  <div className="flex items-center justify-between gap-2 pt-2 sm:pt-3 border-t border-neutral-200 dark:border-neutral-700">
                     <div className="flex flex-col items-center flex-1">
-                      <span className="flex items-center gap-1 text-[10px] text-neutral-400 uppercase font-black mb-1">
+                      <span className="flex items-center gap-0.5 sm:gap-1 text-[8px] sm:text-[10px] text-neutral-400 uppercase font-black mb-1">
                         <CapacityIcon /> Capacity
                       </span>
-                      <span className="text-xs font-black text-primary dark:text-white">{machine.capacity}</span>
+                      <span className="text-[10px] sm:text-xs font-black text-primary dark:text-white">{machine.capacity}</span>
                     </div>
-                    <div className="w-px h-6 bg-neutral-200 dark:bg-neutral-700"></div>
+                    <div className="w-px h-5 sm:h-6 bg-neutral-200 dark:border-neutral-700"></div>
                     <div className="flex flex-col items-center flex-1">
-                      <span className="flex items-center gap-1 text-[10px] text-neutral-400 uppercase font-black mb-1">
+                      <span className="flex items-center gap-0.5 sm:gap-1 text-[8px] sm:text-[10px] text-neutral-400 uppercase font-black mb-1">
                         <PowerIcon /> Power
                       </span>
-                      <span className="text-xs font-black text-primary dark:text-white">{machine.power}</span>
+                      <span className="text-[10px] sm:text-xs font-black text-primary dark:text-white">{machine.power}</span>
                     </div>
                   </div>
                 </div>
@@ -182,53 +183,54 @@ export default function FeaturedMachines() {
               transition={{ duration: 0.3 }}
               className="bg-white dark:bg-neutral-800 rounded-2xl overflow-hidden shadow-lg"
             >
-              <div className="relative h-80 overflow-hidden">
+              <div className="relative h-64 sm:h-72 md:h-80 overflow-hidden">
                 <Image
                   src={featuredMachines[currentSlide].image}
                   alt={featuredMachines[currentSlide].name}
                   fill
                   className="object-cover"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 60vw"
                 />
-                <div className="absolute top-4 left-4">
-                  <span className="px-3 py-1 bg-secondary text-white text-sm font-black rounded-full">
+                <div className="absolute top-3 sm:top-4 left-3 sm:left-4">
+                  <span className="px-2 sm:px-3 py-1 bg-secondary text-white text-xs sm:text-sm font-black rounded-full">
                     {featuredMachines[currentSlide].category}
                   </span>
                 </div>
               </div>
 
-              <div className="p-4">
-                <h3 className="text-xl font-black text-neutral-900 dark:text-white mb-2">
+              <div className="p-3 sm:p-4">
+                <h3 className="text-lg sm:text-xl font-black text-neutral-900 dark:text-white mb-2">
                   {featuredMachines[currentSlide].name}
                 </h3>
-                  <p className="text-neutral-600 dark:text-neutral-400 text-sm mb-4">
+                  <p className="text-neutral-600 dark:text-neutral-400 text-xs sm:text-sm mb-3 sm:mb-4">
                     {featuredMachines[currentSlide].shortDescription}
                   </p>
                 
                 {/* Info */}
-              <div className="p-8">
-                <h3 className="text-xl font-black text-primary dark:text-white mb-6 uppercase text-center border-b border-neutral-200 dark:border-neutral-700 pb-4">
+              <div className="p-4 sm:p-6 md:p-8">
+                <h3 className="text-base sm:text-lg md:text-xl font-black text-primary dark:text-white mb-4 sm:mb-6 uppercase text-center border-b border-neutral-200 dark:border-neutral-700 pb-3 sm:pb-4">
                   {featuredMachines[currentSlide].name}
                 </h3>
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex flex-col items-center flex-1">
-                    <span className="flex items-center gap-1 text-[10px] text-neutral-400 uppercase font-black mb-1">
+                    <span className="flex items-center gap-0.5 sm:gap-1 text-[8px] sm:text-[10px] text-neutral-400 uppercase font-black mb-1">
                       <CapacityIcon /> Capacity
                     </span>
-                    <span className="text-xs font-black text-primary dark:text-white">{featuredMachines[currentSlide].capacity}</span>
+                    <span className="text-[10px] sm:text-xs font-black text-primary dark:text-white">{featuredMachines[currentSlide].capacity}</span>
                   </div>
-                  <div className="w-px h-8 bg-neutral-200 dark:bg-neutral-700"></div>
+                  <div className="w-px h-6 sm:h-8 bg-neutral-200 dark:bg-neutral-700"></div>
                   <div className="flex flex-col items-center flex-1">
-                    <span className="flex items-center gap-1 text-[10px] text-neutral-400 uppercase font-black mb-1">
+                    <span className="flex items-center gap-0.5 sm:gap-1 text-[8px] sm:text-[10px] text-neutral-400 uppercase font-black mb-1">
                       <PowerIcon /> Power
                     </span>
-                    <span className="text-xs font-black text-primary dark:text-white">{featuredMachines[currentSlide].power}</span>
+                    <span className="text-[10px] sm:text-xs font-black text-primary dark:text-white">{featuredMachines[currentSlide].power}</span>
                   </div>
                 </div>
               </div>
 
-                <div className="flex gap-3"> 
+                <div className="flex gap-2 sm:gap-3"> 
                   <Link href="/order" className="flex-1">
-                    <Button className="w-full bg-primary hover:bg-primary-dark">
+                    <Button className="w-full bg-primary hover:bg-primary-dark text-xs sm:text-sm">
                       Order
                     </Button>
                   </Link>

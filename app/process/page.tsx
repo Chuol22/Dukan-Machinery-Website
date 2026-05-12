@@ -81,8 +81,8 @@ export default function ProcessSteps() {
           transition={{ duration: 0.6 }}
           className="text-center mb-20"
         >
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-orange-600 dark:text-white tracking-tight uppercase">
-            Our Working <span className="text-secondary-dark">Process</span>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-green-800 dark:text-white tracking-tight uppercase">
+            Our Working <span className="text-orange-600">Process</span>
           </h2>
           <div className="w-20 h-2 bg-primary mx-auto mt-4 rounded-full"></div>
           <p className="mt-6 text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">

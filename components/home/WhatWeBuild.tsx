@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
-import { motion, useInView, useAnimation, Easing } from 'framer-motion';
+import React, { useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -152,9 +152,9 @@ export default function WhatWeBuild() {
     <section 
       id="what-we-build" 
       ref={sectionRef}
-      className="py-20 bg-white dark:bg-gray-900/50 overflow-hidden"
+      className="py-12 sm:py-16 md:py-20 bg-white dark:bg-gray-900/50 overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
         
         {/* Section Header */}
         <motion.div
@@ -163,10 +163,10 @@ export default function WhatWeBuild() {
           variants={fadeInUpVariants}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-black text-center mb-4 text-secondary-dark dark:text-white">
-            What we build?
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-center mb-4 text-green-800 dark:text-white">
+            What we <span className='text-orange-600'>build</span>
           </h2>
-          <div className="w-20 h-2 bg-primary mx-auto mt-4 rounded-full"></div>
+          <div className="w-16 sm:w-20 h-2 bg-orange-600 mx-auto mt-4 rounded-full"></div>
         </motion.div>
 
         {/* Machines Grid */}
@@ -174,7 +174,7 @@ export default function WhatWeBuild() {
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
           variants={staggerContainerVariants}
-          className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mt-8 sm:mt-12"
         >
           {machines.map((machine, index) => (
             <motion.div
@@ -183,7 +183,7 @@ export default function WhatWeBuild() {
               whileHover={{ y: -8, transition: { duration: 0.2 } }}
               className="group bg-white dark:bg-neutral-800 rounded-2xl shadow-lg overflow-hidden border-b-4 border-orange-500 transition-all duration-300 hover:shadow-2xl"
             >
-              <div className="overflow-hidden h-48 relative">
+              <div className="overflow-hidden h-40 sm:h-48 relative">
                 <Image
                   src={machine.image}
                   alt={machine.title}
@@ -192,11 +192,11 @@ export default function WhatWeBuild() {
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                 />
               </div>
-              <div className="p-6">
-                <h3 className="font-black text-xl mb-2 text-primary dark:text-white">
+              <div className="p-4 sm:p-6">
+                <h3 className="font-black text-base sm:text-lg md:text-xl mb-2 text-primary dark:text-white">
                   {machine.title}
                 </h3>
-                <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
                   {machine.description}
                 </p>
                  

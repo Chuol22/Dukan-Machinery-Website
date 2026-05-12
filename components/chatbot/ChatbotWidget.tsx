@@ -1,56 +1,66 @@
-'use client'
+'use client';
 
-import { useState, useEffect, useCallback } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import ChatbotButton from './ChatbotButton'
-import ChatWindow from './ChatWindow'
-import { ChatProvider } from '@/contexts/ChatbotContext'
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import ChatbotButton from './ChatbotButton';
+import ChatWindow from './ChatWindow';
+import { ChatProvider } from '@/contexts/ChatbotContext';
 
 interface ChatbotWidgetProps {
-  position?: 'bottom-right' | 'bottom-left'
+  position?: 'bottom-right' | 'bottom-left';
 }
 
 export default function ChatbotWidget({ position = 'bottom-right' }: ChatbotWidgetProps) {
-  const [isOpen, setIsOpen] = useState(false)
-  const [isMinimized, setIsMinimized] = useState(false)
-  const [hasUnread, setHasUnread] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);
+  const [hasUnread, setHasUnread] = useState(false);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (!isOpen && !isMinimized) {
-      const timer = setTimeout(() => setHasUnread(true), 30000)
-      return () => clearTimeout(timer)
+      timerRef.current = setTimeout(() => setHasUnread(true), 30000);
     } else {
-      setHasUnread(false)
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
+      }
     }
-  }, [isOpen, isMinimized])
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, [isOpen, isMinimized]);
 
   const handleToggle = useCallback(() => {
-    setIsOpen(prev => !prev)
-    setIsMinimized(false)
-    setHasUnread(false)
-  }, [])
+    setIsOpen(prev => !prev);
+    setIsMinimized(false);
+    setHasUnread(false);
+  }, []);
 
   const handleClose = () => {
-    setIsOpen(false)
-    setIsMinimized(false)
-  }
+    setIsOpen(false);
+    setIsMinimized(false);
+    setHasUnread(false);
+  };
 
   const handleMinimize = () => {
-    setIsMinimized(true)
-    setIsOpen(false)
-  }
+    setIsMinimized(true);
+    setIsOpen(false);
+    setHasUnread(false);
+  };
 
   const handleRestore = () => {
-    setIsMinimized(false)
-    setIsOpen(true)
-  }
+    setIsMinimized(false);
+    setIsOpen(true);
+    setHasUnread(false);
+  };
 
-  const isRight = position === 'bottom-right'
+  const isRight = position === 'bottom-right';
 
   return (
     <ChatProvider>
       <div className={`fixed z-[9999] bottom-6 ${isRight ? 'right-6' : 'left-6'}`}>
-
         {/* CHAT WINDOW */}
         <AnimatePresence>
           {isOpen && !isMinimized && (
@@ -60,12 +70,12 @@ export default function ChatbotWidget({ position = 'bottom-right' }: ChatbotWidg
               exit={{ opacity: 0, y: 30, scale: 0.95 }}
               transition={{ duration: 0.25 }}
               className={`
-                absolute bottom-20
+                absolute bottom-16
                 ${isRight ? 'right-0' : 'left-0'}
-                w-[95vw] sm:w-[450px] md:w-[500px] lg:w-[550px]
-                h-[600px] max-h-[85vh]
+                w-[90vw] sm:w-[380px] md:w-[400px]
+                h-[500px] max-h-[70vh]
                 bg-white dark:bg-neutral-900
-                rounded-2xl shadow-2xl overflow-hidden
+                rounded-xl shadow-xl overflow-hidden
                 border border-neutral-200 dark:border-neutral-700
               `}
             >
@@ -81,8 +91,7 @@ export default function ChatbotWidget({ position = 'bottom-right' }: ChatbotWidg
           hasUnread={hasUnread}
           onMinimizedRestore={isMinimized ? handleRestore : undefined}
         />
-
       </div>
     </ChatProvider>
-  )
+  );
 }
