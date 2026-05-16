@@ -3,12 +3,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { useLocale } from 'next-intl';
 import { 
   Settings, 
   ChevronRight,
 } from 'lucide-react';
 
 export default function HomePage() {
+  const locale = useLocale();
   const [headerHeight, setHeaderHeight] = useState(0);
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [typedText, setTypedText] = useState('');
@@ -87,7 +89,7 @@ export default function HomePage() {
         {/* Video Background Container */}
         <div className="absolute inset-0">
           {!videoLoaded && (
-            <div className="absolute inset-0 bg-gradient-to-r from-green-800 via-green-800 to-green-900 animate-pulse" />
+            <div className="absolute inset-0 bg-linear-to-r from-green-500 via-green-400 to-green-500 animate-pulse" />
           )}
 
           <video
@@ -171,15 +173,15 @@ export default function HomePage() {
                 className="flex flex-wrap gap-3 sm:gap-4 md:gap-6 mt-8 sm:mt-10 md:mt-12 justify-center"
               >
                 <Link
-                  href="/machines"
-                  className="group relative px-5 sm:px-6 md:px-8 lg:px-10 xl:px-12 py-3 sm:py-3.5 md:py-4 lg:py-4.5 xl:py-5 bg-gradient-to-r from-orange-600 to-orange-500 
+                  href={`/${locale}/machines`}
+                  className="group relative px-5 sm:px-6 md:px-8 lg:px-10 xl:px-12 py-3 sm:py-3.5 md:py-4 lg:py-4.5 xl:py-5 bg-linear-to-r from-orange-600 to-orange-500 
                              text-white font-black rounded-xl sm:rounded-2xl transition-all duration-300 
                              uppercase text-xs sm:text-sm md:text-base tracking-wider shadow-2xl shadow-orange-600/30
                              hover:shadow-2xl hover:shadow-orange-600/50 hover:-translate-y-1 
                              active:translate-y-0 hover:from-orange-500 hover:to-orange-400
                              min-h-[44px] min-w-[44px] flex items-center justify-center
                              min-w-[140px] sm:min-w-[160px] md:min-w-[200px] lg:min-w-[220px] xl:min-w-[260px]
-                             before:absolute before:inset-0 before:rounded-xl sm:before:rounded-2xl before:bg-gradient-to-r 
+                             before:absolute before:inset-0 before:rounded-xl sm:before:rounded-2xl before:bg-linear-to-r 
                              before:from-white/20 before:to-transparent before:opacity-0 
                              before:transition-opacity before:duration-300 hover:before:opacity-100
                              overflow-hidden"
@@ -191,7 +193,7 @@ export default function HomePage() {
                 </Link>
 
                 <Link
-                  href="/order"
+                  href={`/${locale}/order`}
                   className="group relative px-5 sm:px-6 md:px-8 lg:px-10 xl:px-12 py-3 sm:py-3.5 md:py-4 lg:py-4.5 xl:py-5 bg-white/10 backdrop-blur-md 
                              border-2 border-white/60 text-white font-black rounded-xl sm:rounded-2xl 
                              transition-all duration-300 uppercase text-xs sm:text-sm md:text-base tracking-wider

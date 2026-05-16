@@ -2,6 +2,7 @@
 
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
+import { useLocale } from 'next-intl'
 import { 
   Clock,
   CheckCircle,
@@ -19,6 +20,7 @@ const benefits = [
 ]
 
 export default function CTABanner() {
+  const locale = useLocale()
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, amount: 0.3 })
 
@@ -102,7 +104,7 @@ export default function CTABanner() {
             variants={itemVariants}
             className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-8 sm:mb-10 md:mb-12"
           >
-            <Link href="/order">
+            <Link href={`/${locale}/order`}>
               <Button 
                 size="lg" 
                 className="bg-orange-400 hover:bg-orange-300 text-white shadow-xl hover:shadow-2xl transition-all duration-300 group animate-pulse-slow animate-shake text-xs sm:text-sm md:text-base"
@@ -110,7 +112,7 @@ export default function CTABanner() {
                 Request Free Consultation
               </Button>
             </Link>
-            <Link href="/contact">
+            <Link href={`/${locale}/contact`}>
               <Button 
                 size="lg" 
                 variant="outline" 

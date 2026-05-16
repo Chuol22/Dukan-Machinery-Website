@@ -1,0 +1,57 @@
+{
+  "pageTitle": "Our Working",
+  "pageTitleHighlight": "Process",
+  "pageDescription": "From initial concept to final operation, we follow a rigorous workflow to ensure the highest quality standards for your industrial needs.",
+  
+  "steps": [
+    {
+      "step": "01",
+      "title": "Consultation & Design",
+      "description": "We analyze your specific requirements to create a custom blueprint tailored to your facility.",
+      "details": [
+        "Site assessment & requirements analysis",
+        "Custom CAD design & 3D modeling",
+        "Blueprint approval & sign-off",
+        "Material selection & sourcing"
+      ]
+    },
+    {
+      "step": "02",
+      "title": "Precision Manufacturing",
+      "description": "Using high-grade industrial materials and precision engineering to build your machinery.",
+      "details": [
+        "CNC precision machining",
+        "Robotic welding assembly",
+        "Multi-stage quality control",
+        "Surface treatment & finishing"
+      ]
+    },
+    {
+      "step": "03",
+      "title": "Delivery & Setup",
+      "description": "Safe transport followed by professional on-site installation and calibration.",
+      "details": [
+        "Secure export-grade packaging",
+        "Door-to-door global shipping",
+        "Professional on-site installation",
+        "Performance calibration & testing"
+      ]
+    },
+    {
+      "step": "04",
+      "title": "Training & Support",
+      "description": "Comprehensive staff training and 24/7 technical support to ensure maximum uptime.",
+      "details": [
+        "Comprehensive operator training",
+        "24/7 remote technical support",
+        "Spare parts availability",
+        "Preventive maintenance programs"
+      ]
+    }
+  ],
+  
+  "loading": {
+    "title": "Loading Process Information",
+    "description": "Please wait while we load our working process details..."
+  }
+}

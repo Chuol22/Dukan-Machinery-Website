@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
+import { useLocale } from 'next-intl'
 import {
   ArrowRight,
   Gauge,
@@ -75,11 +76,12 @@ const cardVariants = {
   visible: {
     y: 0,
     opacity: 1,
-    transition: { duration: 0.5, ease: 'easeOut' },
+    transition: { duration: 0.5, ease: 'easeOut' as const },
   },
 }
 
 export default function FeaturedMachines() {
+  const locale = useLocale()
   const [hoveredCard, setHoveredCard] = useState<number | null>(null)
   const [currentSlide, setCurrentSlide] = useState(0)
   const ref = useRef(null)
@@ -229,7 +231,7 @@ export default function FeaturedMachines() {
               </div>
 
                 <div className="flex gap-2 sm:gap-3"> 
-                  <Link href="/order" className="flex-1">
+                  <Link href={`/${locale}/order`} className="flex-1">
                     <Button className="w-full bg-primary hover:bg-primary-dark text-xs sm:text-sm">
                       Order
                     </Button>

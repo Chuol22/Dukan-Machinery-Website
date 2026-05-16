@@ -1,0 +1,89 @@
+{
+  "button": {
+    "askMe": "Ask me anything!",
+    "close": "Close chat",
+    "minimize": "Minimize chat",
+    "restore": "Restore chat",
+    "ariaLabel": "Chat with AI assistant"
+  },
+  
+  "window": {
+    "title": "Dukan AI Assistant",
+    "online": "Online",
+    "offline": "Offline",
+    "typing": "Typing...",
+    "placeholder": "Type your message...",
+    "send": "Send message",
+    "newChat": "New chat",
+    "clearChat": "Clear chat"
+  },
+  
+  "messages": {
+    "welcome": "👋 Hello! I'm Dukan's AI assistant. I can help you with:\n\n**Machine specifications** • **Pricing information** • **Custom orders** • **Technical support**\n\nWhat would you like to know?",
+    "chatCleared": "✨ Chat cleared! How can I help you today?",
+    "greeting": "Hello! 👋 Welcome to Dukan Machinery. I'm here to help you with our industrial machinery solutions. What would you like to know about?\n\n**Quick options:**\n• Machine specifications\n• Pricing information\n• Custom orders\n• Support & warranty",
+    "thanks": "You're welcome! 😊 Is there anything else I can help you with? I'm here 24/7 to assist with your machinery needs.",
+    "default": "Thank you for your interest in Dukan Machinery! 🏭\n\nTo better assist you, could you please:\n\n1. **Specify the machine type** (poultry feed, animal feed, etc.)\n2. **Share your required capacity** (in tons/hour)\n3. **Mention if you need standard or custom solution**\n\nAlternatively, you can:\n• **Call us**: +971 4 123 4567\n• **Email**: sales@dukanmachinery.com\n• **WhatsApp**: Click the button below\n\nHow can I help you today?",
+    "copySuccess": "Copied!",
+    "copyError": "Failed to copy",
+    "feedbackLike": "Helpful",
+    "feedbackDislike": "Not helpful",
+    "likeFeedbackSent": "Thanks for your feedback!",
+    "dislikeFeedbackSent": "Sorry to hear that. We'll improve!"
+  },
+  
+  "quickActions": {
+    "title": "Quick Questions",
+    "actions": [
+      {
+        "label": "Products",
+        "query": "What machines do you offer?"
+      },
+      {
+        "label": "Pricing",
+        "query": "What are your price ranges?"
+      },
+      {
+        "label": "Support",
+        "query": "How can I contact support?"
+      }
+    ]
+  },
+  
+  "platformButtons": {
+    "title": "Connect with us on",
+    "whatsapp": {
+      "name": "WhatsApp",
+      "description": "Chat instantly"
+    },
+    "telegram": {
+      "name": "Telegram",
+      "description": "Join our channel"
+    },
+    "onlineStatus": "Online • Usually replies in minutes"
+  },
+  
+  "knowledge": {
+    "machines": {
+      "title": "🏭 **Our Machinery Range:**\n\n**Poultry Feed Machines**\n• Poultry Feeder 5000 (5-20 tons/hour)\n• Hammer Mill HM-2000 (10-30 tons/hour)\n• Vertical Mixer VM-3000 (3-8 tons/batch)\n\n**Animal Feed Processing**\n• Pellet Mill PM-150 (8-15 tons/hour)\n• Extruder Systems\n• Cooling & Drying Units\n\n**Custom Solutions**\n• Tailor-made machinery\n• Complete turnkey plants\n• Upgrades & retrofitting\n\nWhich machine interests you? I can share detailed specs! 📊"
+    },
+    "pricing": {
+      "title": "💰 **Pricing Information:**\n\nOur machines are competitively priced based on:\n• **Machine type & capacity**\n• **Customization level**\n• **Additional features**\n• **Installation & training**\n\n**Price Ranges:**\n• Small-scale: $15,000 - $50,000\n• Medium-scale: $50,000 - $150,000\n• Large-scale: $150,000 - $500,000+\n• Complete plants: Custom quotation\n\nFor an **exact quote**, please:\n1. Visit our **Order** page\n2. Call us: +971 4 123 4567\n3. Click WhatsApp below\n\nWould you like me to connect you with a sales representative? 📞"
+    },
+    "custom": {
+      "title": "🔧 **Custom Machinery Solutions:**\n\nYes! We specialize in custom-designed machinery for your unique requirements.\n\n**Customization Options:**\n• Capacity adjustments (±30%)\n• Material specifications (SS304, SS316, HARDOX)\n• Automation level (Manual to fully automated)\n• Space constraints\n• Special processing requirements\n\n**Process:**\n1. **Consultation** - Understand your needs\n2. **Design** - CAD drawings & 3D models\n3. **Approval** - You review & approve\n4. **Manufacturing** - Precision fabrication\n5. **Delivery** - Installation & training\n\nReady to discuss your custom project? Click **Order** or **WhatsApp** me! 🎯"
+    },
+    "capacity": {
+      "title": "📊 **Capacity Information:**\n\nOur machines are available in various capacities:\n\n**Poultry Feeders:** 5-50 tons/hour\n**Hammer Mills:** 10-100 tons/hour\n**Mixers:** 1-20 tons/batch\n**Pellet Mills:** 5-50 tons/hour\n**Complete Plants:** 1-100 tons/hour\n\n**Factors affecting capacity:**\n• Raw material type & moisture\n• Screen size (for grinding)\n• Die specifications (for pelleting)\n• Operational efficiency\n\nWhat capacity do you need? I can recommend the best machine for your production goals! 🎯"
+    },
+    "warranty": {
+      "title": "🛡️ **Warranty & Support:**\n\n**Warranty Coverage:**\n• 24 months standard warranty\n• Extended warranty available\n• Parts & labor included\n• On-site service within 48 hours\n\n**Support Services:**\n• 24/7 technical hotline\n• Remote diagnostics\n• Preventive maintenance programs\n• Operator training\n• Spare parts availability\n\n**Maintenance Plans:**\n• Basic: Quarterly inspection\n• Premium: Monthly service + priority support\n• Enterprise: Dedicated engineer on-call\n\nNeed immediate support? Call our hotline or WhatsApp me! 📞"
+    },
+    "delivery": {
+      "title": "🚚 **Delivery & Installation:**\n\n**Lead Times:**\n• Standard machines: 4-6 weeks\n• Custom machines: 8-12 weeks\n• Complete plants: 16-20 weeks\n• Spare parts: 1-2 weeks\n\n**Delivery Process:**\n1. **Quality Control** - Final testing\n2. **Secure Packaging** - Export-ready\n3. **Shipping** - Air, sea, or land\n4. **Customs Clearance** - Documentation support\n5. **Installation** - Our technicians or yours\n\n**Installation Services:**\n• On-site installation (global)\n• Commissioning & calibration\n• Operator training (2-5 days)\n• Performance verification\n\nNeed express delivery? Let me check options for you! ✈️"
+    },
+    "payment": {
+      "title": "💳 **Payment & Financing:**\n\n**Payment Methods:**\n• Bank Transfer (TT)\n• Letter of Credit (L/C)\n• Credit Card (corporate)\n\n**Typical Terms:**\n• 30% advance payment\n• 40% during manufacturing\n• 30% before shipping\n\n**Financing Options:**\n• Equipment financing partners\n• Leasing options available\n• Export credit facilities\n• Volume discounts for bulk orders\n\n**Special Offers:**\n• Early payment discount: 5%\n• Multiple machines: Negotiable\n• Government tenders: Special terms\n\nNeed flexible payment terms? Contact our sales team for custom arrangements! 💼"
+    }
+  }
+}

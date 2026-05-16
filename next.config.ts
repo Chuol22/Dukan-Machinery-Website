@@ -1,6 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Fix Turbopack root warning
+  turbopack: {
+    root: process.cwd(),
+  },
+  
   // Performance optimizations
   compress: true,
   poweredByHeader: false,

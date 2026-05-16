@@ -1,8 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import Image from 'next/image';
+import React, { useMemo, useState } from 'react';
 import Link from 'next/link';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useLocale } from 'next-intl';
+import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
 
 interface Machine {
@@ -71,30 +73,48 @@ const MaintenanceItem = ({ title, priority, frequency }: any) => {
 };
 
 export default function MachineDetailsPreview({ machineId, allMachines }: MachineDetailsPreviewProps) {
+  const locale = useLocale();
   const [activeTab, setActiveTab] = useState('maintenance');
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
-  const machine = allMachines.find(m => m.id === machineId);
+  const machine = useMemo(
+    () => allMachines.find(m => m.id === machineId),
+    [allMachines, machineId]
+  );
+
+  const thumbnailMachines = useMemo(
+    () => allMachines.slice(0, 17),
+    [allMachines]
+  );
+
+  const processSteps = useMemo(
+    () => machine?.process.split('→').map((step) => step.trim()) ?? [],
+    [machine?.process]
+  );
+
   if (!machine) return null;
 
-  const tabs = [
-    { id: 'specifications', label: 'Specifications', icon: '📊' },
-    { id: 'process', label: 'Process Diagram', icon: '⚙️' },
-    { id: 'maintenance', label: 'Maintenance', icon: '🔧' },
-    { id: 'warranty', label: 'Warranty', icon: '🛡️' },
-  ];
+  const tabs = useMemo(
+    () => [
+      { id: 'specifications', label: 'Specifications', icon: '📊' },
+      { id: 'process', label: 'Process Diagram', icon: '⚙️' },
+      { id: 'maintenance', label: 'Maintenance', icon: '🔧' },
+      { id: 'warranty', label: 'Warranty', icon: '🛡️' },
+    ],
+    []
+  );
 
-  const maintenanceTasks = [
-    { title: 'Clean blades and rollers', priority: 'High', frequency: 'Daily' },
-    { title: 'Lubricate bearings', priority: 'Medium', frequency: 'Weekly' },
-    { title: 'Check drive belts tension', priority: 'Medium', frequency: 'Weekly' },
-    { title: 'Inspect blades for wear', priority: 'High', frequency: 'Monthly' },
-    { title: 'Clean motor ventilation', priority: 'Medium', frequency: 'Monthly' },
-    { title: 'Professional service', priority: 'Low', frequency: 'Quarterly' },
-  ];
-
-  // Get first 17 machines for thumbnail grid
-  const thumbnailMachines = allMachines.slice(0, 17);
+  const maintenanceTasks = useMemo(
+    () => [
+      { title: 'Clean blades and rollers', priority: 'High', frequency: 'Daily' },
+      { title: 'Lubricate bearings', priority: 'Medium', frequency: 'Weekly' },
+      { title: 'Check drive belts tension', priority: 'Medium', frequency: 'Weekly' },
+      { title: 'Inspect blades for wear', priority: 'High', frequency: 'Monthly' },
+      { title: 'Clean motor ventilation', priority: 'Medium', frequency: 'Monthly' },
+      { title: 'Professional service', priority: 'Low', frequency: 'Quarterly' },
+    ],
+    []
+  );
 
   return (
     <section id="machine-details-preview" className="py-16 bg-neutral-50 dark:bg-neutral-900">
@@ -132,14 +152,18 @@ export default function MachineDetailsPreview({ machineId, allMachines }: Machin
                     playsInline
                   />
                 ) : (
-                  <img 
-                    src={m.image} 
-                    alt={m.name}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
+                  <div className="relative w-full h-full">
+                    <Image
+                      src={m.image}
+                      alt={m.name}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                      sizes="80px"
+                    />
+                  </div>
                 )}
                 <div className={`absolute inset-0 ${selectedImageIndex === idx ? 'bg-orange-500/10' : ''}`}></div>
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="absolute inset-x-0 bottom-0 bg-linear-to-t from-black/70 to-transparent p-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <p className="text-[8px] text-white font-black truncate text-center">
                     {m.name.split(' ').slice(0, 2).join(' ')}
                   </p>
@@ -152,7 +176,7 @@ export default function MachineDetailsPreview({ machineId, allMachines }: Machin
         {/* Main Details Card */}
         <div className="bg-white dark:bg-neutral-800 rounded-2xl shadow-xl overflow-hidden">
           {/* Header */}
-          <div className="relative bg-gradient-to-br from-green-900 to-green-800 p-6 sm:p-8">
+          <div className="relative bg-linear-to-br from-green-900 to-green-800 p-6 sm:p-8">
             <div className="flex flex-col sm:flex-row items-center gap-6">
               <div className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-2xl bg-white p-3 shadow-2xl transform hover:scale-105 transition-all duration-500 hover:rotate-2">
                 <div className="w-full h-full rounded-xl overflow-hidden">
@@ -164,13 +188,18 @@ export default function MachineDetailsPreview({ machineId, allMachines }: Machin
                       loop
                       playsInline
                       controls
+                      preload="none"
                     />
                   ) : (
-                    <img 
-                      src={thumbnailMachines[selectedImageIndex]?.image || machine.image} 
-                      alt={machine.name}
-                      className="w-full h-full object-contain"
-                    />
+                    <div className="relative w-full h-full">
+                      <Image
+                        src={thumbnailMachines[selectedImageIndex]?.image || machine.image}
+                        alt={machine.name}
+                        fill
+                        className="object-contain"
+                        sizes="(max-width: 768px) 100vw, 25vw"
+                      />
+                    </div>
                   )}
                 </div>
               </div>
@@ -219,22 +248,22 @@ export default function MachineDetailsPreview({ machineId, allMachines }: Machin
                   </h3>
                   
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-                    <div className="bg-gradient-to-br from-blue-500 to-blue-600 p-3 rounded-lg text-white shadow-sm hover:scale-105 transition">
+                    <div className="bg-linear-to-br from-blue-500 to-blue-600 p-3 rounded-lg text-white shadow-sm hover:scale-105 transition">
                       <div className="text-xl mb-1">⚙️</div>
                       <p className="text-[10px] opacity-90">Capacity</p>
                       <p className="font-black text-xs">{machine.capacity}</p>
                     </div>
-                    <div className="bg-gradient-to-br from-yellow-500 to-yellow-600 p-3 rounded-lg text-white shadow-sm hover:scale-105 transition">
+                    <div className="bg-linear-to-br from-yellow-500 to-yellow-600 p-3 rounded-lg text-white shadow-sm hover:scale-105 transition">
                       <div className="text-xl mb-1">⚡</div>
                       <p className="text-[10px] opacity-90">Power</p>
                       <p className="font-black text-xs">{machine.power}</p>
                     </div>
-                    <div className="bg-gradient-to-br from-purple-500 to-purple-600 p-3 rounded-lg text-white shadow-sm hover:scale-105 transition">
+                    <div className="bg-linear-to-br from-purple-500 to-purple-600 p-3 rounded-lg text-white shadow-sm hover:scale-105 transition">
                       <div className="text-xl mb-1">🏋️</div>
                       <p className="text-[10px] opacity-90">Weight</p>
                       <p className="font-black text-xs">850 kg</p>
                     </div>
-                    <div className="bg-gradient-to-br from-indigo-500 to-indigo-600 p-3 rounded-lg text-white shadow-sm hover:scale-105 transition">
+                    <div className="bg-linear-to-br from-indigo-500 to-indigo-600 p-3 rounded-lg text-white shadow-sm hover:scale-105 transition">
                       <div className="text-xl mb-1">📏</div>
                       <p className="text-[10px] opacity-90">Dimensions</p>
                       <p className="font-black text-xs">2.5×1.2×1.8m</p>
@@ -310,12 +339,12 @@ export default function MachineDetailsPreview({ machineId, allMachines }: Machin
                     </p>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                    {machine.process.split('→').map((step, idx) => (
+                    {processSteps.map((step, idx) => (
                       <div key={idx} className="flex items-center gap-3 p-3 bg-white dark:bg-neutral-800 rounded-lg hover:shadow-md transition">
                         <div className="w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center font-black text-sm">
                           {idx + 1}
                         </div>
-                        <span className="text-sm font-medium text-green-700 dark:text-white">{step.trim()}</span>
+                        <span className="text-sm font-medium text-green-700 dark:text-white">{step}</span>
                       </div>
                     ))}
                   </div>
@@ -405,7 +434,7 @@ export default function MachineDetailsPreview({ machineId, allMachines }: Machin
                     <ChevronRight size={16} className="animate-bounce" />
                   </button>
                 </Link>
-                <Link href="/contact">
+                <Link href={`/${locale}/contact`}>
                   <button className="border-2 border-green-700 text-green-700 dark:border-white dark:text-white font-black px-5 py-2.5 rounded-full text-xs uppercase tracking-widest hover:bg-green-700 hover:text-white transition-all duration-300 hover:scale-105 hover:shadow-xl">
                     Contact Engineer
                   </button>

@@ -2,13 +2,11 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { useLocale } from 'next-intl';
 import { Send, Mail, Phone, MapPin, ArrowUp, MessageCircle } from 'lucide-react';
 
 export default function Footer() {
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
+  const locale = useLocale();
   const currentYear = new Date().getFullYear();
 
   return (
@@ -155,13 +153,13 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/insights" className="text-white/60 hover:text-orange-500 transition-colors duration-300 inline-flex items-center gap-1 group">
+                <Link href={`/${locale}/insights`} className="text-white/60 hover:text-orange-500 transition-colors duration-300 inline-flex items-center gap-1 group">
                   <span className="w-0 group-hover:w-1.5 h-1.5 bg-orange-500 rounded-full transition-all duration-300"></span>
                   Insights & Blog
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="text-white/60 hover:text-orange-500 transition-colors duration-300 inline-flex items-center gap-1 group">
+                <Link href={`/${locale}/contact`} className="text-white/60 hover:text-orange-500 transition-colors duration-300 inline-flex items-center gap-1 group">
                   <span className="w-0 group-hover:w-1.5 h-1.5 bg-orange-500 rounded-full transition-all duration-300"></span>
                   Contact Us
                 </Link>
@@ -178,14 +176,14 @@ export default function Footer() {
             </p>
           </div>
           <div className="flex items-center gap-3 sm:gap-4">
-            <button
-              onClick={scrollToTop}
+            <a
+              href="#top"
               className="flex items-center gap-1.5 sm:gap-2 text-white/80 hover:text-orange-500 transition-colors duration-300 group"
               aria-label="Scroll to top"
             >
               <span className="text-[10px] sm:text-xs md:text-sm font-black">Back to Top</span>
               <ArrowUp className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:-translate-y-1 transition-transform duration-300" />
-            </button>
+            </a>
           </div>
         </div>
       </div>

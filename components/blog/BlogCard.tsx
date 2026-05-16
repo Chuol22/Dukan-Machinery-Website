@@ -5,6 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Calendar, Clock, Eye, Heart, Bookmark, ArrowRight, Star, User } from 'lucide-react'
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 
 interface BlogCardProps {
   post: {
@@ -31,6 +32,7 @@ interface BlogCardProps {
 }
 
 export default function BlogCard({ post, featured = false }: BlogCardProps) {
+  const t = useTranslations('blog')
   const [isLiked, setIsLiked] = useState(false)
   const [isBookmarked, setIsBookmarked] = useState(false)
   const [likesCount, setLikesCount] = useState(post?.likes || 0)
@@ -49,18 +51,18 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
   }
 
   const formatDate = (dateString: string) => {
-    if (!dateString) return 'Recent'
+    if (!dateString) return t('blogCard.recent') || 'Recent'
     const date = new Date(dateString)
     const now = new Date()
     const diffTime = Math.abs(now.getTime() - date.getTime())
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
     
-    if (diffDays === 0) return 'Today'
-    if (diffDays === 1) return 'Yesterday'
-    if (diffDays < 7) return `${diffDays} days ago`
-    if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`
-    if (diffDays < 365) return `${Math.floor(diffDays / 30)} months ago`
-    return `${Math.floor(diffDays / 365)} years ago`
+    if (diffDays === 0) return t('blogCard.today')
+    if (diffDays === 1) return t('blogCard.yesterday')
+    if (diffDays < 7) return t('blogCard.daysAgo', { count: diffDays })
+    if (diffDays < 30) return t('blogCard.weeksAgo', { count: Math.floor(diffDays / 7) })
+    if (diffDays < 365) return t('blogCard.monthsAgo', { count: Math.floor(diffDays / 30) })
+    return t('blogCard.yearsAgo', { count: Math.floor(diffDays / 365) })
   }
 
   // Safe access to author data with fallbacks
@@ -96,7 +98,7 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
             {/* Category Badge */}
             <div className="absolute top-4 left-4 z-20">
               <span className="px-3 py-1 bg-orange-500 text-white text-sm font-semiblack rounded-full shadow-lg">
-                {post?.category || 'Insights'}
+                {post?.category || t('blogCard.category') || 'Insights'}
               </span>
             </div>
             {/* Featured Badge */}
@@ -104,7 +106,7 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
               <div className="absolute top-4 right-4 z-20">
                 <span className="px-3 py-1 bg-orange-600 text-white text-sm font-semiblack rounded-full shadow-lg flex items-center gap-1">
                   <Star className="w-3 h-3" />
-                  Featured
+                  {t('blogCard.featured')}
                 </span>
               </div>
             )}
@@ -121,24 +123,24 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock className="w-4 h-4" />
-                  <span>{post?.readTime || 5} min read</span>
+                  <span>{post?.readTime || 5} {t('blogCard.minRead')}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Eye className="w-4 h-4" />
-                  <span>{(post?.views || 0).toLocaleString()} views</span>
+                  <span>{(post?.views || 0).toLocaleString()} {t('blogCard.views')}</span>
                 </div>
               </div>
 
               {/* Title */}
               <Link href={`/insights/${post?.slug || '#'}`}>
                 <h3 className="text-xl md:text-2xl font-black text-gray-900 dark:text-white mb-3 hover:text-orange-500 transition-colors duration-300 line-clamp-2">
-                  {post?.title || 'Untitled Post'}
+                  {post?.title || t('blogCard.untitledPost')}
                 </h3>
               </Link>
 
               {/* Excerpt */}
               <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3 leading-relaxed">
-                {post?.excerpt || 'Read more about agricultural machinery and feed processing insights.'}
+                {post?.excerpt || t('blogCard.defaultExcerpt')}
               </p>
 
               {/* Tags */}
@@ -178,7 +180,7 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
                   <p className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-orange-500 transition-colors">
                     {authorName}
                   </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">Author</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">{t('blogCard.author')}</p>
                 </div>
               </Link>
 
@@ -187,7 +189,7 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
                 <button
                   onClick={handleLike}
                   className="flex items-center gap-1 text-gray-500 hover:text-red-500 transition-colors"
-                  aria-label="Like"
+                  aria-label={t('blogCard.like')}
                 >
                   <Heart className={`w-5 h-5 ${isLiked ? 'fill-red-500 text-red-500' : ''}`} />
                   <span className="text-sm">{likesCount}</span>
@@ -195,13 +197,13 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
                 <button
                   onClick={handleBookmark}
                   className="text-gray-500 hover:text-orange-500 transition-colors"
-                  aria-label="Bookmark"
+                  aria-label={t('blogCard.bookmark')}
                 >
                   <Bookmark className={`w-5 h-5 ${isBookmarked ? 'fill-orange-500 text-orange-500' : ''}`} />
                 </button>
                 <Link href={`/insights/${post?.slug || '#'}`}>
                   <button className="flex items-center gap-2 text-orange-500 font-semiblack group-hover:gap-3 transition-all">
-                    Read More
+                    {t('blogCard.readMore')}
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </button>
                 </Link>
@@ -241,7 +243,7 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
         {/* Category Badge */}
         <div className="absolute top-3 left-3 z-20">
           <span className="px-2 py-1 bg-orange-500 text-white text-xs font-semiblack rounded-lg shadow-lg">
-            {post?.category || 'Insights'}
+            {post?.category || t('blogCard.category') || 'Insights'}
           </span>
         </div>
 
@@ -250,7 +252,7 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
           <div className="absolute top-3 right-3 z-20">
             <span className="px-2 py-1 bg-orange-600 text-white text-xs font-semiblack rounded-lg shadow-lg flex items-center gap-1">
               <Star className="w-3 h-3" />
-              Featured
+              {t('blogCard.featured')}
             </span>
           </div>
         )}
@@ -266,7 +268,7 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
           </div>
           <div className="flex items-center gap-1">
             <Clock className="w-3 h-3" />
-            <span>{post?.readTime || 5} min</span>
+            <span>{post?.readTime || 5} {t('blogCard.minRead')}</span>
           </div>
           <div className="flex items-center gap-1">
             <Eye className="w-3 h-3" />
@@ -277,13 +279,13 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
         {/* Title */}
         <Link href={`/insights/${post?.slug || '#'}`}>
           <h3 className="text-lg font-black text-gray-900 dark:text-white mb-2 hover:text-orange-500 transition-colors duration-300 line-clamp-2">
-            {post?.title || 'Untitled Post'}
+            {post?.title || t('blogCard.untitledPost')}
           </h3>
         </Link>
 
         {/* Excerpt */}
         <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
-          {post?.excerpt || 'Read more about agricultural machinery and feed processing insights.'}
+          {post?.excerpt || t('blogCard.defaultExcerpt')}
         </p>
 
         {/* Tags */}
@@ -331,14 +333,14 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
             <button
               onClick={handleLike}
               className="flex items-center gap-1 text-gray-400 hover:text-red-500 transition-colors"
-              aria-label="Like"
+              aria-label={t('blogCard.like')}
             >
               <Heart className={`w-4 h-4 ${isLiked ? 'fill-red-500 text-red-500' : ''}`} />
               <span className="text-xs">{likesCount}</span>
             </button>
             <Link href={`/insights/${post?.slug || '#'}`}>
               <button className="text-orange-500 hover:gap-2 transition-all text-sm font-medium flex items-center gap-1">
-                Read
+                {t('blogCard.buttons.read')}
                 <ArrowRight className="w-3 h-3" />
               </button>
             </Link>

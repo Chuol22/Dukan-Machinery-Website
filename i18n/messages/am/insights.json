@@ -1,0 +1,151 @@
+{
+  "pageTitle": "የባለሙያ",
+  "pageTitleHighlight": "ግንዛቤዎች እና ብሎግ",
+  "pageDescription": "የግብርና ማቀነባበሪያ ስራዎችን ለማመቻቸት የባለሙያ ምክር፣ የኢንዱስትሪ አዝማሚያዎች እና ተግባራዊ ምክሮች።",
+  
+  "featuredPost": {
+    "readMore": "ተጨማሪ ያንብቡ",
+    "minutesRead": "ደቂቃ ማንበብ",
+    "views": "እይታዎች",
+    "likes": "ምርጫዎች",
+    "publishedOn": "የታተመበት ቀን"
+  },
+  
+  "blogCard": {
+    "readMore": "ጽሁፉን ያንብቡ",
+    "minutesRead": "ደቂቃ ማንበብ",
+    "views": "እይታዎች",
+    "category": "ምድብ",
+    "tags": "መለያዎች",
+    "share": "አጋራ"
+  },
+  
+  "filters": {
+    "title": "ማጣሪያ እና መደርደር",
+    "searchPlaceholder": "ጽሁፎችን ፈልግ...",
+    "searchButton": "ፈልግ",
+    "allCategories": "ሁሉም ምድቦች",
+    "allTags": "ሁሉም መለያዎች",
+    "dateRange": {
+      "label": "የቀን ክልል",
+      "all": "ሁልጊዜ",
+      "week": "ባለፈው ሳምንት",
+      "month": "ባለፈው ወር",
+      "year": "ባለፈው ዓመት"
+    },
+    "sortBy": {
+      "label": "አዘጋጅ በ",
+      "newest": "አዲስ መጀመሪያ",
+      "oldest": "የድሮ መጀመሪያ",
+      "popular": "በጣም ተወዳጅ",
+      "trending": "አዝማሚያ"
+    },
+    "reset": "ማጣሪያዎችን ዳግም አስጀምር",
+    "showing": "በማሳየት ላይ",
+    "posts": "ጽሁፎች",
+    "noResults": "ከምርጫዎ ጋር የሚዛመድ ጽሁፍ አልተገኘም።",
+    "clearFilters": "ሁሉንም ማጣሪያዎች አጽዳ"
+  },
+  
+  "insights": {
+    "title": "የኢንዱስትሪ",
+    "titleHighlight": "ግንዛቤዎች",
+    "cards": [
+      {
+        "title": "የመኖ ፔሌት የወደፊት ጊዜ",
+        "description": "እ.ኤ.አ. በ2026 አውቶማቲክ የእርጥበት መቆጣጠሪያ የውጤት ጥራትን እንዴት እየለወጠ ነው።",
+        "category": "ማመቻቸት"
+      },
+      {
+        "title": "የማሽን ህይወት ዘመንን ማራዘም",
+        "description": "ለከባድ ኢንዱስትሪ ቀላቃዮች አስፈላጊ የመከላከያ ጥገና ምክሮች።",
+        "category": "ጥገና"
+      },
+      {
+        "title": "የኢትዮፒያ ግብርና እድገት",
+        "description": "የሀገር ውስጥ ማምረት በማሽነሪ ከውጭ መምጣት ጥገኛነትን እንዴት እየቀነሰ ነው።",
+        "category": "ጥናት"
+      }
+    ]
+  },
+  
+  "blogPosts": [
+    {
+      "id": "1",
+      "slug": "choosing-right-feed-mill",
+      "title": "ለእርሻዎ ትክክለኛውን የመኖ ፋብሪካ መምረጥ",
+      "excerpt": "ጥሩ ምርት ለማግኘት የዶሮ መኖ መሳሪያዎችን በሚመርጡበት ጊዜ ሊታሰብባቸው የሚገቡ ቁልፍ ነገሮች። ስለ አቅም፣ የኢነርጂ ውጤታማነት እና የጥገና መስፈርቶች ይማሩ።",
+      "category": "የግዢ መመሪያ",
+      "tags": ["የመኖ-ፋብሪካ", "ዶሮ", "መሳሪያ"],
+      "readTime": 8,
+      "publishedAt": "2026-03-15",
+      "views": 12450,
+      "likes": 342,
+      "featured": true,
+      "author": {
+        "name": "አሰፋ ጌዜ",
+        "bio": "ከ15 ዓመት በላይ ልምድ ያለው የግብርና መሐንዲስ"
+      }
+    },
+    {
+      "id": "2",
+      "slug": "reduce-energy-costs",
+      "title": "በመኖ ማቀነባበር የኢነርጂ ወጪዎችን ለመቀነስ 5 መንገዶች",
+      "excerpt": "የውጤት ጥራት ሳይጎዳ የኤሌክትሪክ ሂሳብዎን ለመቀነስ ተግባራዊ ምክሮች። ኢነርጂ ቆጣቢ ሞተሮችን እና ጥሩ ጊዜ አይሰጥምን ይወቁ።",
+      "category": "ማመቻቸት",
+      "tags": ["ኢነርጂ", "ወጪ-ቆጣቢ", "ውጤታማነት"],
+      "readTime": 6,
+      "publishedAt": "2026-03-10",
+      "views": 8750,
+      "likes": 231,
+      "featured": false,
+      "author": {
+        "name": "ሳሙኤል ከበደ",
+        "bio": "የኢነርጂ ውጤታማነት ስፔሻሊስት"
+      }
+    }
+  ],
+  
+  "categories": {
+    "Buying Guide": "የግዢ መመሪያ",
+    "Optimization": "ማመቻቸት",
+    "Maintenance": "ጥገና",
+    "Industry Trends": "የኢንዱስትሪ አዝማሚያዎች",
+    "Case Study": "ጥናት"
+  },
+  
+  "tags": {
+    "feed-mill": "የመኖ ፋብሪካ",
+    "poultry": "ዶሮ",
+    "equipment": "መሳሪያ",
+    "energy": "ኢነርጂ",
+    "cost-saving": "ወጪ ቆጣቢ",
+    "efficiency": "ውጤታማነት",
+    "hammer-mill": "ሀምራ ወፍጮ",
+    "maintenance": "ጥገና",
+    "repair": "ጥገና",
+    "fertilizer": "ማዳበሪያ",
+    "automation": "አውቶሜሽን",
+    "sustainability": "ዘላቂነት"
+  },
+  
+  "authorBio": {
+    "default": "በዱካን ማሽነሪ የኢንዱስትሪ ባለሙያ"
+  },
+  
+  "loading": {
+    "title": "ጽሁፎችን በመጫን ላይ",
+    "description": "እባክዎ የቅርብ ጊዜ ግንዛቤዎቻችንን እና የብሎግ ጽሁፎቻችንን እስከጫን ድረስ ይጠብቁ..."
+  },
+  
+  "newsletter": {
+    "title": "ለጋዜጣችን ይመዝገቡ",
+    "subtitle": "የቅርብ ጊዜ ግንዛቤዎች፣ ምክሮች እና የኢንዱስትሪ አዝማሚያዎች በቀጥታ ወደ ኢሜልዎ ይድረሱ።",
+    "emailPlaceholder": "ኢሜል አድራሻዎን ያስገቡ",
+    "subscribeButton": "ይመዝገቡ",
+    "subscribing": "በመመዝገብ ላይ...",
+    "success": "በሚገባ ተመዝግበዋል!",
+    "error": "ለመመዝገብ አልተቻለም። እባክዎ ይሞክሩ።",
+    "privacy": "ግላዊነትዎን እናከብራለን። በማንኛውም ጊዜ ደንበኝነት መሻር ይችላሉ።"
+  }
+}

@@ -1,0 +1,151 @@
+{
+  "pageTitle": "Gorsa",
+  "pageTitleHighlight": "Hubannoo fi Blog",
+  "pageDescription": "Gorsa ogeessaa, haala indastirii, fi yaadawwan hoji qonna keessan fooyyessuuf.",
+  
+  "featuredPost": {
+    "readMore": "Dubbisuuf",
+    "minutesRead": "daqiiqaa dubbisuuf",
+    "views": "ilaalaa",
+    "likes": "jaalalaa",
+    "publishedOn": "Maxxanfame"
+  },
+  
+  "blogCard": {
+    "readMore": "Barruu Dubbisi",
+    "minutesRead": "daqiiqaa dubbisuuf",
+    "views": "ilaalaa",
+    "category": "Ramaddii",
+    "tags": "Tuqaa",
+    "share": "Qoodi"
+  },
+  
+  "filters": {
+    "title": "Calalchi & Qindeechi",
+    "searchPlaceholder": "Barruulee barbaadi...",
+    "searchButton": "Barbaadi",
+    "allCategories": "Ramaddii Hundaa",
+    "allTags": "Tuqaa Hundaa",
+    "dateRange": {
+      "label": "Guyyaa",
+      "all": "Yeroo Hunda",
+      "week": "Torban Darbe",
+      "month": "Ji'a Darbe",
+      "year": "Waggaa Darbe"
+    },
+    "sortBy": {
+      "label": "Akaakuun Qindeessi",
+      "newest": "Haaraa Dura",
+      "oldest": "Moofaa Dura",
+      "popular": "Beekamaa",
+      "trending": "Ho'aa"
+    },
+    "reset": "Calalchi Deebisi",
+    "showing": "Agarsisa",
+    "posts": "barruulee",
+    "noResults": "Barruulee filannoo keessan waliin wal ta'an hin argamne.",
+    "clearFilters": "Calalchiiwwan hundaa haqi"
+  },
+  
+  "insights": {
+    "title": "Indastirii",
+    "titleHighlight": "Hubannoo",
+    "cards": [
+      {
+        "title": "Fuula Duraa Pileetii Bu'uuraa",
+        "description": "Adeemsi qulqullina jiidhaa hanga 2026 oomisha haaraa.",
+        "category": "Fooyya'ina"
+      },
+      {
+        "title": "Jireenya Mashinaa Dheeressuu",
+        "description": "Yaadawwan ittisa mashinaalee ulfaataa.",
+        "category": "Eegumsa"
+      },
+      {
+        "title": "Guddina Qonnaa Itiyoophiyaa",
+        "description": "Oomishni biyyaa hanga mashinaalee alaa hir'isaa.",
+        "category": "Qorannoo"
+      }
+    ]
+  },
+  
+  "blogPosts": [
+    {
+      "id": "1",
+      "slug": "choosing-right-feed-mill",
+      "title": "Mashinaa Bu'uura Sirri Ta'e Qonnaaf Filachuu",
+      "excerpt": "Waan bu'uura lukkuulee oomishaaf yaaduu qabu: dandeettii, humnii fi eegumsa.",
+      "category": "Qajeelfama Bituu",
+      "tags": ["mashinaa-bu'uuraa", "lukkuulee", "meeshaa"],
+      "readTime": 8,
+      "publishedAt": "2026-03-15",
+      "views": 12450,
+      "likes": 342,
+      "featured": true,
+      "author": {
+        "name": "Asefa Geze",
+        "bio": "Injineerii qonnaa waggaa 15 ol"
+      }
+    },
+    {
+      "id": "2",
+      "slug": "reduce-energy-costs",
+      "title": "Kaffaltii Humnaa Hir'isuuf Karaa 5",
+      "excerpt": "Bilbila elektirikii hir'isuu fi oomisha fooyyessuu.",
+      "category": "Fooyya'ina",
+      "tags": ["humna", "baasii-hir'isuu", "qulqullina"],
+      "readTime": 6,
+      "publishedAt": "2026-03-10",
+      "views": 8750,
+      "likes": 231,
+      "featured": false,
+      "author": {
+        "name": "Samuel Kebede",
+        "bio": "Ogeessa humna qusachuu"
+      }
+    }
+  ],
+  
+  "categories": {
+    "Buying Guide": "Qajeelfama Bituu",
+    "Optimization": "Fooyya'ina",
+    "Maintenance": "Eegumsa",
+    "Industry Trends": "Haala Indastirii",
+    "Case Study": "Qorannoo"
+  },
+  
+  "tags": {
+    "feed-mill": "Mashinaa Bu'uuraa",
+    "poultry": "Lukkuulee",
+    "equipment": "Meeshaa",
+    "energy": "Humna",
+    "cost-saving": "Baasii Hir'isuu",
+    "efficiency": "Qulqullina",
+    "hammer-mill": "Mashinaa Maddii",
+    "maintenance": "Eegumsa",
+    "repair": "Suphuu",
+    "fertilizer": "Ferteelaayizaa",
+    "automation": "Awtomeeshinii",
+    "sustainability": "Duraatiif Fayyadamuu"
+  },
+  
+  "authorBio": {
+    "default": "Ogeessa indastirii Dukan Machinery"
+  },
+  
+  "loading": {
+    "title": "Barruulee Fe'aa Jira",
+    "description": "Maalimoo hubannoo fi barruulee haaraa keenya fe'unnaaf eeggadhu..."
+  },
+  
+  "newsletter": {
+    "title": "Ergaa Nuuf Ergaa",
+    "subtitle": "Hubannoo, gorsa fi haala indastirii haaraa iimeeliidhaan argachuuf.",
+    "emailPlaceholder": "Teessoo iimeelii keessan galchi",
+    "subscribeButton": "Ergaa Nuuf Ergaa",
+    "subscribing": "Eergaamaa jira...",
+    "success": "Milkaa'inaan ergame!",
+    "error": "Erguu hin dandeenye. Itoophhaadhaan yaalii.",
+    "privacy": "Icimmaan keessan ni kabajna. Yeroo kamittuu addaan baasuu dandeessu."
+  }
+}
