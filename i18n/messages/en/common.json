@@ -1,0 +1,29 @@
+{
+  "nav": {
+    "home": "Home",
+    "machines": "Machines",
+    "contact": "Contact",
+    "order": "Order"
+  },
+  "footer": {
+    "copyright": "All rights reserved",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service"
+  },
+  "buttons": {
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "back": "Back",
+    "continue": "Continue",
+    "confirm": "Confirm"
+  },
+  "messages": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success!",
+    "noData": "No data found"
+  }
+}

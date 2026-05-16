@@ -1,0 +1,133 @@
+{
+  "accordion": {
+    "ariaLabel": "Meeshaa akordiyonii jijjiiri"
+  },
+  
+  "button": {
+    "loading": "Fe'aa jira...",
+    "submit": "Ergi",
+    "cancel": "Haqi",
+    "save": "Pakuu",
+    "delete": "Balleessi",
+    "edit": "Gulaali",
+    "update": "Haaraa gochuu",
+    "confirm": "Mirkaneessi",
+    "close": "Cufi"
+  },
+  
+  "counter": {
+    "rangeLabel": "Iddoo: {min} - {max}",
+    "increment": "Dabali",
+    "decrement": "Hir'isi"
+  },
+  
+  "input": {
+    "validInput": "Seensa sirrii",
+    "required": "Dirqala",
+    "invalidEmail": "Maalimoo teessoo iimeelii sirrii galchi",
+    "invalidPhone": "Maalimoo lakkoofsa bilbilaa sirrii galchi",
+    "passwordMinLength": "Jechicha icciitii wixinee 8 arfi",
+    "passwordsDoNotMatch": "Jechoonni icciitii wal hin simne"
+  },
+  
+  "modal": {
+    "close": "Modeelii cufi"
+  },
+  
+  "select": {
+    "selectOption": "Filannoo filadhu",
+    "noOptions": "Filannoon hin jiru"
+  },
+  
+  "tabs": {
+    "ariaLabel": "Tab {tabName}"
+  },
+  
+  "textarea": {
+    "charactersRemaining": "{count} arfi hafan",
+    "maxLengthExceeded": "Daanga'an dheerinaa ce'e"
+  },
+  
+  "loadingSpinner": {
+    "loading": "Fe'aa jira...",
+    "pleaseWait": "Maalimoo eeggadhu..."
+  },
+  
+  "validation": {
+    "required": "{field} barbaachisa",
+    "minLength": "{field} wixinee {min} arfi ta'uu qaba",
+    "maxLength": "{field} daangaa {max} arfi ta'uu qaba",
+    "min": "{field} wixinee {min} ta'uu qaba",
+    "max": "{field} daangaa {max} ta'uu qaba",
+    "email": "Maalimoo teessoo iimeelii sirrii galchi",
+    "phone": "Maalimoo lakkoofsa bilbilaa sirrii galchi",
+    "number": "Maalimoo lakkoofsa sirrii galchi",
+    "url": "Maalimoo URL sirrii galchi",
+    "pattern": "Maalimoo akkaataa gaafatame galchi"
+  },
+  
+  "common": {
+    "yes": "Eeyyee",
+    "no": "Miti",
+    "ok": "Tole",
+    "cancel": "Haqi",
+    "save": "Pakuu",
+    "delete": "Balleessi",
+    "edit": "Gulaali",
+    "add": "Dabali",
+    "remove": "Baasi",
+    "clear": "Qulqulleessi",
+    "reset": "Deebisi",
+    "search": "Barbaadi",
+    "filter": "Calalchi",
+    "sort": "Qindeessi",
+    "view": "Ilaali",
+    "copy": "Kooyii",
+    "paste": "Maxxanfachiisi",
+    "cut": "Muri",
+    "undo": "Haqi",
+    "redo": "Itti deebi'i",
+    "refresh": "Haaraa gochuu",
+    "download": "Buufadhu",
+    "upload": "Fe'i",
+    "export": "Ergi",
+    "import": "Galchi",
+    "print": "Maxxansi",
+    "share": "Qoodi",
+    "more": "Dabala",
+    "less": "Xiqqaa",
+    "expand": "Bal'isi",
+    "collapse": "Ciipsi",
+    "show": "Agarsiisi",
+    "hide": "Dhoksi",
+    "next": "Itti aani",
+    "previous": "Kan duraa",
+    "first": "Kan jalqabaa",
+    "last": "Kan dhuma",
+    "page": "Fuula",
+    "of": "keessaa",
+    "total": "Iddoo guutuu",
+    "items": "meeshaawwan",
+    "showing": "Agarsisa",
+    "to": "hanga",
+    "noResults": "Bu'aani hin argamne",
+    "loading": "Fe'aa jira...",
+    "error": "Dogoggorri uumame",
+    "success": "Milkaa'ina!",
+    "warning": "Akeekkachiisa",
+    "info": "Odeeffannoo"
+  },
+  
+  "placeholders": {
+    "name": "Maqaa galchi",
+    "email": "Teessoo iimeelii galchi",
+    "phone": "Lakkoofsa bilbilaa galchi",
+    "address": "Teessoo galchi",
+    "city": "Magaalaa galchi",
+    "country": "Biydaara filadhu",
+    "postalCode": "Koodii poostaa galchi",
+    "message": "Ergaa keessan galchi",
+    "search": "Barbaadi...",
+    "select": "Filannoo filadhu"
+  }
+}

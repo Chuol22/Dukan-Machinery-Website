@@ -1,0 +1,72 @@
+{
+  "pageTitle": "What Our",
+  "pageTitleHighlight": "Clients Say",
+  "pageDescription": "Trusted by industry leaders across the globe.",
+  "trustedBy": "Trusted by over",
+  "globalEnterprises": "Global Enterprises",
+  
+  "testimonials": [
+    {
+      "id": 1,
+      "name": "Henok",
+      "initials": "H",
+      "position": "Factory Owner",
+      "location": "Adam, Oromia, Ethiopia",
+      "company": "Geze Poultry Farms",
+      "content": "The Poultry Feed Machine we installed has exceeded our expectations. The pellet quality is consistent, and the energy efficiency is remarkable.",
+      "rating": 5,
+      "date": "2024-01-15",
+      "project": "Complete poultry feed production line installation with capacity of 15 tons/day."
+    },
+    {
+      "id": 2,
+      "name": "Hayu Samuel",
+      "initials": "S",
+      "position": "Operations Manager",
+      "location": "Addis Ababa, Ethiopia",
+      "company": "Kebede Agritech",
+      "content": "Dukan Machinery provided exceptional support during the setup of our cattle feed line. Their technical team is truly professional and knowledgeable.",
+      "rating": 5,
+      "date": "2024-02-20",
+      "project": "Custom cattle feed processing plant with automated mixing and pelleting systems."
+    },
+    {
+      "id": 3,
+      "name": "Meti Solomon",
+      "initials": "M",
+      "position": "Agri-Industrial Consultant",
+      "location": "Harar, Ethiopia",
+      "company": "Alemayew Consulting",
+      "content": "Finding reliable custom industrial machines is tough, but Dukan's engineering standards are top-tier. They understand the nuances of feed processing.",
+      "rating": 5,
+      "date": "2024-03-10",
+      "project": "Consultancy project for multiple feed mills across East Africa."
+    },
+    {
+      "id": 4,
+      "name": "Chala Berhan",
+      "initials": "T",
+      "position": "Production Director",
+      "location": "Jimma, Ethiopia",
+      "company": "Berhan Mills Group",
+      "content": "The hammer mill we purchased has been running continuously for 18 months with zero downtime. Outstanding build quality.",
+      "rating": 5,
+      "date": "2024-01-05",
+      "project": "Industrial hammer mill installation for fine grain processing."
+    }
+  ],
+  
+  "labels": {
+    "project": "Project",
+    "company": "Company",
+    "date": "Date",
+    "location": "Location",
+    "position": "Position",
+    "rating": "Rating"
+  },
+  
+  "loading": {
+    "title": "Loading Testimonials",
+    "description": "Please wait while we load client testimonials..."
+  }
+}

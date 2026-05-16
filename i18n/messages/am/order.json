@@ -1,0 +1,256 @@
+{
+  "pageTitle": "ትዕዛዝ &",
+  "pageTitleHighlight": "ብጁ ጥያቄ",
+  "orderType": {
+    "standard": "መደበኛ ትዕዛዝ",
+    "custom": "ብጁ ጥያቄ"
+  },
+  
+  "standardOrder": {
+    "title": "መደበኛ ትዕዛዝ",
+    "selectMachine": "ማሽንዎን ይምረጡ",
+    "machineLabel": "ማሽን *",
+    "machinePlaceholder": "ማሽን ይምረጡ...",
+    "quantityLabel": "ብዛት *",
+    "quantityMinError": "ብዛት ቢያንስ 1 መሆን አለበት",
+    "quantityMaxError": "ለጅምላ ትዕዛዞች (>100) እባክዎ ሽያጭን ያነጋግሩ",
+    "orderSummary": "የትዕዛዝ ማጠቃለያ",
+    "unitPrice": "የአንድ ዋጋ",
+    "quantity": "ብዛት",
+    "total": "ጠቅላላ",
+    "priceOnRequest": "ዋጋ በጥያቄ ይገኛል። የሽያጭ ቡድናችን በዋጋ መረጃ ያገናኝዎታል።",
+    
+    "customerInfo": {
+      "title": "የደንበኛ መረጃ",
+      "fullName": "ሙሉ ስም *",
+      "fullNamePlaceholder": "John Doe",
+      "companyName": "የኩባንያ ስም *",
+      "companyNamePlaceholder": "ABC Industries",
+      "email": "ኢሜል *",
+      "emailPlaceholder": "john@example.com",
+      "phone": "ስልክ *",
+      "phonePlaceholder": "+1 234 567 8900",
+      "address": "አድራሻ *",
+      "addressPlaceholder": "ጎዳና አድራሻ",
+      "city": "ከተማ *",
+      "cityPlaceholder": "ከተማ",
+      "country": "ሀገር *",
+      "countryPlaceholder": "ሀገር ይምረጡ",
+      "postalCode": "ፖስታ ኮድ",
+      "postalCodePlaceholder": "ፖስታ ኮድ"
+    },
+    
+    "deliveryInfo": {
+      "title": "የመላኪያ መረጃ",
+      "preferredDate": "የሚመረጥ የመላኪያ ቀን *",
+      "deliveryAddress": "የመላኪያ አድራሻ *",
+      "deliveryAddressPlaceholder": "ሙሉ የመላኪያ አድራሻ",
+      "specialInstructions": "ልዩ መመሪያዎች",
+      "specialInstructionsPlaceholder": "ማንኛውም ልዩ የመላኪያ መስፈርቶች ወይም ማስታወሻዎች"
+    },
+    
+    "paymentInfo": {
+      "title": "ክፍያ እና ግምገማ",
+      "paymentMethod": "የክፍያ ዘዴ *",
+      "methods": {
+        "bank_transfer": "የባንክ ዝውውር",
+        "letter_of_credit": "የብድር ደብዳቤ",
+        "credit_card": "ክሬዲት ካርድ"
+      }
+    },
+    
+    "terms": {
+      "agree": "እስማማለሁ",
+      "termsAndConditions": "ውሎች እና ሁኔታዎች",
+      "confirmText": "እና የቀረበው መረጃ ሁሉ ትክክል መሆኑን አረጋግጣለሁ።"
+    },
+    
+    "buttons": {
+      "back": "ተመለስ",
+      "continue": "ቀጥል",
+      "placeOrder": "ትዕዛዝ አስገባ",
+      "processing": "በማቀናበር ላይ..."
+    },
+    
+    "validation": {
+      "machineRequired": "እባክዎ ማሽን ይምረጡ",
+      "fullNameRequired": "ሙሉ ስም ያስፈልጋል",
+      "companyNameRequired": "የኩባንያ ስም ያስፈልጋል",
+      "emailRequired": "ኢሜል ያስፈልጋል",
+      "emailInvalid": "ኢሜል ልክ አይደለም",
+      "phoneRequired": "ስልክ ቁጥር ያስፈልጋል",
+      "addressRequired": "አድራሻ ያስፈልጋል",
+      "cityRequired": "ከተማ ያስፈልጋል",
+      "countryRequired": "ሀገር ያስፈልጋል",
+      "preferredDateRequired": "የሚመረጥ የመላኪያ ቀን ያስፈልጋል",
+      "deliveryAddressRequired": "የመላኪያ አድራሻ ያስፈልጋል",
+      "termsRequired": "ውሎች እና ሁኔታዎችን መቀበል አለብዎት"
+    },
+    
+    "success": {
+      "title": "ትዕዛዝ ተቀበልን!",
+      "message": "ለትዕዛዝዎ እናመሰግናለን። የሽያጭ ቡድናችን ዝርዝሮችን ለማረጋገጥ በ24 ሰዓታት ውስጥ ያገናኝዎታል።",
+      "orderReference": "የትዕዛዝ ማጣቀሻ",
+      "confirmationEmail": "የማረጋገጫ ኢሜል ልከናል",
+      "returnHome": "ወደ መነሻ ተመለስ"
+    }
+  },
+  
+  "customRequest": {
+    "title": "ብጁ ጥያቄ",
+    "feedType": {
+      "label": "የሚቀነባበረው መኖ አይነት *",
+      "placeholder": "የመኖ አይነት ይምረጡ...",
+      "options": {
+        "broiler": "የዶሮ መኖ (ብሮይለር)",
+        "layer": "የዶሮ መኖ (ሌየር)",
+        "cattle": "የከብት መኖ",
+        "swine": "የአሳማ መኖ",
+        "aqua": "የውሃ እንስሳ መኖ",
+        "pet": "የቤት እንስሳ መኖ",
+        "other": "ሌላ"
+      }
+    },
+    
+    "capacity": {
+      "label": "የሚፈለገው አቅም *",
+      "units": {
+        "kg_day": "ኪግ/ቀን",
+        "quintals_day": "ኩንታል/ቀን",
+        "tons_day": "ቶን/ቀን"
+      }
+    },
+    
+    "powerSource": {
+      "label": "የሃይል ምንጭ ምርጫ",
+      "electric": "ኤሌክትሪክ",
+      "diesel": "ናፍታ",
+      "both": "ሁለቱም"
+    },
+    
+    "spaceAvailable": {
+      "label": "የሚገኝ ቦታ (ሜትሮች)",
+      "length": "ርዝመት",
+      "width": "ስፋት",
+      "height": "ቁመት"
+    },
+    
+    "timeline": {
+      "label": "የፕሮጀክት ጊዜ",
+      "urgent": "አስቸኳይ",
+      "standard": "መደበኛ",
+      "flexible": "ተለዋዋጭ",
+      "urgentDesc": "< 4 ሳምንታት",
+      "standardDesc": "4-8 ሳምንታት",
+      "flexibleDesc": "> 8 ሳምንታት"
+    },
+    
+    "budget": {
+      "label": "የሚገመት በጀት (ዶላር)",
+      "placeholder": "የበጀት ክልል ይምረጡ...",
+      "ranges": {
+        "10k-50k": "$10,000 - $50,000",
+        "50k-100k": "$50,000 - $100,000",
+        "100k-250k": "$100,000 - $250,000",
+        "250k-500k": "$250,000 - $500,000",
+        "500k+": "$500,000+"
+      }
+    },
+    
+    "specialRequirements": {
+      "label": "ልዩ መስፈርቶች",
+      "placeholder": "ማንኛውም ልዩ ባህሪያት፣ ቁሳቁሶች፣ ወይም መስፈርቶች..."
+    },
+    
+    "imageUpload": {
+      "label": "የማጣቀሻ ምስሎች / ንድፎች",
+      "dragText": "ጎትተው ይጣሉ ወይም ለመስቀል ጠቅ ያድርጉ",
+      "subText": "ምስሎች ብቻ • ቢበዛ {maxImages} ምስሎች • እስከ {maxSize}ኤምቢ እያንዳንዳቸው",
+      "dropText": "ፋይሎችን እዚህ ጣሉ",
+      "errors": {
+        "typeError": "የፋይል አይነት አይደገፍም። እባክዎ ምስል ይስቀሉ",
+        "sizeError": "የፋይል መጠን ከ{maxSize}ኤምቢ ገደብ አልፏል",
+        "maxError": "ቢበዛ {maxImages} ምስሎች ይፈቀዳሉ"
+      },
+      "tips": {
+        "title": "ለተሻለ ውጤት ምክሮች፡",
+        "tip1": "የመጫኛ ቦታውን ግልጽ፣ በደንብ የተበሩ ፎቶዎችን ይጠቀሙ",
+        "tip2": "ከተቻለ ልኬቶችን ወይም መለኪያዎችን ያካትቱ",
+        "tip3": "ፎቶዎችን ከተለያዩ አንግሎች ይነሱ"
+      }
+    },
+    
+    "additionalInfo": {
+      "label": "ተጨማሪ መረጃ",
+      "placeholder": "ሊያጋሩን የሚፈልጉት ማንኛውም ተጨማሪ መረጃ..."
+    },
+    
+    "contactInfo": {
+      "title": "የእውቂያ መረጃ",
+      "fullName": "ሙሉ ስም *",
+      "companyName": "የኩባንያ ስም *",
+      "email": "ኢሜል *",
+      "phone": "ስልክ *"
+    },
+    
+    "buttons": {
+      "submit": "ብጁ ጥያቄ አስገባ",
+      "submitting": "በማስገባት ላይ..."
+    },
+    
+    "validation": {
+      "feedTypeRequired": "እባክዎ የመኖ አይነት ይምረጡ",
+      "nameRequired": "ስም ያስፈልጋል",
+      "companyRequired": "የኩባንያ ስም ያስፈልጋል",
+      "emailRequired": "ኢሜል ያስፈልጋል",
+      "emailInvalid": "ኢሜል ልክ አይደለም",
+      "phoneRequired": "ስልክ ቁጥር ያስፈልጋል"
+    },
+    
+    "success": {
+      "title": "ጥያቄ በሚገባ ተልኳል!",
+      "message": "ለብጁ ማሽን ጥያቄዎ እናመሰግናለን። የምህንድስና ቡድናችን መስፈርቶችዎን በገምግሞ በ48 ሰዓታት ውስጥ ያገናኝዎታል።",
+      "requestId": "የጥያቄ መታወቂያ",
+      "confirmationEmail": "የማረጋገጫ ኢሜል ልከናል",
+      "returnHome": "ወደ መነሻ ተመለስ"
+    },
+    
+    "footerNote": "ቡድናችን በ48 ሰዓታት ውስጥ ምላሽ ይሰጣል። ሁሉም መረጃ ሚስጥራዊነቱ ይጠበቃል።"
+  },
+  
+  "orderSummary": {
+    "orderConfirmed": "ትዕዛዝ ተረጋገጠ",
+    "orderCancelled": "ትዕዛዝ ተሰርዟል",
+    "orderReceived": "ትዕዛዝ ተቀብሏል",
+    "orderId": "የትዕዛዝ መታወቂያ",
+    "customerInfo": "የደንበኛ መረጃ",
+    "orderItems": "የትዕዛዝ ዕቃዎች",
+    "paymentInfo": "የክፍያ መረጃ",
+    "nextSteps": "ቀጣይ እርምጃዎች",
+    "step1": "የሽያጭ ቡድናችን ትዕዛዝዎን ለማረጋገጥ በ{hours} ሰዓታት ውስጥ ያገናኝዎታል።",
+    "step2": "ፕሮፎርማ ደረሰኝ እና የክፍያ መመሪያዎችን በኢሜል ይቀበላሉ።",
+    "step3": "ምርት ክፍያ ከተረጋገጠ በኋላ ይጀምራል። የማቅረቢያ ጊዜ: 4-8 ሳምንታት።",
+    "helpTitle": "በትዕዛዝዎ እርዳታ ይፈልጋሉ?",
+    "helpText": "በ {email} ይገናኙን ወይም ይደውሉ {phone}",
+    "buttons": {
+      "download": "አውርድ",
+      "email": "ኢሜል"
+    }
+  },
+  
+  "loading": {
+    "title": "የትዕዛዝ ቅጽ በመጫን ላይ",
+    "description": "እባክዎ የትዕዛዝ ቅጽዎ እስኪዘጋጅ ይጠብቁ..."
+  },
+  
+  "common": {
+    "name": "ስም",
+    "company": "ኩባንያ",
+    "email": "ኢሜል",
+    "phone": "ስልክ",
+    "address": "አድራሻ",
+    "city": "ከተማ",
+    "country": "ሀገር",
+    "postalCode": "ፖስታ ኮድ"
+  }
+}

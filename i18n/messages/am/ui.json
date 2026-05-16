@@ -1,0 +1,133 @@
+{
+  "accordion": {
+    "ariaLabel": "የአኮርዲዮን ንጥል ቀይር"
+  },
+  
+  "button": {
+    "loading": "በመጫን ላይ...",
+    "submit": "አስገባ",
+    "cancel": "ሰርዝ",
+    "save": "አስቀምጥ",
+    "delete": "ሰርዝ",
+    "edit": "አርትዕ",
+    "update": "አዘምን",
+    "confirm": "አረጋግጥ",
+    "close": "ዝጋ"
+  },
+  
+  "counter": {
+    "rangeLabel": "ክልል: {min} - {max}",
+    "increment": "ጨምር",
+    "decrement": "ቀንስ"
+  },
+  
+  "input": {
+    "validInput": "ትክክለኛ ግቤት",
+    "required": "ግዴታ ነው",
+    "invalidEmail": "እባክዎ ትክክለኛ ኢሜል አድራሻ ያስገቡ",
+    "invalidPhone": "እባክዎ ትክክለኛ ስልክ ቁጥር ያስገቡ",
+    "passwordMinLength": "የይለፍ ቃል ቢያንስ 8 ቁምፊዎች መሆን አለበት",
+    "passwordsDoNotMatch": "የይለፍ ቃሎቹ አይዛመዱም"
+  },
+  
+  "modal": {
+    "close": "ሞዳሉን ዝጋ"
+  },
+  
+  "select": {
+    "selectOption": "አማራጭ ይምረጡ",
+    "noOptions": "ምንም አማራጮች የሉም"
+  },
+  
+  "tabs": {
+    "ariaLabel": "ትር {tabName}"
+  },
+  
+  "textarea": {
+    "charactersRemaining": "{count} ቁምፊዎች ቀርተዋል",
+    "maxLengthExceeded": "ከፍተኛ ርዝመት አልፏል"
+  },
+  
+  "loadingSpinner": {
+    "loading": "በመጫን ላይ...",
+    "pleaseWait": "እባክዎ ይጠብቁ..."
+  },
+  
+  "validation": {
+    "required": "{field} ያስፈልጋል",
+    "minLength": "{field} ቢያንስ {min} ቁምፊዎች መሆን አለበት",
+    "maxLength": "{field} ቢበዛ {max} ቁምፊዎች መሆን አለበት",
+    "min": "{field} ቢያንስ {min} መሆን አለበት",
+    "max": "{field} ቢበዛ {max} መሆን አለበት",
+    "email": "እባክዎ ትክክለኛ ኢሜል አድራሻ ያስገቡ",
+    "phone": "እባክዎ ትክክለኛ ስልክ ቁጥር ያስገቡ",
+    "number": "እባክዎ ትክክለኛ ቁጥር ያስገቡ",
+    "url": "እባክዎ ትክክለኛ ዩአርኤል ያስገቡ",
+    "pattern": "እባክዎ የተጠየቀውን ቅርጸት ያሟሉ"
+  },
+  
+  "common": {
+    "yes": "አዎ",
+    "no": "አይ",
+    "ok": "እሺ",
+    "cancel": "ሰርዝ",
+    "save": "አስቀምጥ",
+    "delete": "ሰርዝ",
+    "edit": "አርትዕ",
+    "add": "ጨምር",
+    "remove": "አስወግድ",
+    "clear": "አጽዳ",
+    "reset": "ዳግም አስጀምር",
+    "search": "ፈልግ",
+    "filter": "አጣራ",
+    "sort": "ደርድር",
+    "view": "ተመልከት",
+    "copy": "ቅዳ",
+    "paste": "ለጥፍ",
+    "cut": "ቁረጥ",
+    "undo": "ቀለብስ",
+    "redo": "እንደገና አድርግ",
+    "refresh": "አዘምን",
+    "download": "አውርድ",
+    "upload": "ስቀል",
+    "export": "ላክ",
+    "import": "አምጣ",
+    "print": "አትማ",
+    "share": "አጋራ",
+    "more": "ተጨማሪ",
+    "less": "ያነሰ",
+    "expand": "ዘርጋ",
+    "collapse": "ሰብስብ",
+    "show": "አሳይ",
+    "hide": "ደብቅ",
+    "next": "ቀጣይ",
+    "previous": "ቀዳሚ",
+    "first": "አንደኛ",
+    "last": "መጨረሻ",
+    "page": "ገጽ",
+    "of": "ከ",
+    "total": "ጠቅላላ",
+    "items": "ንጥሎች",
+    "showing": "በማሳየት ላይ",
+    "to": "እስከ",
+    "noResults": "ምንም ውጤት አልተገኘም",
+    "loading": "በመጫን ላይ...",
+    "error": "ስህተት ተከስቷል",
+    "success": "ተሳክቷል!",
+    "warning": "ማስጠንቀቂያ",
+    "info": "መረጃ"
+  },
+  
+  "placeholders": {
+    "name": "ስም ያስገቡ",
+    "email": "ኢሜል አድራሻ ያስገቡ",
+    "phone": "ስልክ ቁጥር ያስገቡ",
+    "address": "አድራሻ ያስገቡ",
+    "city": "ከተማ ያስገቡ",
+    "country": "ሀገር ይምረጡ",
+    "postalCode": "ፖስታ ኮድ ያስገቡ",
+    "message": "መልእክትዎን ያስገቡ",
+    "search": "ፈልግ...",
+    "select": "አማራጭ ይምረጡ"
+  }
+}

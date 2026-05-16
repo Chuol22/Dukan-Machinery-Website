@@ -1,0 +1,95 @@
+{
+  "blogCard": {
+    "featured": "ታዋቂ",
+    "readMore": "ተጨማሪ ያንብቡ",
+    "minRead": "ደቂቃ ማንበብ",
+    "views": "እይታዎች",
+    "author": "ደራሲ",
+    "today": "ዛሬ",
+    "yesterday": "ትናንት",
+    "daysAgo": "ከ{count} ቀናት በፊት",
+    "weeksAgo": "ከ{count} ሳምንታት በፊት",
+    "monthsAgo": "ከ{count} ወራት በፊት",
+    "yearsAgo": "ከ{count} ዓመታት በፊት",
+    "like": "ወደድኩት",
+    "bookmark": "ዕልባት",
+    "untitledPost": "ርዕስ የሌለው ጽሁፍ",
+    "defaultExcerpt": "ስለ ግብርና ማሽኖች እና የመኖ ማቀነባበሪያ ግንዛቤዎች ተጨማሪ ያንብቡ።",
+    "buttons": {
+      "read": "አንብብ"
+    }
+  },
+  
+  "blogFilters": {
+    "searchPlaceholder": "ጽሁፎችን በርዕስ፣ ይዘት ወይም መለያዎች ይፈልጉ...",
+    "searchButton": "ፈልግ",
+    "filtersButton": "ማጣሪያዎች",
+    "clearAll": "ሁሉንም አጽዳ",
+    "showing": "በማሳየት ላይ",
+    "articles": "ጽሁፎች",
+    "allCategories": "ሁሉም ምድቦች",
+    "allTags": "ሁሉም መለያዎች",
+    "popularTags": "ታዋቂ መለያዎች",
+    "clearAllFilters": "ሁሉንም ማጣሪያዎች አጽዳ",
+    "applyFilters": "ማጣሪያዎችን ተግብር",
+    "sortOptions": {
+      "newest": "አዲስ መጀመሪያ",
+      "oldest": "የድሮ መጀመሪያ",
+      "popular": "በጣም ተወዳጅ",
+      "trending": "አዝማሚያ"
+    },
+    "dateRange": {
+      "all": "ሁልጊዜ",
+      "week": "ባለፈው ሳምንት",
+      "month": "ባለፈው ወር",
+      "year": "ባለፈው ዓመት"
+    }
+  },
+  
+  "newsletter": {
+    "title": "ለጋዜጣችን ይመዝገቡ",
+    "badge": "ቀዳሚ ይሁኑ",
+    "description": "ከ1,000+ የኢንዱስትሪ ባለሙያዎች ጋር ስለ መኖ ማቀነባበሪያ ቴክኖሎጂ፣ የኢንዱስትሪ አዝማሚያዎች እና ልዩ ቅናሾች ሳምንታዊ ዝመናዎችን ይቀበሉ።",
+    "benefits": {
+      "weeklyInsights": "ሳምንታዊ የኢንዱስትሪ ግንዛቤዎች",
+      "productLaunches": "አዲስ ምርት ማስጀመሪያዎች",
+      "expertGuides": "የባለሙያ መመሪያዎች እና ምክሮች",
+      "exclusiveOffers": "ልዩ ቅናሾች"
+    },
+    "form": {
+      "fullName": "ሙሉ ስም (አማራጭ)",
+      "fullNamePlaceholder": "ስምዎ",
+      "email": "ኢሜል አድራሻ *",
+      "emailPlaceholder": "you@example.com",
+      "subscribeButton": "አሁን ይመዝገቡ",
+      "subscribing": "በመመዝገብ ላይ...",
+      "privacyText": "በመመዝገብ፣ የግላዊነት ፖሊሲያችንን ተቀብለዋል እና ዝመናዎችን ለመቀበል ፈቃደኛ ነዎት።",
+      "noSpam": "አይጠለፍም",
+      "unsubscribe": "በማንኛውም ጊዜ ደንበኝነት መሻር"
+    },
+    "messages": {
+      "success": "ለመመዝገብ እናመሰግናለን! ገቢዎን ያረጋግጡ።",
+      "error": "ስህተት ተከስቷል። እባክዎ ይሞክሩ።",
+      "emailRequired": "እባክዎ ኢሜል አድራሻዎን ያስገቡ",
+      "emailInvalid": "እባክዎ ትክክለኛ ኢሜል አድራሻ ያስገቡ"
+    },
+    "compact": {
+      "title": "ዘመናዊ ይሁኑ",
+      "description": "የቅርብ ጊዜ ግንዛቤዎችን እና ቅናሾችን ያግኙ",
+      "placeholder": "ኢሜል አድራሻዎ",
+      "subscribe": "ይመዝገቡ",
+      "success": "✓ በሚገባ ተመዝግበዋል!"
+    }
+  },
+  
+  "loading": {
+    "title": "ጽሁፎችን በመጫን ላይ",
+    "description": "እባክዎ የቅርብ ጊዜ ግንዛቤዎቻችንን እና የብሎግ ጽሁፎቻችንን እስከጫን ድረስ ይጠብቁ..."
+  },
+  
+  "noResults": {
+    "title": "ምንም ጽሁፎች አልተገኙም",
+    "description": "እባክዎ የፍለጋ ወይም የማጣሪያ መስፈርቶችዎን ያስተካክሉ",
+    "clearFilters": "ሁሉንም ማጣሪያዎች አጽዳ"
+  }
+}
