@@ -241,19 +241,13 @@ export default function FeaturedMachines() {
 
           {/* Carousel Controls */}
           <button
-            type="button"
             onClick={prevSlide}
-            title="Previous slide"
-            aria-label="Previous slide"
             className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/90 dark:bg-neutral-800/90 p-2 rounded-full shadow-lg"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
           <button
-            type="button"
             onClick={nextSlide}
-            title="Next slide"
-            aria-label="Next slide"
             className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/90 dark:bg-neutral-800/90 p-2 rounded-full shadow-lg"
           >
             <ChevronRight className="w-5 h-5" />
@@ -264,18 +258,13 @@ export default function FeaturedMachines() {
             {featuredMachines.map((_, idx) => (
               <button
                 key={idx}
-                type="button"
                 onClick={() => setCurrentSlide(idx)}
-                title={`Go to slide ${idx + 1}`}
-                aria-label={`Go to slide ${idx + 1}`}
                 className={`h-2 rounded-full transition-all duration-300 ${
                   currentSlide === idx
                     ? 'w-8 bg-primary'
                     : 'w-2 bg-neutral-300 dark:bg-neutral-600'
                 }`}
-              >
-                <span className="sr-only">Go to slide {idx + 1}</span>
-              </button>
+              />
             ))}
           </div>
         </div>
