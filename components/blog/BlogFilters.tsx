@@ -1,5 +1,4 @@
-
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
   Search, 
@@ -12,7 +11,6 @@ import {
   Eye,
   Tag
 } from 'lucide-react'
-import { useTranslations } from 'next-intl'
 
 interface BlogFiltersProps {
   onFilterChange: (filters: FilterOptions) => void
@@ -29,8 +27,21 @@ interface FilterOptions {
   dateRange: 'all' | 'week' | 'month' | 'year'
 }
 
+const sortOptions = [
+  { value: 'newest', label: 'Newest First', icon: Clock },
+  { value: 'oldest', label: 'Oldest First', icon: Calendar },
+  { value: 'popular', label: 'Most Popular', icon: Eye },
+  { value: 'trending', label: 'Trending', icon: TrendingUp },
+]
+
+const dateRangeOptions = [
+  { value: 'all', label: 'All Time' },
+  { value: 'week', label: 'Last Week' },
+  { value: 'month', label: 'Last Month' },
+  { value: 'year', label: 'Last Year' },
+]
+
 export default function BlogFilters({ onFilterChange, categories, tags, totalPosts }: BlogFiltersProps) {
-  const t = useTranslations('blog')
   const [isOpen, setIsOpen] = useState(false)
   const [filters, setFilters] = useState<FilterOptions>({
     search: '',
@@ -40,20 +51,6 @@ export default function BlogFilters({ onFilterChange, categories, tags, totalPos
     dateRange: 'all',
   })
   const [activeFiltersCount, setActiveFiltersCount] = useState(0)
-
-  const sortOptions = [
-    { value: 'newest', label: t('blogFilters.sortOptions.newest'), icon: Clock },
-    { value: 'oldest', label: t('blogFilters.sortOptions.oldest'), icon: Calendar },
-    { value: 'popular', label: t('blogFilters.sortOptions.popular'), icon: Eye },
-    { value: 'trending', label: t('blogFilters.sortOptions.trending'), icon: TrendingUp },
-  ]
-
-  const dateRangeOptions = [
-    { value: 'all', label: t('blogFilters.dateRange.all') },
-    { value: 'week', label: t('blogFilters.dateRange.week') },
-    { value: 'month', label: t('blogFilters.dateRange.month') },
-    { value: 'year', label: t('blogFilters.dateRange.year') },
-  ]
 
   useEffect(() => {
     let count = 0
@@ -94,7 +91,7 @@ export default function BlogFilters({ onFilterChange, categories, tags, totalPos
         <div className="relative">
           <input
             type="text"
-            placeholder={t('blogFilters.searchPlaceholder')}
+            placeholder="Search articles by title, content, or tags..."
             value={filters.search}
             onChange={(e) => setFilters({ ...filters, search: e.target.value })}
             className="w-full px-5 py-4 pl-12 pr-24 bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-neutral-900 dark:text-white placeholder-neutral-400 transition-all duration-300"
@@ -104,7 +101,7 @@ export default function BlogFilters({ onFilterChange, categories, tags, totalPos
             type="submit"
             className="absolute right-2 top-1/2 transform -translate-y-1/2 px-4 py-1.5 bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition-colors duration-300 text-sm font-medium"
           >
-            {t('blogFilters.searchButton')}
+            Search
           </button>
         </div>
       </form>
@@ -120,7 +117,7 @@ export default function BlogFilters({ onFilterChange, categories, tags, totalPos
           >
             <Filter className="w-4 h-4 text-neutral-600 dark:text-neutral-400" />
             <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
-              {t('blogFilters.filtersButton')}
+              Filters
             </span>
             {activeFiltersCount > 0 && (
               <span className="px-1.5 py-0.5 bg-orange-500 text-white text-xs rounded-full">
@@ -172,7 +169,7 @@ export default function BlogFilters({ onFilterChange, categories, tags, totalPos
                 onClick={clearFilters}
                 className="text-xs text-neutral-500 hover:text-orange-500 transition-colors"
               >
-                {t('blogFilters.clearAll')}
+                Clear all
               </button>
             </div>
           )}
@@ -180,7 +177,7 @@ export default function BlogFilters({ onFilterChange, categories, tags, totalPos
 
         {/* Results Count */}
         <div className="text-sm text-neutral-500 dark:text-neutral-400">
-          {t('blogFilters.showing')} <span className="font-semibold text-orange-500">{totalPosts}</span> {t('blogFilters.articles')}
+          Showing <span className="font-semibold text-orange-500">{totalPosts}</span> articles
         </div>
       </div>
 
@@ -199,7 +196,7 @@ export default function BlogFilters({ onFilterChange, categories, tags, totalPos
                 {/* Category Filter */}
                 <div>
                   <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
-                    {t('blogFilters.category') || 'Category'}
+                    Category
                   </label>
                   <div className="relative">
                     <select
@@ -207,7 +204,7 @@ export default function BlogFilters({ onFilterChange, categories, tags, totalPos
                       onChange={(e) => handleFilterChange('category', e.target.value)}
                       className="w-full px-4 py-2 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 appearance-none cursor-pointer"
                     >
-                      <option value="">{t('blogFilters.allCategories')}</option>
+                      <option value="">All Categories</option>
                       {categories.map((category) => (
                         <option key={category} value={category}>
                           {category}
@@ -221,7 +218,7 @@ export default function BlogFilters({ onFilterChange, categories, tags, totalPos
                 {/* Tags Filter */}
                 <div>
                   <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
-                    {t('blogFilters.tags') || 'Tags'}
+                    Tags
                   </label>
                   <div className="relative">
                     <select
@@ -229,7 +226,7 @@ export default function BlogFilters({ onFilterChange, categories, tags, totalPos
                       onChange={(e) => handleFilterChange('tag', e.target.value)}
                       className="w-full px-4 py-2 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 appearance-none cursor-pointer"
                     >
-                      <option value="">{t('blogFilters.allTags')}</option>
+                      <option value="">All Tags</option>
                       {tags.map((tag) => (
                         <option key={tag} value={tag}>
                           #{tag}
@@ -243,7 +240,7 @@ export default function BlogFilters({ onFilterChange, categories, tags, totalPos
                 {/* Date Range Filter */}
                 <div>
                   <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
-                    {t('blogFilters.dateRange.label') || 'Date Range'}
+                    Date Range
                   </label>
                   <div className="relative">
                     <select
@@ -264,7 +261,7 @@ export default function BlogFilters({ onFilterChange, categories, tags, totalPos
                 {/* Sort By */}
                 <div>
                   <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
-                    {t('blogFilters.sortBy.label') || 'Sort By'}
+                    Sort By
                   </label>
                   <div className="relative">
                     <select
@@ -286,7 +283,7 @@ export default function BlogFilters({ onFilterChange, categories, tags, totalPos
               {/* Popular Tags Cloud */}
               <div>
                 <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-3">
-                  {t('blogFilters.popularTags')}
+                  Popular Tags
                 </label>
                 <div className="flex flex-wrap gap-2">
                   {tags.slice(0, 12).map((tag) => (
@@ -313,13 +310,13 @@ export default function BlogFilters({ onFilterChange, categories, tags, totalPos
                   onClick={clearFilters}
                   className="px-4 py-2 text-sm text-neutral-600 dark:text-neutral-400 hover:text-orange-500 transition-colors"
                 >
-                  {t('blogFilters.clearAllFilters')}
+                  Clear All Filters
                 </button>
                 <button
                   onClick={() => setIsOpen(false)}
                   className="px-4 py-2 bg-orange-500 text-white text-sm rounded-lg hover:bg-orange-600 transition-colors"
                 >
-                  {t('blogFilters.applyFilters')}
+                  Apply Filters
                 </button>
               </div>
             </div>

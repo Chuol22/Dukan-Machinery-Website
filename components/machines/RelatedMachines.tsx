@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
@@ -34,12 +33,10 @@ export default function RelatedMachines({ currentMachineId, category }: RelatedM
             >
               <Link href={`/machines/${machine.slug}`}>
                 <div className="relative h-48 overflow-hidden">
-                  <Image
-                    src={machine.image}
+                  <img 
+                    src={machine.image} 
                     alt={machine.name}
-                    fill
-                    className="object-contain p-4 group-hover:scale-105 transition-transform duration-500"
-                    sizes="(max-width: 640px) 100vw, 33vw"
+                    className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-500"
                   />
                 </div>
                 <div className="p-4">

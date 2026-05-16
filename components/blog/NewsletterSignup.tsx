@@ -14,7 +14,6 @@ import {
   BookOpen,
   Shield
 } from 'lucide-react'
-import { useTranslations } from 'next-intl'
 
 interface NewsletterSignupProps {
   variant?: 'default' | 'compact'
@@ -22,31 +21,30 @@ interface NewsletterSignupProps {
 }
 
 export default function NewsletterSignup({ variant = 'default', className = '' }: NewsletterSignupProps) {
-  const t = useTranslations('blog')
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState('')
 
   const benefits = [
-    { icon: TrendingUp, text: t('newsletter.benefits.weeklyInsights') },
-    { icon: Zap, text: t('newsletter.benefits.productLaunches') },
-    { icon: BookOpen, text: t('newsletter.benefits.expertGuides') },
-    { icon: Shield, text: t('newsletter.benefits.exclusiveOffers') },
+    { icon: TrendingUp, text: 'Weekly industry insights' },
+    { icon: Zap, text: 'New product launches' },
+    { icon: BookOpen, text: 'Expert guides & tips' },
+    { icon: Shield, text: 'Exclusive offers' },
   ]
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
     if (!email) {
-      setErrorMessage(t('newsletter.messages.emailRequired'))
+      setErrorMessage('Please enter your email address')
       setStatus('error')
       return
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(email)) {
-      setErrorMessage(t('newsletter.messages.emailInvalid'))
+      setErrorMessage('Please enter a valid email address')
       setStatus('error')
       return
     }
@@ -80,8 +78,8 @@ export default function NewsletterSignup({ variant = 'default', className = '' }
             </div>
           </div>
           <div className="flex-1">
-            <h3 className="text-green-600 font-black mb-1">{t('newsletter.compact.title')}</h3>
-            <p className="text-green-500 text-sm mb-3">{t('newsletter.compact.description')}</p>
+            <h3 className="text-green-600 font-black mb-1">Stay Updated</h3>
+            <p className="text-green-500 text-sm mb-3">Get the latest insights and offers</p>
             
             <form onSubmit={handleSubmit} className="space-y-2">
               <div className="relative">
@@ -89,7 +87,7 @@ export default function NewsletterSignup({ variant = 'default', className = '' }
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder={t('newsletter.compact.placeholder')}
+                  placeholder="Your email address"
                   className="w-full px-3 py-2 pr-10 bg-green-600/10 border border-green-600/20 rounded-lg text-green-600 placeholder-green-600/60 focus:outline-none focus:ring-2 focus:ring-green-600/30 text-sm"
                 />
                 <Mail className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-green-600/60" />
@@ -99,7 +97,7 @@ export default function NewsletterSignup({ variant = 'default', className = '' }
                 disabled={status === 'loading'}
                 className="w-full px-3 py-2 bg-green-600 text-orange-600 rounded-lg hover:bg-green-600/90 transition-colors text-sm font-medium disabled:opacity-50"
               >
-                {status === 'loading' ? t('newsletter.form.subscribing') : t('newsletter.compact.subscribe')}
+                {status === 'loading' ? 'Subscribing...' : 'Subscribe'}
               </button>
             </form>
           </div>
@@ -113,7 +111,7 @@ export default function NewsletterSignup({ variant = 'default', className = '' }
               exit={{ opacity: 0, y: -10 }}
               className="mt-3 p-2 bg-green-500/20 rounded-lg text-center"
             >
-              <p className="text-green-500 text-xs">{t('newsletter.compact.success')}</p>
+              <p className="text-green-500 text-xs">✓ Subscribed successfully!</p>
             </motion.div>
           )}
           {status === 'error' && (
@@ -152,16 +150,17 @@ export default function NewsletterSignup({ variant = 'default', className = '' }
               className="inline-flex bg-orange-100 dark:bg-orange-900/30 items-center gap-2 px-3 py-1 rounded-full mb-4"
             >
               <Sparkles className="w-4 h-4 text-orange-500" />
-              <span className="text-orange-700 dark:text-orange-400 text-lg font-black">{t('newsletter.badge')}</span>
+              <span className="text-orange-700 dark:text-orange-400 text-lg font-black">Stay Ahead</span>
             </motion.div>
 
             {/* Title */}
             <h3 className="text-xl md:text-2xl font-black text-green-800 dark:text-white mb-4">
-              {t('newsletter.title')}
+              Subscribe to Our Newsletter
             </h3>
             
             <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
-              {t('newsletter.description')}
+              Join 1,00+ industry professionals who receive weekly updates on 
+              feed processing technology, industry trends, and exclusive offers.
             </p>
 
             {/* Benefits List */}
@@ -186,11 +185,11 @@ export default function NewsletterSignup({ variant = 'default', className = '' }
             <div className="flex items-center gap-4 text-gray-500 dark:text-gray-400 text-sm">
               <div className="flex items-center gap-1">
                 <CheckCircle className="w-4 h-4 text-orange-500" />
-                <span>{t('newsletter.form.noSpam')}</span>
+                <span>No spam</span>
               </div>
               <div className="flex items-center gap-1">
                 <CheckCircle className="w-4 h-4 text-orange-500" />
-                <span>{t('newsletter.form.unsubscribe')}</span>
+                <span>Unsubscribe anytime</span>
               </div>
             </div>
           </div>
@@ -205,27 +204,27 @@ export default function NewsletterSignup({ variant = 'default', className = '' }
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="block text-gray-700 dark:text-gray-300 text-sm font-black mb-2">
-                  {t('newsletter.form.fullName')}
+                  Full Name (Optional)
                 </label>
                 <input
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder={t('newsletter.form.fullNamePlaceholder')}
+                  placeholder="Name"
                   className="w-full px-4 py-3 bg-white dark:bg-neutral-800 border border-gray-200 dark:border-neutral-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all duration-300"
                 />
               </div>
 
               <div>
                 <label className="block text-gray-700 dark:text-gray-300 text-sm font-black mb-2">
-                  {t('newsletter.form.email')}
+                  Email Address *
                 </label>
                 <div className="relative">
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder={t('newsletter.form.emailPlaceholder')}
+                    placeholder="i@example.com"
                     className="w-full px-4 py-3 pl-11 bg-white dark:bg-neutral-800 border border-gray-200 dark:border-neutral-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all duration-300"
                   />
                   <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500" />
@@ -240,18 +239,18 @@ export default function NewsletterSignup({ variant = 'default', className = '' }
                 {status === 'loading' ? (
                   <>
                     <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    {t('newsletter.form.subscribing')}
+                    Subscribing...
                   </>
                 ) : (
                   <>
-                    {t('newsletter.form.subscribeButton')}
+                    Subscribe Now
                     <Send className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                   </>
                 )}
               </button>
 
               <p className="text-gray-400 dark:text-gray-500 text-xs text-center">
-                {t('newsletter.form.privacyText')}
+                By subscribing, you agree to our Privacy Policy and consent to receive updates.
               </p>
             </form>
 
@@ -265,7 +264,7 @@ export default function NewsletterSignup({ variant = 'default', className = '' }
                   className="mt-4 p-3 bg-green-500/20 rounded-lg flex items-center gap-2"
                 >
                   <CheckCircle className="w-5 h-5 text-green-500" />
-                  <p className="text-green-600 dark:text-green-400 text-sm">{t('newsletter.messages.success')}</p>
+                  <p className="text-green-600 dark:text-green-400 text-sm">Thanks for subscribing! Check your inbox.</p>
                 </motion.div>
               )}
               {status === 'error' && (

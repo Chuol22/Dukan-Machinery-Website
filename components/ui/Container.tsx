@@ -1,3 +1,5 @@
+'use client'
+
 import { forwardRef } from 'react'
 
 export interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {

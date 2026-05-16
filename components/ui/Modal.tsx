@@ -83,9 +83,7 @@ export default function Modal({
                   )}
                   {showCloseButton && (
                     <button
-                      type="button"
                       onClick={onClose}
-                      aria-label="Close modal"
                       className="p-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors"
                     >
                       <X className="w-5 h-5" />

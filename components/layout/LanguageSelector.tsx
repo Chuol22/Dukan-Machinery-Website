@@ -5,7 +5,6 @@ import { useState, useRef, useEffect } from 'react'
 import { useLanguage, type Language } from '@/contexts/LanguageContext'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Globe, ChevronDown } from 'lucide-react'
-import { li } from 'framer-motion/client'
 
 const languages: { code: Language; nativeName: string; englishName: string; flag: string }[] = [
   { code: 'en', nativeName: 'English',       englishName: 'English', flag: '🇬🇧' },

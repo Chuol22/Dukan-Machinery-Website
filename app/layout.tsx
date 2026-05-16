@@ -1,6 +1,19 @@
+// app/layout.tsx
 import type { Metadata, Viewport } from 'next';
 import { changaOne } from './fonts';
 import './globals.css';
+
+// Layout Components
+import Navbar from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer';
+import ScrollToTop from '@/components/layout/ScrollToTop';
+
+// ✅ Import the client wrapper instead of dynamic directly
+import ChatbotClientWrapper from '@/components/chatbot/ChatbotClientWrapper';
+
+// Context Providers
+import { ThemeProvider } from '@/contexts/ThemeContext';
+import { LanguageProvider } from '@/contexts/LanguageContext';
 
 export const metadata: Metadata = {
   title: {
@@ -69,10 +82,27 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html suppressHydrationWarning={true}>
-      <head />
-      <body id="top" suppressHydrationWarning={true}>
-        {children}
+    <html 
+      lang="en" 
+      className={changaOne.variable} 
+      suppressHydrationWarning={true}
+    >
+      <body 
+        className="font-sans" 
+        suppressHydrationWarning={true}
+      >
+        <ThemeProvider>
+          <LanguageProvider>
+            <Navbar />
+            <main className="pt-16 lg:pt-20 min-h-screen">
+              {children}
+            </main>
+            <Footer />
+            <ScrollToTop />
+            {/* ✅ Use the client wrapper */}
+            <ChatbotClientWrapper />
+          </LanguageProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

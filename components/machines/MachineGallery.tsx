@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 
@@ -33,15 +32,11 @@ export default function MachineGallery({ images, productName }: MachineGalleryPr
               className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-105"
             />
           ) : (
-            <div className="relative w-full h-full">
-              <Image
-                src={images[selectedImage]}
-                alt={productName}
-                fill
-                className="object-contain p-4 transition-transform duration-500 group-hover:scale-105"
-                sizes="(max-width: 768px) 100vw, 30vw"
-              />
-            </div>
+            <img 
+              src={images[selectedImage]} 
+              alt={productName}
+              className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-105"
+            />
           )}
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
             <span className="bg-white/90 text-gray-800 px-4 py-2 rounded-full text-sm font-black">Click to enlarge</span>
@@ -62,24 +57,16 @@ export default function MachineGallery({ images, productName }: MachineGalleryPr
                 }`}
               >
                 {image.endsWith('.mp4') ? (
-                  <video 
-                    src={image} 
-                    muted 
-                    loop 
-                    playsInline
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="relative w-full h-full">
-                    <Image
-                      src={image}
-                      alt={`${productName} ${index + 1}`}
-                      fill
-                      className="object-cover"
-                      sizes="80px"
-                    />
-                  </div>
-                )}
+                <video 
+                  src={image} 
+                  muted 
+                  loop 
+                  playsInline
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <img src={image} alt={`${productName} ${index + 1}`} className="w-full h-full object-cover" />
+              )}
               </button>
             ))}
           </div>
@@ -117,16 +104,12 @@ export default function MachineGallery({ images, productName }: MachineGalleryPr
               onClick={(e) => e.stopPropagation()}
             />
           ) : (
-            <div className="relative max-w-[90vw] max-h-[90vh] w-full h-full">
-              <Image
-                src={images[selectedImage]}
-                alt={productName}
-                fill
-                className="object-contain"
-                sizes="90vw"
-                onClick={(e) => e.stopPropagation()}
-              />
-            </div>
+            <img 
+              src={images[selectedImage]} 
+              alt={productName}
+              className="max-w-[90vw] max-h-[90vh] object-contain"
+              onClick={(e) => e.stopPropagation()}
+            />
           )}
 
           <button 

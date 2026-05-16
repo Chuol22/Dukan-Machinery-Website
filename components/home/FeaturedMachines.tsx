@@ -2,7 +2,6 @@
 
 import { useState, useRef } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
-import { useLocale } from 'next-intl'
 import {
   ArrowRight,
   Gauge,
@@ -76,12 +75,11 @@ const cardVariants = {
   visible: {
     y: 0,
     opacity: 1,
-    transition: { duration: 0.5, ease: 'easeOut' as const },
+    transition: { duration: 0.5, ease: 'easeOut' },
   },
 }
 
 export default function FeaturedMachines() {
-  const locale = useLocale()
   const [hoveredCard, setHoveredCard] = useState<number | null>(null)
   const [currentSlide, setCurrentSlide] = useState(0)
   const ref = useRef(null)
@@ -231,7 +229,7 @@ export default function FeaturedMachines() {
               </div>
 
                 <div className="flex gap-2 sm:gap-3"> 
-                  <Link href={`/${locale}/order`} className="flex-1">
+                  <Link href="/order" className="flex-1">
                     <Button className="w-full bg-primary hover:bg-primary-dark text-xs sm:text-sm">
                       Order
                     </Button>
@@ -243,13 +241,19 @@ export default function FeaturedMachines() {
 
           {/* Carousel Controls */}
           <button
+            type="button"
             onClick={prevSlide}
+            title="Previous slide"
+            aria-label="Previous slide"
             className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/90 dark:bg-neutral-800/90 p-2 rounded-full shadow-lg"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
           <button
+            type="button"
             onClick={nextSlide}
+            title="Next slide"
+            aria-label="Next slide"
             className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/90 dark:bg-neutral-800/90 p-2 rounded-full shadow-lg"
           >
             <ChevronRight className="w-5 h-5" />
@@ -260,13 +264,18 @@ export default function FeaturedMachines() {
             {featuredMachines.map((_, idx) => (
               <button
                 key={idx}
+                type="button"
                 onClick={() => setCurrentSlide(idx)}
+                title={`Go to slide ${idx + 1}`}
+                aria-label={`Go to slide ${idx + 1}`}
                 className={`h-2 rounded-full transition-all duration-300 ${
                   currentSlide === idx
                     ? 'w-8 bg-primary'
                     : 'w-2 bg-neutral-300 dark:bg-neutral-600'
                 }`}
-              />
+              >
+                <span className="sr-only">Go to slide {idx + 1}</span>
+              </button>
             ))}
           </div>
         </div>
