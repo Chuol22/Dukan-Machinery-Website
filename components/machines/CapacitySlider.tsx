@@ -19,7 +19,7 @@ export default function CapacitySlider({ min, max, value, onChange, unit = 'kg/h
         <label className="text-sm font-black text-green-700 dark:text-white uppercase tracking-wider">
           Capacity: {value.toLocaleString()} {unit}
         </label>
-        <span className="text-xs text-neutral-500">
+        <span className="text-xs text-gray-500">
           {min.toLocaleString()} - {max.toLocaleString()} {unit}
         </span>
       </div>
@@ -31,7 +31,7 @@ export default function CapacitySlider({ min, max, value, onChange, unit = 'kg/h
           max={max}
           value={value}
           onChange={(e) => onChange(parseInt(e.target.value))}
-          className="w-full h-2 bg-neutral-200 dark:bg-neutral-700 rounded-lg appearance-none cursor-pointer"
+          className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer"
           style={{
             background: `linear-gradient(to right, #f97316 0%, #f97316 ${percentage}%, #e5e7eb ${percentage}%, #e5e7eb 100%)`
           }}

@@ -31,20 +31,20 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     const isPassword = type === 'password'
     const inputType = isPassword ? (showPassword ? 'text' : 'password') : type
 
-    const baseStyles = 'w-full px-4 py-2 text-base bg-neutral-50 dark:bg-neutral-900 border rounded-lg focus:outline-none focus:ring-2 transition-all duration-200'
+    const baseStyles = 'w-full px-4 py-2 text-base bg-gray-50 dark:bg-gray-900 border rounded-lg focus:outline-none focus:ring-2 transition-all duration-200'
     
     const stateStyles = error
       ? 'border-red-500 focus:ring-red-500'
       : success
       ? 'border-green-500 focus:ring-green-500'
-      : 'border-neutral-200 dark:border-neutral-700 focus:border-primary focus:ring-primary'
+      : 'border-gray-200 dark:border-gray-700 focus:border-primary focus:ring-primary'
 
     const paddingStyles = icon && iconPosition === 'left' ? 'pl-10' : icon && iconPosition === 'right' ? 'pr-10' : ''
 
     return (
       <div className="w-full">
         {label && (
-          <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             {label}
             {required && <span className="text-red-500 ml-1">*</span>}
           </label>
@@ -52,7 +52,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         
         <div className="relative">
           {icon && iconPosition === 'left' && (
-            <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400">
+            <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
               {icon}
             </div>
           )}
@@ -69,14 +69,14 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-neutral-400 hover:text-neutral-600"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
             >
               {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             </button>
           )}
           
           {!isPassword && icon && iconPosition === 'right' && (
-            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-neutral-400">
+            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
               {icon}
             </div>
           )}
@@ -97,7 +97,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         )}
         
         {helperText && !error && (
-          <p className="mt-1 text-sm text-neutral-500">{helperText}</p>
+          <p className="mt-1 text-sm text-gray-500">{helperText}</p>
         )}
       </div>
     )

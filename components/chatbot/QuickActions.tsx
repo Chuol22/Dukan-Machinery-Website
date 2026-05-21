@@ -64,7 +64,7 @@ export default function QuickActions({ onActionClick }: QuickActionsProps) {
     <div className="space-y-2">
       <div className="flex items-center gap-2">
         <HelpCircle className="w-4 h-4 text-orange-500" />
-        <span className="text-xs font-black text-neutral-500 dark:text-neutral-400">
+        <span className="text-xs font-black text-gray-500 dark:text-gray-400">
           Quick Questions
         </span>
       </div>
@@ -84,7 +84,7 @@ export default function QuickActions({ onActionClick }: QuickActionsProps) {
             onClick={() => onActionClick(action.query)}
             className="group relative overflow-hidden"
           >
-            <div className="relative px-3 py-2 bg-neutral-100 dark:bg-neutral-800 rounded-xl hover:shadow-md transition-all duration-300">
+            <div className="relative px-3 py-2 bg-gray-100 dark:bg-gray-800 rounded-xl hover:shadow-md transition-all duration-300">
               {/* Gradient Hover Effect */}
               <div className={`absolute inset-0 bg-gradient-to-r ${action.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
               
@@ -92,7 +92,7 @@ export default function QuickActions({ onActionClick }: QuickActionsProps) {
                 <div className={`p-1.5 rounded-lg bg-gradient-to-r ${action.color} bg-opacity-10`}>
                   <action.icon className="w-3.5 h-3.5 text-orange-500" />
                 </div>
-                <span className="text-[11px] font-medium text-neutral-700 dark:text-neutral-300">
+                <span className="text-[11px] font-medium text-gray-700 dark:text-gray-300">
                   {action.label}
                 </span>
               </div>

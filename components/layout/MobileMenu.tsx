@@ -5,8 +5,8 @@ import { useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
-import LanguageSelector from './LanguageSelector'
 import ModeToggle from './ModeToggle'
+import { LanguageSelector } from '@/components/LanguageSelector'
 
 
 interface MobileMenuProps {
@@ -43,11 +43,11 @@ export default function MobileMenu({ isOpen, onClose, navItems }: MobileMenuProp
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 20 }}
-            className="fixed right-0 top-0 bottom-0 w-80 bg-white dark:bg-neutral-900 shadow-2xl z-50 lg:hidden"
+            className="fixed right-0 top-0 bottom-0 w-80 bg-white dark:bg-gray-900 shadow-2xl z-50 lg:hidden"
           >
             <div className="flex flex-col h-full">
               {/* Header */}
-              <div className="flex items-center justify-between p-6 border-b border-neutral-200 dark:border-neutral-800">
+              <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-800">
                 <span className="text-lg font-bold">Menu</span>
                 <div className="flex items-center space-x-2">
                   <LanguageSelector />
@@ -69,7 +69,7 @@ export default function MobileMenu({ isOpen, onClose, navItems }: MobileMenuProp
                       className={`block px-6 py-3 text-base font-medium transition-colors min-h-[44px] flex items-center ${
                         isActive
                           ? 'bg-primary/10 text-primary border-r-4 border-primary'
-                          : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'
+                          : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
                       }`}
                     >
                       {item.name}
@@ -79,8 +79,8 @@ export default function MobileMenu({ isOpen, onClose, navItems }: MobileMenuProp
               </nav>
 
               {/* Footer */}
-              <div className="p-6 border-t border-neutral-200 dark:border-neutral-800">
-                <p className="text-sm text-neutral-500 dark:text-neutral-400 text-center">
+              <div className="p-6 border-t border-gray-200 dark:border-gray-800">
+                <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
                   © 2024 Dukan Machinery
                 </p>
               </div>

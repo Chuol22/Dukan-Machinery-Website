@@ -76,7 +76,7 @@ export default function PlatformButtons({
     <div className="space-y-2">
       <div className="flex items-center gap-2">
         <div className="w-1 h-2 bg-secondary rounded-full" />
-        <span className="text-xs font-medium text-neutral-500 dark:text-neutral-400">
+        <span className="text-xs font-medium text-gray-500 dark:text-gray-400">
           Connect with us on
         </span>
       </div>
@@ -98,9 +98,9 @@ export default function PlatformButtons({
           >
             <div className="relative px-3 py-2 flex items-center gap-2">
               <motion.div
-                className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"
+                className="absolute inset-0 bg-white/20 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 initial={false}
-                whileHover={{ scale: 1.5, opacity: 0.2 }}
+                whileHover={{ scale: 1.5, opacity: 0.25 }}
                 transition={{ duration: 0.3 }}
               />
               
@@ -134,7 +134,7 @@ export default function PlatformButtons({
 
       <div className="flex items-center justify-center gap-1 pt-1">
         <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
-        <span className="text-[10px] text-neutral-400">
+        <span className="text-[10px] text-gray-400">
           Online • Usually replies in minutes
         </span>
       </div>

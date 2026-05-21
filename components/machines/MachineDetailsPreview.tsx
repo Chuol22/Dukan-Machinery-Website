@@ -32,7 +32,7 @@ const TabButton = ({ active, onClick, children, icon }: any) => (
     className={`flex items-center gap-1.5 pb-3 px-2 font-black text-xs sm:text-sm uppercase tracking-wider transition border-b-2 ${
       active 
         ? 'border-orange-500 text-orange-500' 
-        : 'border-transparent text-neutral-500 hover:text-green-700 dark:hover:text-white'
+        : 'border-transparent text-gray-500 hover:text-green-700 dark:hover:text-white'
     }`}
   >
     <span className="text-sm">{icon}</span>
@@ -48,7 +48,7 @@ const MaintenanceItem = ({ title, priority, frequency }: any) => {
   };
 
   return (
-    <div className="bg-neutral-50 dark:bg-neutral-700/50 p-3 rounded-lg hover:shadow-md transition-shadow duration-300">
+    <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg hover:shadow-md transition-shadow duration-300">
       <div className="flex items-start gap-3">
         <div className="text-orange-500 text-lg mt-1">🔧</div>
         <div className="flex-1">
@@ -57,7 +57,7 @@ const MaintenanceItem = ({ title, priority, frequency }: any) => {
             <span className={`text-[10px] px-2 py-0.5 rounded-full ${priorityColors[priority]}`}>
               {priority}
             </span>
-            <span className="text-[10px] text-neutral-500 flex items-center gap-1">
+            <span className="text-[10px] text-gray-500 flex items-center gap-1">
               <svg width="12" height="12" viewBox="0 0 512 512" fill="currentColor">
                 <path d="M256,8C119,8,8,119,8,256S119,504,256,504,504,393,504,256,393,8,256,8Zm92.49,313h0l-20,25a16,16,0,0,1-22.49,2.5h0l-67-49.72a40,40,0,0,1-15-31.23V112a16,16,0,0,1,16-16h32a16,16,0,0,1,16,16V256l58,42.5A16,16,0,0,1,348.49,321Z"/>
               </svg>
@@ -97,7 +97,7 @@ export default function MachineDetailsPreview({ machineId, allMachines }: Machin
   const thumbnailMachines = allMachines.slice(0, 17);
 
   return (
-    <section id="machine-details-preview" className="py-16 bg-neutral-50 dark:bg-neutral-900">
+    <section id="machine-details-preview" className="py-16 bg-gray-50 dark:bg-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Section Header */}
         <div className="text-center mb-10">
@@ -105,7 +105,7 @@ export default function MachineDetailsPreview({ machineId, allMachines }: Machin
             Machine <span className="text-orange-500">Details</span>
           </h2>
           <div className="w-16 h-1 bg-orange-500 mx-auto mt-3 rounded-full"></div>
-          <p className="mt-4 text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto text-sm sm:text-base">
+          <p className="mt-4 text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-sm sm:text-base">
             Detailed technical specifications and features of our industrial machines.
           </p>
         </div>
@@ -150,7 +150,7 @@ export default function MachineDetailsPreview({ machineId, allMachines }: Machin
         </div>
 
         {/* Main Details Card */}
-        <div className="bg-white dark:bg-neutral-800 rounded-2xl shadow-xl overflow-hidden">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden">
           {/* Header */}
           <div className="relative bg-gradient-to-br from-green-900 to-green-800 p-6 sm:p-8">
             <div className="flex flex-col sm:flex-row items-center gap-6">
@@ -188,7 +188,7 @@ export default function MachineDetailsPreview({ machineId, allMachines }: Machin
           </div>
 
           {/* Tabs */}
-          <div className="border-b border-neutral-200 dark:border-neutral-700 px-4 pt-4 overflow-x-auto">
+          <div className="border-b border-gray-200 dark:border-gray-700 px-4 pt-4 overflow-x-auto">
             <div className="flex gap-2 sm:gap-4 min-w-max">
               {tabs.map((tab) => (
                 <TabButton
@@ -242,48 +242,48 @@ export default function MachineDetailsPreview({ machineId, allMachines }: Machin
                   </div>
 
                   <div className="grid md:grid-cols-2 gap-4">
-                    <div className="bg-neutral-50 dark:bg-neutral-700/50 rounded-xl p-4">
+                    <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4">
                       <h4 className="font-black text-green-700 dark:text-white mb-3 flex items-center gap-2">
                         📦 General
                       </h4>
                       <div className="space-y-2">
-                        <div className="flex justify-between py-2 px-3 bg-white dark:bg-neutral-800 rounded-lg text-sm">
+                        <div className="flex justify-between py-2 px-3 bg-white dark:bg-gray-800 rounded-lg text-sm">
                           <span className="font-bold">Model:</span>
                           <span className="font-black">{machine.name.split(' ').slice(0, 2).join(' ')}</span>
                         </div>
-                        <div className="flex justify-between py-2 px-3 bg-white dark:bg-neutral-800 rounded-lg text-sm">
+                        <div className="flex justify-between py-2 px-3 bg-white dark:bg-gray-800 rounded-lg text-sm">
                           <span className="font-bold">Type:</span>
                           <span className="font-black">{machine.type}</span>
                         </div>
-                        <div className="flex justify-between py-2 px-3 bg-white dark:bg-neutral-800 rounded-lg text-sm">
+                        <div className="flex justify-between py-2 px-3 bg-white dark:bg-gray-800 rounded-lg text-sm">
                           <span className="font-bold">Material:</span>
                           <span className="font-black">Stainless Steel 304</span>
                         </div>
-                        <div className="flex justify-between py-2 px-3 bg-white dark:bg-neutral-800 rounded-lg text-sm">
+                        <div className="flex justify-between py-2 px-3 bg-white dark:bg-gray-800 rounded-lg text-sm">
                           <span className="font-bold">Warranty:</span>
                           <span className="font-black">18 months</span>
                         </div>
                       </div>
                     </div>
                     
-                    <div className="bg-neutral-50 dark:bg-neutral-700/50 rounded-xl p-4">
+                    <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4">
                       <h4 className="font-black text-green-700 dark:text-white mb-3 flex items-center gap-2">
                         🎯 Performance
                       </h4>
                       <div className="space-y-2">
-                        <div className="flex justify-between py-2 px-3 bg-white dark:bg-neutral-800 rounded-lg text-sm">
+                        <div className="flex justify-between py-2 px-3 bg-white dark:bg-gray-800 rounded-lg text-sm">
                           <span className="font-bold">Extraction Rate:</span>
                           <span className="font-black">95%</span>
                         </div>
-                        <div className="flex justify-between py-2 px-3 bg-white dark:bg-neutral-800 rounded-lg text-sm">
+                        <div className="flex justify-between py-2 px-3 bg-white dark:bg-gray-800 rounded-lg text-sm">
                           <span className="font-bold">Water Consumption:</span>
                           <span className="font-black">500 L/ton</span>
                         </div>
-                        <div className="flex justify-between py-2 px-3 bg-white dark:bg-neutral-800 rounded-lg text-sm">
+                        <div className="flex justify-between py-2 px-3 bg-white dark:bg-gray-800 rounded-lg text-sm">
                           <span className="font-bold">RPM:</span>
                           <span className="font-black">1440 RPM</span>
                         </div>
-                        <div className="flex justify-between py-2 px-3 bg-white dark:bg-neutral-800 rounded-lg text-sm">
+                        <div className="flex justify-between py-2 px-3 bg-white dark:bg-gray-800 rounded-lg text-sm">
                           <span className="font-bold">Voltage:</span>
                           <span className="font-black">380V, 3 Phase</span>
                         </div>
@@ -304,14 +304,14 @@ export default function MachineDetailsPreview({ machineId, allMachines }: Machin
                   <h3 className="text-lg sm:text-xl font-black text-green-700 dark:text-white mb-4 flex items-center gap-2">
                     ⚙️ Production Process Flow
                   </h3>
-                  <div className="mb-6 p-4 bg-green-700/5 dark:bg-neutral-700/50 rounded-xl">
-                    <p className="text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed">
+                  <div className="mb-6 p-4 bg-green-700/5 dark:bg-gray-700/50 rounded-xl">
+                    <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
                       {machine.process}
                     </p>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                     {machine.process.split('→').map((step, idx) => (
-                      <div key={idx} className="flex items-center gap-3 p-3 bg-white dark:bg-neutral-800 rounded-lg hover:shadow-md transition">
+                      <div key={idx} className="flex items-center gap-3 p-3 bg-white dark:bg-gray-800 rounded-lg hover:shadow-md transition">
                         <div className="w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center font-black text-sm">
                           {idx + 1}
                         </div>
@@ -353,35 +353,35 @@ export default function MachineDetailsPreview({ machineId, allMachines }: Machin
                     🛡️ Warranty & Support
                   </h3>
                   <div className="grid md:grid-cols-2 gap-4">
-                    <div className="p-4 bg-white dark:bg-neutral-800 rounded-lg hover:shadow-md transition">
+                    <div className="p-4 bg-white dark:bg-gray-800 rounded-lg hover:shadow-md transition">
                       <h4 className="font-black text-green-700 dark:text-white mb-2 flex items-center gap-2">
                         🏆 Standard Warranty
                       </h4>
-                      <p className="text-sm text-neutral-600 dark:text-neutral-300">
+                      <p className="text-sm text-gray-600 dark:text-gray-300">
                         18 months comprehensive warranty covering manufacturing defects and material quality.
                       </p>
                     </div>
-                    <div className="p-4 bg-white dark:bg-neutral-800 rounded-lg hover:shadow-md transition">
+                    <div className="p-4 bg-white dark:bg-gray-800 rounded-lg hover:shadow-md transition">
                       <h4 className="font-black text-green-700 dark:text-white mb-2 flex items-center gap-2">
                         🎧 Technical Support
                       </h4>
-                      <p className="text-sm text-neutral-600 dark:text-neutral-300">
+                      <p className="text-sm text-gray-600 dark:text-gray-300">
                         24/7 phone and email support. On-site service available within 48 hours.
                       </p>
                     </div>
-                    <div className="p-4 bg-white dark:bg-neutral-800 rounded-lg hover:shadow-md transition">
+                    <div className="p-4 bg-white dark:bg-gray-800 rounded-lg hover:shadow-md transition">
                       <h4 className="font-black text-green-700 dark:text-white mb-2 flex items-center gap-2">
                         🚚 Spare Parts
                       </h4>
-                      <p className="text-sm text-neutral-600 dark:text-neutral-300">
+                      <p className="text-sm text-gray-600 dark:text-gray-300">
                         Genuine spare parts available with express shipping worldwide.
                       </p>
                     </div>
-                    <div className="p-4 bg-white dark:bg-neutral-800 rounded-lg hover:shadow-md transition">
+                    <div className="p-4 bg-white dark:bg-gray-800 rounded-lg hover:shadow-md transition">
                       <h4 className="font-black text-green-700 dark:text-white mb-2 flex items-center gap-2">
                         ⏰ Lifetime Support
                       </h4>
-                      <p className="text-sm text-neutral-600 dark:text-neutral-300">
+                      <p className="text-sm text-gray-600 dark:text-gray-300">
                         Free technical consultation and training for the lifetime of the machine.
                       </p>
                     </div>
@@ -392,11 +392,11 @@ export default function MachineDetailsPreview({ machineId, allMachines }: Machin
           </div>
 
           {/* CTA Section */}
-          <div className="p-4 sm:p-6 bg-neutral-100 dark:bg-neutral-700 border-t border-neutral-200 dark:border-neutral-600">
+          <div className="p-4 sm:p-6 bg-gray-100 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600">
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4 max-w-3xl mx-auto">
               <div className="text-center sm:text-left">
                 <h3 className="text-lg sm:text-xl font-black text-green-700 dark:text-white">Ready to get started?</h3>
-                <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300">Order or request a custom configuration</p>
+                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">Order or request a custom configuration</p>
               </div>
               <div className="flex gap-3">
                 <Link href={`/order?machine=${machine.id}`}>

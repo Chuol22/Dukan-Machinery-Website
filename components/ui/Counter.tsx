@@ -66,7 +66,7 @@ export default function Counter({
   return (
     <div className="inline-flex flex-col gap-2">
       {label && (
-        <label className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
+        <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
           {label}
         </label>
       )}
@@ -75,7 +75,7 @@ export default function Counter({
         <button
           onClick={decrement}
           disabled={value <= min}
-          className={`${buttonSizes[size]} rounded-full border border-neutral-200 dark:border-neutral-700 flex items-center justify-center hover:border-primary hover:text-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed`}
+          className={`${buttonSizes[size]} rounded-full border border-gray-200 dark:border-gray-700 flex items-center justify-center hover:border-primary hover:text-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed`}
         >
           <Minus className="w-3 h-3" />
         </button>
@@ -96,14 +96,14 @@ export default function Counter({
         <button
           onClick={increment}
           disabled={value >= max}
-          className={`${buttonSizes[size]} rounded-full border border-neutral-200 dark:border-neutral-700 flex items-center justify-center hover:border-primary hover:text-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed`}
+          className={`${buttonSizes[size]} rounded-full border border-gray-200 dark:border-gray-700 flex items-center justify-center hover:border-primary hover:text-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed`}
         >
           <Plus className="w-3 h-3" />
         </button>
       </div>
       
       {(min > -Infinity || max < Infinity) && (
-        <p className="text-xs text-neutral-500">
+        <p className="text-xs text-gray-500">
           Range: {format(min)} - {format(max)}
         </p>
       )}

@@ -22,16 +22,16 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     disabled,
     ...props 
   }, ref) => {
-    const baseStyles = 'w-full px-4 py-2 text-base bg-neutral-50 dark:bg-neutral-900 border rounded-lg focus:outline-none focus:ring-2 transition-all duration-200 resize-y'
+    const baseStyles = 'w-full px-4 py-2 text-base bg-gray-50 dark:bg-gray-900 border rounded-lg focus:outline-none focus:ring-2 transition-all duration-200 resize-y'
     
     const stateStyles = error
       ? 'border-red-500 focus:ring-red-500'
-      : 'border-neutral-200 dark:border-neutral-700 focus:border-primary focus:ring-primary'
+      : 'border-gray-200 dark:border-gray-700 focus:border-primary focus:ring-primary'
 
     return (
       <div className="w-full">
         {label && (
-          <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             {label}
             {required && <span className="text-red-500 ml-1">*</span>}
           </label>
@@ -53,7 +53,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         )}
         
         {helperText && !error && (
-          <p className="mt-1 text-sm text-neutral-500">{helperText}</p>
+          <p className="mt-1 text-sm text-gray-500">{helperText}</p>
         )}
       </div>
     )

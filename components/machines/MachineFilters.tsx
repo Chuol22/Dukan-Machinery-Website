@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+
 import { Filter, Search, X } from 'lucide-react';
 
 interface MachineFiltersProps {
@@ -17,10 +18,6 @@ interface MachineFiltersProps {
   totalMachines: number;
 }
 
-const categories = ['All', 'Cattle', 'Poultry', 'Goat', 'General Purpose'];
-const stages = ['All', 'Preparation', 'Grinding', 'Mixing', 'Pelletizing', 'Processing', 'Recycling', 'Extraction', 'Construction', 'Fabrication'];
-const capacities = ['All', 'Small (<500 kg/hr)', 'Medium (500-2000 kg/hr)', 'Large (>2000 kg/hr)'];
-
 export default function MachineFilters({
   selectedCategory,
   setSelectedCategory,
@@ -34,8 +31,12 @@ export default function MachineFilters({
   setShowFilters,
   totalMachines
 }: MachineFiltersProps) {
+  const categories = ['All', 'Cattle', 'Poultry', 'Goat', 'General Purpose'];
+  const stages = ['All', 'Preparation', 'Processing', 'Packaging'];
+  const capacities = ['All', 'Small', 'Medium', 'Large'];
+
   return (
-    <section className="sticky top-0 z-20 bg-white dark:bg-neutral-800 shadow-md py-4">
+    <section className="sticky top-0 z-20 bg-white dark:bg-gray-800 shadow-md py-4">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Mobile Filter Toggle */}
         <div className="lg:hidden flex justify-between items-center mb-3">
@@ -50,10 +51,10 @@ export default function MachineFilters({
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
             <input
               type="text"
-              placeholder="Search machines..."
+              placeholder={'searchPlaceholder'}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
             />
           </div>
         </div>
@@ -61,7 +62,7 @@ export default function MachineFilters({
         {/* Filters */}
         <div className={`${showFilters ? 'block' : 'hidden'} lg:block`}>
           <div className="flex flex-wrap justify-center gap-4 mb-4">
-            <div className="flex flex-wrap gap-4 p-5 bg-neutral-100 dark:bg-neutral-700 rounded-2xl">
+            <div className="flex flex-wrap gap-4 p-5 bg-gray-100 dark:bg-gray-700 rounded-2xl">
               {/* Category Filter */}
               <div className="flex items-center gap-3">
                 <svg className="text-orange-500" width="20" height="20" viewBox="0 0 512 512" fill="currentColor">
@@ -78,7 +79,7 @@ export default function MachineFilters({
                 </select>
               </div>
               
-              <div className="w-px h-8 bg-neutral-300 dark:bg-neutral-600"></div>
+              <div className="w-px h-8 bg-gray-300 dark:bg-gray-600"></div>
               
               {/* Stage Filter */}
               <select 
@@ -91,7 +92,7 @@ export default function MachineFilters({
                 ))}
               </select>
               
-              <div className="w-px h-8 bg-neutral-300 dark:bg-neutral-600"></div>
+              <div className="w-px h-8 bg-gray-300 dark:bg-gray-600"></div>
               
               {/* Capacity Filter */}
               <select 
@@ -109,17 +110,17 @@ export default function MachineFilters({
 
         {/* Desktop Search */}
         <div className="hidden lg:flex justify-between items-center">
-          <p className="text-neutral-500 dark:text-neutral-400 text-sm font-black uppercase tracking-wider">
+          <p className="text-gray-500 dark:text-gray-400 text-sm font-black uppercase tracking-wider">
             Showing {totalMachines} machines
           </p>
           <div className="relative w-64">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
             <input
               type="text"
-              placeholder="Search machines..."
+              placeholder={'searchPlaceholder'}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
             />
           </div>
         </div>

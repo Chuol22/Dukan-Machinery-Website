@@ -19,7 +19,7 @@ export default function MachineGallery({ images, productName }: MachineGalleryPr
       <div className="space-y-4">
         {/* Main Image */}
         <div 
-          className="relative h-80 md:h-96 bg-neutral-100 dark:bg-neutral-700 rounded-2xl overflow-hidden cursor-pointer group"
+          className="relative h-80 md:h-96 bg-gray-100 dark:bg-gray-700 rounded-2xl overflow-hidden cursor-pointer group"
           onClick={() => setIsModalOpen(true)}
         >
           {images[selectedImage].endsWith('.mp4') ? (

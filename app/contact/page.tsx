@@ -1,6 +1,6 @@
 export default function ContactPage() {
   return (
-    <div className="bg-white dark:bg-neutral-900 text-neutral-800 dark:text-neutral-100 transition-colors duration-500 min-h-screen flex flex-col">
+    <div className="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 transition-colors duration-500 min-h-screen flex flex-col">
       <main className="flex-grow container mx-auto px-4 py-16">
         <div className="max-w-6xl mx-auto">
           <h1 className="text-4xl font-black text-center mb-8 text-green-800 dark:text-white">
@@ -8,7 +8,7 @@ export default function ContactPage() {
           </h1>
 
           <div className="grid md:grid-cols-2 gap-12 mb-12">
-            <div className="bg-gray-50 dark:bg-neutral-800 rounded-lg shadow-lg p-8">
+            <div className="bg-gray-50 dark:bg-gray-800 rounded-lg shadow-lg p-8">
               <h2 className="text-2xl font-black mb-6 text-secondary-dark">Get in Touch</h2>
               <form className="space-y-6">
                 <div>
@@ -17,7 +17,7 @@ export default function ContactPage() {
                     type="text"
                     id="name"
                     name="name"
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-primary"
                     placeholder="My name"
                   />
                 </div>
@@ -28,7 +28,7 @@ export default function ContactPage() {
                     type="email"
                     id="email"
                     name="email"
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-primary"
                     placeholder="dkm@example.com"
                   />
                 </div>
@@ -39,7 +39,7 @@ export default function ContactPage() {
                     type="tel"
                     id="phone"
                     name="phone"
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-primary"
                     placeholder="+251 (90) 000-000"
                   />
                 </div>
@@ -49,7 +49,7 @@ export default function ContactPage() {
                   <select
                     id="subject"
                     name="subject"
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-primary"
                   >
                     <option value="">Select a subject</option>
                     <option value="sales">Sales Inquiry</option>
@@ -66,7 +66,7 @@ export default function ContactPage() {
                     id="message"
                     name="message"
                     rows={5}
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-primary"
                     placeholder="Tell us about your requirements..."
                   ></textarea>
                 </div>
@@ -81,7 +81,7 @@ export default function ContactPage() {
             </div>
 
             <div className="space-y-8">
-              <div className="bg-green-50 dark:bg-neutral-800 rounded-lg shadow-lg p-8">
+              <div className="bg-green-50 dark:bg-gray-800 rounded-lg shadow-lg p-8">
                 <h2 className="text-2xl font-black mb-6 text-secondary-dark dark:text-white">Contact Information</h2>
                 <div className="space-y-4">
                   <div className="flex items-start space-x-4">
@@ -126,7 +126,7 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              <div className="bg-white dark:bg-neutral-800 rounded-lg shadow-lg p-8">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
                 <h2 className="text-2xl font-black mb-6 text-orange-600">Business Hours</h2>
                 <div className="space-y-2">
                   <div className="flex justify-between">
@@ -148,7 +148,7 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              <div className="bg-gray-50 dark:bg-neutral-800 rounded-lg shadow-lg p-8">
+              <div className="bg-gray-50 dark:bg-gray-800 rounded-lg shadow-lg p-8">
                 <h3 className="text-xl font-black mb-3 text-secondary-dark dark:text-white">Need Immediate Assistance?</h3>
                 <p className="mb-4 text-gray-600 dark:text-gray-300">
                   Our technical support team is available 24/7 for emergency service requests.

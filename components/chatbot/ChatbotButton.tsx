@@ -50,7 +50,7 @@ export default function ChatbotButton({
           variants={pulseVariants}
           initial="initial"
           animate="animate"
-          className="absolute inset-0 rounded-full bg-orange-500"
+          className="absolute inset-0 rounded-full bg-green-500"
           style={{ width: '100%', height: '100%' }}
         />
       )}
@@ -80,8 +80,8 @@ export default function ChatbotButton({
         onClick={onClick}
         className={`relative w-12 h-12 rounded-full shadow-md flex items-center justify-center transition-all duration-300 ${
           isOpen
-            ? 'bg-gray-600 dark:bg-gray-500 hover:bg-gray-500 dark:hover:bg-gray-400'
-            : 'bg-gradient-to-br from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700'
+            ? 'bg-gray-600 dark:bg-gray-400 hover:bg-gray-600 dark:hover:bg-gray-400'
+            : 'bg-linear-to-br from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700'
         }`}
         aria-label="Chat with AI assistant"
       >
@@ -120,7 +120,7 @@ export default function ChatbotButton({
         <motion.div
           initial={{ opacity: 0, x: 10 }}
           animate={{ opacity: 1, x: 0 }}
-          className="absolute right-full mr-3 top-1/2 transform -translate-y-1/2 whitespace-nowrap bg-neutral-800 text-white text-sm px-3 py-1.5 rounded-lg shadow-lg"
+          className="absolute right-full mr-3 top-1/2 transform -translate-y-1/2 whitespace-nowrap bg-gray-800 text-white text-sm px-3 py-1.5 rounded-lg shadow-lg"
         >
           <span className="flex items-center gap-2">
             <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />

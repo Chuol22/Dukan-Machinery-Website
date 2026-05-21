@@ -94,32 +94,39 @@ export default function WhatWeBuild() {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
 
-  const machines = [
+  const machineTranslations = [
     {
-      title: "Poultry Feed Machines",
-      description: "High-capacity pellet lines for layers, broilers & chicks.",
-      image: "/images/machines/Chicken Feed Machine.jpg",
-      animation: "fade-left"
+      title: 'Feed Processing',
+      description: 'Advanced machinery for efficient animal feed production'
     },
     {
-      title: "Animal Feed Processing",
-      description: "Complete systems for cattle, fish & livestock nutrition.",
-      image: "/images/machines/Animal Feed Processing.jpg",
-      animation: "fade-up"
+      title: 'Industrial Equipment',
+      description: 'Heavy-duty machines for various industrial applications'
     },
     {
-      title: "Custom Industrial Machines",
-      description: "Tailored automation for unique agri-industrial needs.",
-      image: "/images/machines/Custom Industrial Machines.jpg",
-      animation: "fade-down"
+      title: 'Custom Solutions',
+      description: 'Tailored machinery to meet specific operational needs'
     },
     {
-      title: "Maintenance & Support",
-      description: "24/7 service, spare parts, and performance upgrades.",
-      image: "/images/machines/industry machine/maintenance_support.jpg",
-      animation: "fade-right"
+      title: 'Maintenance Support',
+      description: 'Comprehensive support services for all equipment'
     }
+  ]
+
+  const images = [
+    "/images/machines/Chicken Feed Machine.jpg",
+    "/images/machines/Animal Feed Processing.jpg",
+    "/images/machines/Custom Industrial Machines.jpg",
+    "/images/machines/industry machine/maintenance_support.jpg"
   ];
+
+  const animations = ["fade-left", "fade-up", "fade-down", "fade-right"];
+
+  const machines = machineTranslations.map((machine, index) => ({
+    ...machine,
+    image: images[index],
+    animation: animations[index]
+  }));
 
   const features = [
     {
@@ -152,7 +159,7 @@ export default function WhatWeBuild() {
     <section 
       id="what-we-build" 
       ref={sectionRef}
-      className="py-12 sm:py-16 md:py-20 bg-white dark:bg-gray-900/50 overflow-hidden"
+      className="py-12 sm:py-16 md:py-20 bg-gray-50 dark:bg-gray-900 overflow-hidden"
     >
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
         
@@ -163,8 +170,8 @@ export default function WhatWeBuild() {
           variants={fadeInUpVariants}
           className="text-center mb-16"
         >
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-center mb-4 text-green-800 dark:text-white">
-            What we <span className='text-orange-600'>build</span>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-center mb-4 text-green-800 dark:text-green-400">
+            What We Build <span className='text-orange-600'>Our Expertise</span>
           </h2>
           <div className="w-16 sm:w-20 h-2 bg-orange-600 mx-auto mt-4 rounded-full"></div>
         </motion.div>
@@ -181,7 +188,7 @@ export default function WhatWeBuild() {
               key={index}
               variants={cardVariants}
               whileHover={{ y: -8, transition: { duration: 0.2 } }}
-              className="group bg-white dark:bg-neutral-800 rounded-2xl shadow-lg overflow-hidden border-b-4 border-orange-500 transition-all duration-300 hover:shadow-2xl"
+              className="group bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden border-b-4 border-orange-500 transition-all duration-300 hover:shadow-2xl dark:shadow-none dark:hover:border-orange-400"
             >
               <div className="overflow-hidden h-40 sm:h-48 relative">
                 <Image
@@ -193,10 +200,10 @@ export default function WhatWeBuild() {
                 />
               </div>
               <div className="p-4 sm:p-6">
-                <h3 className="font-black text-base sm:text-lg md:text-xl mb-2 text-primary dark:text-white">
+                <h3 className="font-black text-base sm:text-lg md:text-xl mb-2 text-primary dark:text-orange-400">
                   {machine.title}
                 </h3>
-                <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
                   {machine.description}
                 </p>
                  

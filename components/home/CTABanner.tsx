@@ -2,25 +2,23 @@
 
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { 
-  Clock,
-  CheckCircle,
-} from 'lucide-react'
+
 import Link from 'next/link'
+import { ArrowRight, CheckCircle, Clock } from 'lucide-react'
 import Button from '@/components/ui/Button'
 
-const benefits = [
-  'Free technical consultation',
-  'Custom solution design',
-  '24/7 expert support',
-  'Competitive pricing',
-  'On-site installation',
-  'Training included'
-]
-
 export default function CTABanner() {
-  const ref = useRef(null)
+    const ref = useRef(null)
   const isInView = useInView(ref, { once: true, amount: 0.3 })
+
+  const benefits = [
+    'Free Consultation',
+    'Custom Solutions',
+    'Expert Support',
+    'Quality Guaranteed',
+    'Fast Delivery',
+    'Competitive Pricing'
+  ]
 
   const containerVariants = {
     hidden: { opacity: 0, scale: 0.95 },
@@ -44,9 +42,9 @@ export default function CTABanner() {
   }
 
   return (
-    <section ref={ref} className="relative py-16 sm:py-20 md:py-24 overflow-hidden bg-white dark:bg-neutral-900">
+    <section ref={ref} className="relative py-16 sm:py-20 md:py-24 overflow-hidden bg-white dark:bg-gray-900">
       {/* Background Gradient */}
-      <div className="absolute inset-0 bg-white dark:bg-neutral-900">
+      <div className="absolute inset-0 bg-white dark:bg-gray-900">
         {/* Animated Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-0 w-48 sm:w-64 md:w-72 h-48 sm:h-64 md:h-72 bg-orange rounded-full filter blur-3xl animate-pulse" />
@@ -71,12 +69,12 @@ export default function CTABanner() {
           className="max-w-5xl mx-auto"
         >
           {/* Main Heading */}
-          <motion.h2 
+          <motion.h2
             variants={itemVariants}
-            className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black text-green-800 dark:text-white text-center mb-4 sm:mb-6"
+            className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black text-green-800 dark:text-green-400 text-center mb-4 sm:mb-6"
           >
-            Ready to Transform Your
-            <span className="text-orange-600 block mt-1 sm:mt-2">Feed Production?</span>
+            Ready to Get Started?
+            <span className="text-orange-600 dark:text-orange-400 block mt-1 sm:mt-2">Contact Us Today</span>
           </motion.h2>
 
            
@@ -89,7 +87,7 @@ export default function CTABanner() {
               <motion.div
                 key={index}
                 variants={itemVariants}
-                className="flex items-center justify-center gap-1.5 sm:gap-2 bg-white dark:bg-neutral-800 backdrop-blur-sm border border-gray-200 dark:border-neutral-700 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2"
+                className="flex items-center justify-center gap-1.5 sm:gap-2 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-200 dark:border-gray-700 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2"
               >
                 <CheckCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-orange-600 flex-shrink-0" />
                 <span className="text-[10px] sm:text-xs md:text-sm text-green-700 dark:text-gray-200 font-black">{benefit}</span>
@@ -102,19 +100,19 @@ export default function CTABanner() {
             variants={itemVariants}
             className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-8 sm:mb-10 md:mb-12"
           >
-            <Link href="/order">
+            <Link href={'/order'}>
               <Button 
                 size="lg" 
                 className="bg-orange-400 hover:bg-orange-300 text-white shadow-xl hover:shadow-2xl transition-all duration-300 group animate-pulse-slow animate-shake text-xs sm:text-sm md:text-base"
               >
-                Request Free Consultation
+                {'buttons.consultation'}
               </Button>
             </Link>
-            <Link href="/contact">
+            <Link href={'/contact'}>
               <Button 
                 size="lg" 
                 variant="outline" 
-                className="border-orange-600 text-green-600 hover:bg-orange-300 backdrop-blur-sm text-xs sm:text-sm md:text-base"
+                className="border-orange-600 text-green-600 dark:border-orange-400 dark:text-green-400 hover:bg-orange-300 dark:hover:bg-orange-400/20 backdrop-blur-sm text-xs sm:text-sm md:text-base"
               >
                 Contact Sales
               </Button>
@@ -126,9 +124,9 @@ export default function CTABanner() {
             variants={itemVariants}
             className="text-center mt-6 sm:mt-8"
           >
-            <div className="inline-flex items-center gap-1.5 sm:gap-2 text-orange-600 text-xs sm:text-sm">
+            <div className="inline-flex items-center gap-1.5 sm:gap-2 text-orange-600 dark:text-orange-400 text-xs sm:text-sm">
               <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              <span>Response within 2 hours • 24/7 Support Available</span>
+              <span>Response within 2 hours</span>
             </div>
           </motion.div>
         </motion.div>

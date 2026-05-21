@@ -59,7 +59,7 @@ export default function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
   }
 
   return (
-    <div className="flex flex-col h-full bg-white dark:bg-neutral-900">
+    <div className="flex flex-col h-full bg-white dark:bg-gray-900">
 
       {/* HEADER */}
       <div className="flex-shrink-0 bg-gradient-to-r from-orange-600 via-orange-500 to-orange-600 px-4 py-3 rounded-t-2xl shadow-md">
@@ -90,7 +90,7 @@ export default function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
       </div>
 
       {/* MESSAGES AREA */}
-      <div className="flex-1 flex flex-col overflow-hidden bg-neutral-50/50 dark:bg-neutral-950/20 backdrop-blur-[2px]">
+      <div className="flex-1 flex flex-col overflow-hidden bg-gray-50/50 dark:bg-gray-950/20 backdrop-blur-[2px]">
 
         <div
           ref={messagesRef}
@@ -113,7 +113,7 @@ export default function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
                   <Bot className="w-5 h-5 text-orange-500" />
                 </div>
 
-                <div className="bg-white dark:bg-neutral-800 px-4 py-3 rounded-2xl rounded-bl-none shadow-sm flex gap-1.5 border border-neutral-100 dark:border-neutral-700">
+                <div className="bg-white dark:bg-gray-800 px-4 py-3 rounded-2xl rounded-bl-none shadow-sm flex gap-1.5 border border-gray-100 dark:border-gray-700">
                   <span className="w-2 h-2 bg-orange-500/60 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
                   <span className="w-2 h-2 bg-orange-500/60 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
                   <span className="w-2 h-2 bg-orange-500/60 rounded-full animate-bounce"></span>
@@ -134,15 +134,15 @@ export default function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
       </div>
 
       {/* INPUT */}
-      <div className="p-4 border-t border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-900">
-        <div className="flex gap-3 items-center bg-neutral-100 dark:bg-neutral-800 rounded-2xl p-1 focus-within:ring-2 focus-within:ring-orange-500/20 transition-all">
+      <div className="p-4 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900">
+        <div className="flex gap-3 items-center bg-gray-100 dark:bg-gray-800 rounded-2xl p-1 focus-within:ring-2 focus-within:ring-orange-500/20 transition-all">
           <input
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Type your message..."
             disabled={isProcessing}
-            className="flex-1 px-4 py-3 bg-transparent focus:outline-none text-sm md:text-base text-neutral-700 dark:text-neutral-200 placeholder:text-neutral-400 dark:placeholder:text-neutral-500"
+            className="flex-1 px-4 py-3 bg-transparent focus:outline-none text-sm md:text-base text-gray-700 dark:text-gray-200 placeholder:text-gray-400 dark:placeholder:text-gray-500"
           />
 
           <button

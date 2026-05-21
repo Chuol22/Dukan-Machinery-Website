@@ -94,9 +94,9 @@ export default function BlogFilters({ onFilterChange, categories, tags, totalPos
             placeholder="Search articles by title, content, or tags..."
             value={filters.search}
             onChange={(e) => setFilters({ ...filters, search: e.target.value })}
-            className="w-full px-5 py-4 pl-12 pr-24 bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-neutral-900 dark:text-white placeholder-neutral-400 transition-all duration-300"
+            className="w-full px-5 py-4 pl-12 pr-24 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-gray-900 dark:text-white placeholder-neutral-400 transition-all duration-300"
           />
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-neutral-400" />
+          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
           <button
             type="submit"
             className="absolute right-2 top-1/2 transform -translate-y-1/2 px-4 py-1.5 bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition-colors duration-300 text-sm font-medium"
@@ -113,10 +113,10 @@ export default function BlogFilters({ onFilterChange, categories, tags, totalPos
           <motion.button
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsOpen(!isOpen)}
-            className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg hover:border-orange-500 transition-colors duration-300"
+            className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-orange-500 transition-colors duration-300"
           >
-            <Filter className="w-4 h-4 text-neutral-600 dark:text-neutral-400" />
-            <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
+            <Filter className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
               Filters
             </span>
             {activeFiltersCount > 0 && (
@@ -167,7 +167,7 @@ export default function BlogFilters({ onFilterChange, categories, tags, totalPos
               )}
               <button
                 onClick={clearFilters}
-                className="text-xs text-neutral-500 hover:text-orange-500 transition-colors"
+                className="text-xs text-gray-500 hover:text-orange-500 transition-colors"
               >
                 Clear all
               </button>
@@ -176,7 +176,7 @@ export default function BlogFilters({ onFilterChange, categories, tags, totalPos
         </div>
 
         {/* Results Count */}
-        <div className="text-sm text-neutral-500 dark:text-neutral-400">
+        <div className="text-sm text-gray-500 dark:text-gray-400">
           Showing <span className="font-semibold text-orange-500">{totalPosts}</span> articles
         </div>
       </div>
@@ -191,18 +191,18 @@ export default function BlogFilters({ onFilterChange, categories, tags, totalPos
             transition={{ duration: 0.3 }}
             className="overflow-hidden"
           >
-            <div className="p-6 bg-white dark:bg-neutral-800 rounded-xl border border-neutral-200 dark:border-neutral-700 space-y-6">
+            <div className="p-6 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {/* Category Filter */}
                 <div>
-                  <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Category
                   </label>
                   <div className="relative">
                     <select
                       value={filters.category}
                       onChange={(e) => handleFilterChange('category', e.target.value)}
-                      className="w-full px-4 py-2 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 appearance-none cursor-pointer"
+                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 appearance-none cursor-pointer"
                     >
                       <option value="">All Categories</option>
                       {categories.map((category) => (
@@ -211,20 +211,20 @@ export default function BlogFilters({ onFilterChange, categories, tags, totalPos
                         </option>
                       ))}
                     </select>
-                    <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-neutral-400 pointer-events-none" />
+                    <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                   </div>
                 </div>
 
                 {/* Tags Filter */}
                 <div>
-                  <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Tags
                   </label>
                   <div className="relative">
                     <select
                       value={filters.tag}
                       onChange={(e) => handleFilterChange('tag', e.target.value)}
-                      className="w-full px-4 py-2 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 appearance-none cursor-pointer"
+                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 appearance-none cursor-pointer"
                     >
                       <option value="">All Tags</option>
                       {tags.map((tag) => (
@@ -233,20 +233,20 @@ export default function BlogFilters({ onFilterChange, categories, tags, totalPos
                         </option>
                       ))}
                     </select>
-                    <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-neutral-400 pointer-events-none" />
+                    <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                   </div>
                 </div>
 
                 {/* Date Range Filter */}
                 <div>
-                  <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Date Range
                   </label>
                   <div className="relative">
                     <select
                       value={filters.dateRange}
                       onChange={(e) => handleFilterChange('dateRange', e.target.value as any)}
-                      className="w-full px-4 py-2 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 appearance-none cursor-pointer"
+                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 appearance-none cursor-pointer"
                     >
                       {dateRangeOptions.map((option) => (
                         <option key={option.value} value={option.value}>
@@ -254,20 +254,20 @@ export default function BlogFilters({ onFilterChange, categories, tags, totalPos
                         </option>
                       ))}
                     </select>
-                    <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-neutral-400 pointer-events-none" />
+                    <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                   </div>
                 </div>
 
                 {/* Sort By */}
                 <div>
-                  <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Sort By
                   </label>
                   <div className="relative">
                     <select
                       value={filters.sortBy}
                       onChange={(e) => handleFilterChange('sortBy', e.target.value as any)}
-                      className="w-full px-4 py-2 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 appearance-none cursor-pointer"
+                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 appearance-none cursor-pointer"
                     >
                       {sortOptions.map((option) => (
                         <option key={option.value} value={option.value}>
@@ -275,14 +275,14 @@ export default function BlogFilters({ onFilterChange, categories, tags, totalPos
                         </option>
                       ))}
                     </select>
-                    <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-neutral-400 pointer-events-none" />
+                    <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                   </div>
                 </div>
               </div>
 
               {/* Popular Tags Cloud */}
               <div>
-                <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-3">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
                   Popular Tags
                 </label>
                 <div className="flex flex-wrap gap-2">
@@ -295,7 +295,7 @@ export default function BlogFilters({ onFilterChange, categories, tags, totalPos
                       className={`px-3 py-1.5 text-sm rounded-lg transition-all duration-300 ${
                         filters.tag === tag
                           ? 'bg-orange-500 text-white'
-                          : 'bg-neutral-100 dark:bg-neutral-700 text-neutral-600 dark:text-neutral-400 hover:bg-orange-100 dark:hover:bg-orange-900/30 hover:text-orange-600'
+                          : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-orange-100 dark:hover:bg-orange-900/30 hover:text-orange-600'
                       }`}
                     >
                       #{tag}
@@ -305,10 +305,10 @@ export default function BlogFilters({ onFilterChange, categories, tags, totalPos
               </div>
 
               {/* Action Buttons */}
-              <div className="flex justify-end gap-3 pt-4 border-t border-neutral-200 dark:border-neutral-700">
+              <div className="flex justify-end gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
                 <button
                   onClick={clearFilters}
-                  className="px-4 py-2 text-sm text-neutral-600 dark:text-neutral-400 hover:text-orange-500 transition-colors"
+                  className="px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-orange-500 transition-colors"
                 >
                   Clear All Filters
                 </button>

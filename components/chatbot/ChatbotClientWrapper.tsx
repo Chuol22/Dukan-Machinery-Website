@@ -13,10 +13,5 @@ const ChatbotWidget = dynamic(
 );
 
 export default function ChatbotClientWrapper() {
-  // Prevent hydration mismatch by not rendering anything on server
-  if (typeof window === 'undefined') {
-    return null;
-  }
-
   return <ChatbotWidget />;
 }

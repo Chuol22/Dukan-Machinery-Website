@@ -26,7 +26,7 @@ export default function LoadingSpinner({
     primary: 'border-primary border-t-primary/20',
     secondary: 'border-secondary border-t-secondary/20',
     white: 'border-white border-t-white/20',
-    gray: 'border-neutral-500 border-t-neutral-500/20',
+    gray: 'border-gray-500 border-t-neutral-500/20',
   }
 
   const spinner = (
@@ -42,7 +42,7 @@ export default function LoadingSpinner({
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
           className={`text-sm ${
-            color === 'white' ? 'text-white' : 'text-neutral-600 dark:text-neutral-400'
+            color === 'white' ? 'text-white' : 'text-gray-600 dark:text-gray-400'
           }`}
         >
           {text}
@@ -53,7 +53,7 @@ export default function LoadingSpinner({
 
   if (fullScreen) {
     return (
-      <div className="fixed inset-0 bg-white/90 dark:bg-neutral-900/90 backdrop-blur-sm flex items-center justify-center z-50">
+      <div className="fixed inset-0 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm flex items-center justify-center z-50">
         {spinner}
       </div>
     )

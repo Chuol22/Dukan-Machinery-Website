@@ -32,11 +32,11 @@ export default function Tabs({
 
   const variants = {
     default: {
-      container: 'border-b border-neutral-200 dark:border-neutral-700',
+      container: 'border-b border-gray-200 dark:border-gray-700',
       tab: (isActive: boolean) => `px-4 py-2 text-sm font-medium transition-all ${
         isActive 
           ? 'text-primary border-b-2 border-primary -mb-px' 
-          : 'text-neutral-600 dark:text-neutral-400 hover:text-primary hover:border-b-2 hover:border-primary/50'
+          : 'text-gray-600 dark:text-gray-400 hover:text-primary hover:border-b-2 hover:border-primary/50'
       }`,
     },
     pills: {
@@ -44,15 +44,15 @@ export default function Tabs({
       tab: (isActive: boolean) => `px-4 py-2 text-sm font-medium rounded-lg transition-all ${
         isActive 
           ? 'bg-primary text-white' 
-          : 'text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800'
+          : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'
       }`,
     },
     underline: {
-      container: 'flex gap-6 border-b border-neutral-200 dark:border-neutral-700',
+      container: 'flex gap-6 border-b border-gray-200 dark:border-gray-700',
       tab: (isActive: boolean) => `pb-2 text-sm font-medium transition-all relative ${
         isActive 
           ? 'text-primary' 
-          : 'text-neutral-600 dark:text-neutral-400 hover:text-primary'
+          : 'text-gray-600 dark:text-gray-400 hover:text-primary'
       }`,
     },
     buttons: {
@@ -60,7 +60,7 @@ export default function Tabs({
       tab: (isActive: boolean) => `px-4 py-2 text-sm font-medium rounded-lg transition-all border ${
         isActive 
           ? 'bg-primary text-white border-primary' 
-          : 'border-neutral-200 dark:border-neutral-700 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800'
+          : 'border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'
       }`,
     },
   }

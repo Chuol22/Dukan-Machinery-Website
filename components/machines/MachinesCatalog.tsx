@@ -27,19 +27,19 @@ interface MachinesCatalogProps {
 
 export default function MachinesCatalog({ machines, onViewDetails }: MachinesCatalogProps) {
   return (
-    <section id="machines-section" className="py-20 bg-white dark:bg-neutral-800">
+    <section id="machines-section" className="py-20 bg-white dark:bg-gray-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-black text-green-700 dark:text-white uppercase tracking-tight">
-            Machinery <span className="text-orange-500">Catalogue</span>
+            Our <span className="text-orange-500">Machines</span>
           </h2>
           <div className="w-20 h-1.5 bg-orange-500 mx-auto mt-4 rounded-full"></div>
-          <p className="mt-6 text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
-            Explore our range of high-performance agricultural and industrial machines with detailed specifications.
+          <p className="mt-6 text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            Discover our premium range of industrial machinery designed for maximum efficiency and durability
           </p>
         </div>
 
-        <p className="mb-8 text-neutral-500 dark:text-neutral-400 text-sm font-black uppercase tracking-wider">
+        <p className="mb-8 text-gray-500 dark:text-gray-400 text-sm font-black uppercase tracking-wider">
           Showing {machines.length} machines
         </p>
 
@@ -50,12 +50,12 @@ export default function MachinesCatalog({ machines, onViewDetails }: MachinesCat
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="border-b border-neutral-200 dark:border-neutral-700 pb-12 last:border-0"
+              className="border-b border-gray-200 dark:border-gray-700 pb-12 last:border-0"
             >
               <div className="grid lg:grid-cols-2 gap-8">
                 {/* Image/Video Section */}
                 <div>
-                  <div className="relative h-60 bg-neutral-200 dark:bg-neutral-700 rounded-2xl overflow-hidden mb-4 group cursor-pointer">
+                  <div className="relative h-60 bg-gray-200 dark:bg-gray-700 rounded-2xl overflow-hidden mb-4 group cursor-pointer">
                     {machine.image.endsWith('.mp4') ? (
                       <video 
                         src={machine.image}
@@ -106,30 +106,30 @@ export default function MachinesCatalog({ machines, onViewDetails }: MachinesCat
                   </h3>
                   
                   <div className="grid grid-cols-2 gap-4 mb-6">
-                    <div className="bg-neutral-100 dark:bg-neutral-700 p-3 rounded-lg">
-                      <p className="text-xs text-neutral-500 dark:text-neutral-400">capacity</p>
+                    <div className="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Capacity</p>
                       <p className="font-black text-xs text-green-700 dark:text-white">{machine.capacity}</p>
                     </div>
-                    <div className="bg-neutral-100 dark:bg-neutral-700 p-3 rounded-lg">
-                      <p className="text-xs text-neutral-500 dark:text-neutral-400">power</p>
+                    <div className="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Power</p>
                       <p className="font-black text-xs text-green-700 dark:text-white">{machine.power}</p>
                     </div>
                   </div>
-                  
+
                   <div className="grid grid-cols-2 gap-4 mb-6">
                     <div>
                       <p className="text-xs font-black text-green-700 dark:text-white uppercase mb-1">Input</p>
-                      <p className="text-sm text-neutral-600 dark:text-neutral-400">{machine.input}</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">{machine.input}</p>
                     </div>
                     <div>
                       <p className="text-xs font-black text-green-700 dark:text-white uppercase mb-1">Output</p>
-                      <p className="text-sm text-neutral-600 dark:text-neutral-400">{machine.output}</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">{machine.output}</p>
                     </div>
                   </div>
-                  
-                  <div className="mb-6 p-4 bg-green-700/5 dark:bg-neutral-700/50 rounded-xl">
+
+                  <div className="mb-6 p-4 bg-green-700/5 dark:bg-gray-700/50 rounded-xl">
                     <p className="text-xs font-black text-green-700 dark:text-white uppercase mb-2">Process</p>
-                    <p className="text-sm text-neutral-600 dark:text-neutral-400">{machine.process}</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">{machine.process}</p>
                   </div>
                   
                   <div className="flex flex-wrap gap-2 mb-6">
@@ -149,10 +149,10 @@ export default function MachinesCatalog({ machines, onViewDetails }: MachinesCat
                           <svg width="16" height="16" viewBox="0 0 576 512" fill="currentColor">
                             <path d="M528.12 301.319l47.273-208C578.806 78.301 567.391 64 551.99 64H159.208l-9.166-44.81C147.758 8.021 137.93 0 126.529 0H24C10.745 0 0 10.745 0 24v16c0 13.255 10.745 24 24 24h69.883l70.248 343.435C147.325 417.1 136 435.222 136 456c0 30.928 25.072 56 56 56s56-25.072 56-56c0-15.674-6.447-29.835-16.824-40h209.647C430.447 426.165 424 440.326 424 456c0 30.928 25.072 56 56 56s56-25.072 56-56c0-22.172-12.888-41.332-31.579-50.405l5.517-24.276c3.413-15.018-8.002-29.319-23.403-29.319H218.117l-6.545-32h293.145c11.206 0 20.92-7.754 23.403-18.681z"/>
                           </svg>
-                          Order
+                          Order Now
                         </button>
                       </Link>
-                      <button 
+                      <button
                         onClick={() => onViewDetails(machine.id)}
                         className="border-2 border-green-700 text-green-700 dark:border-white dark:text-white font-black px-5 py-3 rounded-full text-xs uppercase tracking-widest hover:bg-green-700 hover:text-white transition flex items-center gap-2"
                       >
@@ -165,11 +165,11 @@ export default function MachinesCatalog({ machines, onViewDetails }: MachinesCat
                   </div>
                 </div>
               </div>
-              <button 
+              <button
                 onClick={() => onViewDetails(machine.id)}
                 className="mt-4 text-orange-500 font-black text-sm uppercase tracking-wider hover:underline"
               >
-                View All Features
+                View All Features →
               </button>
             </motion.div>
           ))}
@@ -177,7 +177,7 @@ export default function MachinesCatalog({ machines, onViewDetails }: MachinesCat
 
         {machines.length === 0 && (
           <div className="text-center py-20">
-            <p className="text-gray-500 dark:text-gray-400 text-lg">No machines found matching your criteria.</p>
+            <p className="text-gray-500 dark:text-gray-400 text-lg">No machines found</p>
           </div>
         )}
       </div>

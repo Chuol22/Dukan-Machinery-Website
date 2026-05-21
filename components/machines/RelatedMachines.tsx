@@ -18,7 +18,7 @@ export default function RelatedMachines({ currentMachineId, category }: RelatedM
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pb-12">
-      <div className="pt-8 border-t border-neutral-200 dark:border-neutral-700">
+      <div className="pt-8 border-t border-gray-200 dark:border-gray-700">
         <h3 className="text-2xl font-black text-green-700 dark:text-white mb-6 text-center">
           Related Machines
         </h3>
@@ -29,7 +29,7 @@ export default function RelatedMachines({ currentMachineId, category }: RelatedM
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="group bg-neutral-50 dark:bg-neutral-700 rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+              className="group bg-gray-50 dark:bg-gray-700 rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
             >
               <Link href={`/machines/${machine.slug}`}>
                 <div className="relative h-48 overflow-hidden">
@@ -52,7 +52,7 @@ export default function RelatedMachines({ currentMachineId, category }: RelatedM
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-xs text-neutral-500 dark:text-neutral-400">Click to view</span>
+                    <span className="text-xs text-gray-500 dark:text-gray-400">Click to view</span>
                     <ChevronRight size={16} className="text-orange-500 group-hover:translate-x-1 transition-transform" />
                   </div>
                 </div>

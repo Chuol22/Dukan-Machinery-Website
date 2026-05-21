@@ -42,8 +42,8 @@ export default function Accordion({
   }
 
   const variants = {
-    default: 'border-b border-neutral-200 dark:border-neutral-700 last:border-0',
-    bordered: 'border border-neutral-200 dark:border-neutral-700 rounded-lg mb-2',
+    default: 'border-b border-gray-200 dark:border-gray-700 last:border-0',
+    bordered: 'border border-gray-200 dark:border-gray-700 rounded-lg mb-2',
     separated: 'rounded-lg shadow-md mb-4',
   }
 
@@ -56,18 +56,18 @@ export default function Accordion({
           <div key={item.id} className={variants[variant]}>
             <button
               onClick={() => toggleItem(item.id)}
-              className="w-full flex items-center justify-between p-4 text-left hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors"
+              className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
             >
-              <span className="font-semibold text-neutral-900 dark:text-white">
+              <span className="font-semibold text-gray-900 dark:text-white">
                 {item.title}
               </span>
               {icon === 'chevron' ? (
-                <ChevronDown className={`w-5 h-5 text-neutral-500 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`w-5 h-5 text-gray-500 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
               ) : (
                 isOpen ? (
-                  <Minus className="w-5 h-5 text-neutral-500" />
+                  <Minus className="w-5 h-5 text-gray-500" />
                 ) : (
-                  <Plus className="w-5 h-5 text-neutral-500" />
+                  <Plus className="w-5 h-5 text-gray-500" />
                 )
               )}
             </button>
@@ -81,7 +81,7 @@ export default function Accordion({
                   transition={{ duration: 0.3 }}
                   className="overflow-hidden"
                 >
-                  <div className="p-4 pt-0 text-neutral-600 dark:text-neutral-400">
+                  <div className="p-4 pt-0 text-gray-600 dark:text-gray-400">
                     {item.content}
                   </div>
                 </motion.div>

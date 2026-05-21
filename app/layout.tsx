@@ -1,19 +1,14 @@
 // app/layout.tsx
 import type { Metadata, Viewport } from 'next';
-import { changaOne } from './fonts';
 import './globals.css';
-
-// Layout Components
+import { ThemeProvider } from '@/contexts/ThemeContext';
+import { changaOne } from './fonts';
 import Navbar from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import ScrollToTop from '@/components/layout/ScrollToTop';
-
-// ✅ Import the client wrapper instead of dynamic directly
 import ChatbotClientWrapper from '@/components/chatbot/ChatbotClientWrapper';
-
-// Context Providers
-import { ThemeProvider } from '@/contexts/ThemeContext';
-import { LanguageProvider } from '@/contexts/LanguageContext';
+import FloatingSocial from '@/components/social/FloatingSocial';
+import { GoogleTranslateScript } from '@/components/GoogleTranslateScript';
 
 export const metadata: Metadata = {
   title: {
@@ -40,7 +35,7 @@ export const metadata: Metadata = {
     siteName: 'Dukan Machinery',
     images: [
       {
-        url: '/og-image.jpg',
+        url: '/dkmlogo.png',
         width: 1200,
         height: 630,
         alt: 'Dukan Machinery - Industrial Equipment',
@@ -49,9 +44,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Dukan Machinery - Premium Industrial Equipment Solutions',
+    title: 'Dukan Machinery - Industrial Equipment Solutions',
     description: 'Leading manufacturer of premium feed processing machinery and industrial equipment.',
-    images: ['/og-image.jpg'],
+    images: ['/dkmlogo.png'],
     creator: '@dukanmachinery',
   },
   robots: {
@@ -82,26 +77,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html 
-      lang="en" 
-      className={changaOne.variable} 
-      suppressHydrationWarning={true}
-    >
-      <body 
-        className="font-sans" 
-        suppressHydrationWarning={true}
-      >
+    <html lang="en" className={changaOne.variable} suppressHydrationWarning>
+      <body suppressHydrationWarning>
         <ThemeProvider>
-          <LanguageProvider>
-            <Navbar />
-            <main className="pt-16 lg:pt-20 min-h-screen">
-              {children}
-            </main>
-            <Footer />
-            <ScrollToTop />
-            {/* ✅ Use the client wrapper */}
-            <ChatbotClientWrapper />
-          </LanguageProvider>
+          {/* Hidden div for Google Translate - required */}
+          <div id="google_translate_element" style={{ display: 'none' }} />
+          <GoogleTranslateScript />
+          <Navbar />
+          <main className="pt-16 lg:pt-20 min-h-screen">
+            {children}
+          </main>
+          <Footer />
+          <ScrollToTop />
+          <ChatbotClientWrapper />
+          <FloatingSocial />
         </ThemeProvider>
       </body>
     </html>

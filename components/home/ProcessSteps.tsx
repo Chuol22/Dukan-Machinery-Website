@@ -3,6 +3,7 @@
 
 import { motion, useInView } from 'framer-motion'
 import { useRef, useState } from 'react'
+
 import { 
   PenTool, 
   Settings, 
@@ -11,61 +12,44 @@ import {
   CheckCircle
 } from 'lucide-react'
 
-const processSteps = [
-  {
-    step: "01",
-    title: "Consultation & Design",
-    icon: PenTool,
-    description: "We analyze your specific requirements to create a custom blueprint tailored to your facility.",
-    details: [
-      "Site assessment & requirements analysis",
-      "Custom CAD design & 3D modeling", 
-      "Blueprint approval & sign-off",
-      "Material selection & sourcing"
-    ]
-  },
-  {
-    step: "02",
-    title: "Precision Manufacturing",
-    icon: Settings,
-    description: "Using high-grade industrial materials and precision engineering to build your machinery.",
-    details: [
-      "CNC precision machining",
-      "Robotic welding assembly",
-      "Multi-stage quality control",
-      "Surface treatment & finishing"
-    ]
-  },
-  {
-    step: "03",
-    title: "Delivery & Setup",
-    icon: Truck,
-    description: "Safe transport followed by professional on-site installation and calibration.",
-    details: [
-      "Secure export-grade packaging",
-      "Door-to-door global shipping",
-      "Professional on-site installation",
-      "Performance calibration & testing"
-    ]
-  },
-  {
-    step: "04",
-    title: "Training & Support",
-    icon: Headphones,
-    description: "Comprehensive staff training and 24/7 technical support to ensure maximum uptime.",
-    details: [
-      "Comprehensive operator training",
-      "24/7 remote technical support",
-      "Spare parts availability",
-      "Preventive maintenance programs"
-    ]
-  }
-]
+const icons = [PenTool, Settings, Truck, Headphones]
 
 export default function ProcessSteps() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, amount: 0.2 })
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
+
+  const steps = [
+    {
+      step: '01',
+      title: 'Consultation',
+      description: 'Discuss your requirements with our experts',
+      details: ['Needs assessment', 'Technical consultation', 'Solution proposal']
+    },
+    {
+      step: '02',
+      title: 'Design',
+      description: 'Custom machinery design and engineering',
+      details: ['3D modeling', 'Engineering specs', 'Material selection']
+    },
+    {
+      step: '03',
+      title: 'Manufacturing',
+      description: 'Precision manufacturing and quality testing',
+      details: ['Quality control', 'Assembly', 'Performance testing']
+    },
+    {
+      step: '04',
+      title: 'Delivery',
+      description: 'Installation and ongoing support',
+      details: ['On-site installation', 'Training provided', '24/7 support']
+    }
+  ]
+
+  const processSteps = steps.map((step, index) => ({
+    ...step,
+    icon: icons[index]
+  }))
 
   return (
     <section 
@@ -82,12 +66,11 @@ export default function ProcessSteps() {
           className="text-center mb-12 sm:mb-16 md:mb-20"
         >
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-green-900 dark:text-white tracking-tight uppercase">
-            Our Working <span className='text-orange-600'>Process</span>
+            Our Process <span className='text-orange-600'>How We Work</span>
           </h2>
           <div className="w-16 sm:w-20 h-2 bg-orange-400 mx-auto mt-4 rounded-full"></div>
           <p className="mt-4 sm:mt-6 text-sm sm:text-base text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            From initial concept to final operation, we follow a rigorous workflow to ensure 
-            the highest quality standards for your industrial needs.
+            From consultation to delivery, we ensure a seamless experience
           </p>
         </motion.div>
 

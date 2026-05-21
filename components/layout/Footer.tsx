@@ -2,9 +2,15 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
+
 import { Send, Mail, Phone, MapPin, ArrowUp, MessageCircle } from 'lucide-react';
 
 export default function Footer() {
+  const params = useParams();
+  const locale = params?.locale ?? '';
+  const localePrefix = locale ? `/${locale}` : '';
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -12,7 +18,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-green-800 text-white item-center pt-12 sm:pt-16 pb-6 sm:pb-8">
+    <footer className="bg-green-800 dark:bg-gray-950 text-white item-center pt-12 sm:pt-16 pb-6 sm:pb-8 border-t border-transparent dark:border-gray-800">
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
         {/* Main Footer Grid - 3 equal columns */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 sm:gap-10 md:gap-12 mb-8 sm:mb-12">
@@ -21,7 +27,7 @@ export default function Footer() {
           <div className="space-y-3 sm:space-y-4">
             {/* Logo */}
             <div className="flex items-center gap-2 sm:gap-3">
-              <div className="relative w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full flex items-center justify-center">
+              <div className="relative w-10 h-10 sm:w-12 sm:h-12 bg-white dark:bg-gray-100 rounded-full flex items-center justify-center">
                 <Image
                   src="/images/hero/dkmlogo.png"
                   alt="Dukan Machinery Logo"
@@ -32,10 +38,10 @@ export default function Footer() {
                 />
               </div>
               <div>
-                <h2 className="text-base sm:text-lg md:text-xl text-white font-black tracking-tight">
-                  Dukan <span className="text-orange-500">Machinery</span>
+                <h2 className="text-base sm:text-lg md:text-xl text-white dark:text-gray-100 font-black tracking-tight">
+                  Dukan <span className="text-orange-500 dark:text-orange-400">Machinery</span>
                 </h2>
-                <p className="text-white/50 text-[10px] sm:text-xs">Built for Performance. Built for Reliability.</p>
+                <p className="text-white/50 dark:text-gray-400 text-[10px] sm:text-xs">Built for Performance. Built for Reliability.</p>
               </div>
             </div>
             
@@ -102,8 +108,8 @@ export default function Footer() {
 
           {/* Column 2: Contact Information */}
           <div className="space-y-3 sm:space-y-4">
-            <h3 className="text-base sm:text-lg font-bold text-white border-l-3 border-orange-500 pl-3">
-              Contact Information
+            <h3 className="text-base sm:text-lg font-bold text-white dark:text-gray-100 border-l-3 border-orange-500 dark:border-orange-400 pl-3">
+              {'contactInfo'}
             </h3>
             <ul className="space-y-2 text-xs sm:text-sm">
               <li className="flex items-start gap-2 sm:gap-3">
@@ -132,36 +138,36 @@ export default function Footer() {
 
           {/* Column 3: Quick Links */}
           <div className="space-y-3 sm:space-y-4">
-            <h3 className="text-base sm:text-lg font-bold text-white border-l-3 border-orange-500 pl-3">
-              Quick Links
+            <h3 className="text-base sm:text-lg font-bold text-white dark:text-gray-100 border-l-3 border-orange-500 dark:border-orange-400 pl-3">
+              {'quickLinks'}
             </h3>
             <ul className="space-y-2 text-xs sm:text-sm">
               <li>
-                <Link href="/#what-we-build" className="text-white/60 hover:text-orange-500 transition-colors duration-300 inline-flex items-center gap-1 group">
+                <Link href={`${localePrefix}/#what-we-build`} className="text-white/60 hover:text-orange-500 transition-colors duration-300 inline-flex items-center gap-1 group">
                   <span className="w-0 group-hover:w-1.5 h-1.5 bg-orange-500 rounded-full transition-all duration-300"></span>
                   What We Build?
                 </Link>
               </li>
               <li>
-                <Link href="/#process" className="text-white/60 hover:text-orange-500 transition-colors duration-300 inline-flex items-center gap-1 group">
+                <Link href={`${localePrefix}/#process`} className="text-white/60 hover:text-orange-500 transition-colors duration-300 inline-flex items-center gap-1 group">
                   <span className="w-0 group-hover:w-1.5 h-1.5 bg-orange-500 rounded-full transition-all duration-300"></span>
                   Our Process
                 </Link>
               </li>
               <li>
-                <Link href="/#testimonials" className="text-white/60 hover:text-orange-500 transition-colors duration-300 inline-flex items-center gap-1 group">
+                <Link href={`${localePrefix}/#testimonials`} className="text-white/60 hover:text-orange-500 transition-colors duration-300 inline-flex items-center gap-1 group">
                   <span className="w-0 group-hover:w-1.5 h-1.5 bg-orange-500 rounded-full transition-all duration-300"></span>
                   Testimonials
                 </Link>
               </li>
               <li>
-                <Link href="/insights" className="text-white/60 hover:text-orange-500 transition-colors duration-300 inline-flex items-center gap-1 group">
+                <Link href={`${localePrefix}/insights`} className="text-white/60 hover:text-orange-500 transition-colors duration-300 inline-flex items-center gap-1 group">
                   <span className="w-0 group-hover:w-1.5 h-1.5 bg-orange-500 rounded-full transition-all duration-300"></span>
                   Insights & Blog
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="text-white/60 hover:text-orange-500 transition-colors duration-300 inline-flex items-center gap-1 group">
+                <Link href={`${localePrefix}/contact`} className="text-white/60 hover:text-orange-500 transition-colors duration-300 inline-flex items-center gap-1 group">
                   <span className="w-0 group-hover:w-1.5 h-1.5 bg-orange-500 rounded-full transition-all duration-300"></span>
                   Contact Us
                 </Link>
@@ -174,7 +180,7 @@ export default function Footer() {
         <div className="border-t border-white/10 pt-6 sm:pt-8 flex flex-col md:flex-row justify-between items-center gap-3 sm:gap-4">
           <div className="text-center md:text-left">
             <p className="text-white/60 text-xs sm:text-sm">
-              {currentYear} Dukan Machinery. All rights reserved.
+              {currentYear} Dukan Machinery. {'copyright'}
             </p>
           </div>
           <div className="flex items-center gap-3 sm:gap-4">
@@ -183,7 +189,7 @@ export default function Footer() {
               className="flex items-center gap-1.5 sm:gap-2 text-white/80 hover:text-orange-500 transition-colors duration-300 group"
               aria-label="Scroll to top"
             >
-              <span className="text-[10px] sm:text-xs md:text-sm font-black">Back to Top</span>
+              <span className="text-[10px] sm:text-xs md:text-sm font-black">{'backToTop'}</span>
               <ArrowUp className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:-translate-y-1 transition-transform duration-300" />
             </button>
           </div>

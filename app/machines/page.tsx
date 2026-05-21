@@ -41,7 +41,7 @@ export default function MachinesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-neutral-800">
+    <div className="min-h-screen bg-white dark:bg-gray-800">
       {/* Hero Section */}
       <section className="relative bg-green-50 dark:bg-gray-900 text-gray-900 dark:text-white py-16 overflow-hidden">
         <div className="absolute inset-0 bg-white dark:bg-gray-900"></div>

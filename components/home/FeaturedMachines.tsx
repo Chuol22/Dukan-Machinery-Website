@@ -22,7 +22,6 @@ const CapacityIcon = () =>
     <path d="M510.28 445.86l-73.03-292.13c-3.8-15.19-16.44-25.72-30.87-25.72h-60.25c3.57-10.05 5.88-20.72 5.88-32 0-53.02-42.98-96-96-96s-96 42.98-96 96c0 11.28 2.3 21.95 5.88 32h-60.25c-14.43 0-27.08 10.54-30.87 25.72L1.72 445.86C-6.61 479.17 16.38 512 48.03 512h415.95c31.64 0 54.63-32.83 46.3-66.14zM256 128c-17.64 0-32-14.36-32-32s14.36-32 32-32 32 14.36 32 32-14.36 32-32 32z"></path>
   </svg>;
 
-
 const PowerIcon = () =>
 <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 320 512" className="text-secondary" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
     <path d="M296 160H180.6l42.6-129.8C227.2 15 215.7 0 200 0H56C44 0 33.8 8.9 32.2 20.8l-32 240C-1.7 275.2 9.5 288 24 288h118.7L96.6 482.5c-3.6 15.2 8 29.5 23.3 29.5 8.4 0 16.4-4.4 20.8-12l176-304c9.3-15.9-2.2-36-20.7-36z"></path>
@@ -75,15 +74,53 @@ const cardVariants = {
   visible: {
     y: 0,
     opacity: 1,
-    transition: { duration: 0.5, ease: 'easeOut' },
+    transition: { duration: 0.5 },
   },
 }
 
 export default function FeaturedMachines() {
-  const [hoveredCard, setHoveredCard] = useState<number | null>(null)
+    const [hoveredCard, setHoveredCard] = useState<number | null>(null)
   const [currentSlide, setCurrentSlide] = useState(0)
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, amount: 0.2 })
+
+  const machinesTranslations = [
+    {
+      name: 'Cattle Feed Pellet Machine',
+      shortDescription: 'High-capacity automatic feeding system for large-scale poultry operations',
+      capacity: '1.5 - 2 Tons/hr',
+      power: '15kW - 22kW',
+    },
+    {
+      name: 'Straw Cutting Machine',
+      shortDescription: 'Industrial hammer mill for fine grinding of various grains',
+      capacity: '500 - 800 kg/hr',
+      power: '3kW - 5.5kW',
+    },
+    {
+      name: 'Cow Dung Drying Machine',
+      shortDescription: 'High-capacity pellet mill for quality feed pellets',
+      capacity: '1000 kg/hr',
+      power: '7.5kW Industrial Motor',
+    },
+  ]
+
+  const images = [
+    '/images/machines/industry machine/Cattle Feed Pellet.jpg',
+    '/images/machines/industry machine/Straw cutting.jpg',
+    '/images/machines/industry machine/Cow dung.jpg'
+  ]
+
+  const featuredMachines = machinesTranslations.map((machine, index) => ({
+    id: index + 1,
+    name: machine.name,
+    slug: `machine-${index + 1}`,
+    shortDescription: machine.shortDescription,
+    capacity: machine.capacity,
+    power: machine.power,
+    image: images[index],
+    category: 'General Purpose'
+  }))
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % featuredMachines.length)
@@ -94,7 +131,7 @@ export default function FeaturedMachines() {
   }
 
   return (
-    <section ref={ref} className="py-16 sm:py-20 md:py-24 bg-gray-50 dark:bg-neutral-900 overflow-hidden">
+    <section ref={ref} className="py-16 sm:py-20 md:py-24 bg-gray-50 dark:bg-gray-900 overflow-hidden">
       <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div
@@ -103,16 +140,16 @@ export default function FeaturedMachines() {
           transition={{ duration: 0.6 }}
           className="text-center max-w-3xl mx-auto mb-12 sm:mb-16"
         >
-          <h2 className="text-green-800 dark:text-white font-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl uppercase tracking-wider">
-            Featured<span className='text-orange-600'>build</span>
+          <h2 className="text-green-800 dark:text-green-400 font-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl uppercase tracking-wider">
+            Featured Machines<span className='text-orange-600'> Excellence</span>
           </h2>
           <div className='w-16 sm:w-20 h-2 bg-orange-600 mt-4 rounded-full mx-auto'></div>
-          <h5 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-black text-neutral-900 dark:text-white mt-4 mb-4 sm:mb-6">
-            Our Most Popular{' '}
-            <span className="text-primary">Industrial Machines</span>
+          <h5 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-black text-gray-900 dark:text-gray-100 mt-4 mb-4 sm:mb-6">
+            Our Best{' '}
+            <span className="text-primary dark:text-orange-400">Selling Products</span>
           </h5>
-          <p className="text-sm sm:text-base md:text-lg text-neutral-600 font-black dark:text-neutral-400">
-            Discover our best-selling machinery trusted by feed manufacturers worldwide
+          <p className="text-sm sm:text-base md:text-lg text-gray-600 font-black dark:text-gray-400">
+            High-performance machinery for your industrial needs
           </p>
         </motion.div>
 
@@ -129,9 +166,9 @@ export default function FeaturedMachines() {
               onHoverEnd={() => setHoveredCard(null)}
               className="group relative"
             >
-              <div className="bg-white dark:bg-neutral-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300">
+              <div className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300">
                 {/* Image Container */}
-                <div className="relative h-48 sm:h-56 overflow-hidden bg-neutral-200 dark:bg-neutral-700">
+                <div className="relative h-48 sm:h-56 overflow-hidden bg-gray-200 dark:bg-gray-700">
                   <Image
                     src={machine.image}
                     alt={machine.name}
@@ -143,24 +180,24 @@ export default function FeaturedMachines() {
 
                 {/* Content */}
                 <div className="p-3 sm:p-4">
-                  <h3 className="text-base sm:text-lg font-black text-green-900 dark:text-white mb-2">
+                  <h3 className="text-base sm:text-lg font-black text-green-900 dark:text-orange-400 mb-2">
                     {machine.name}
                   </h3>
-                  <p className="text-gray-600 dark:text-neutral-400 text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-2">
+                  <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-2">
                     {machine.shortDescription}
                   </p>
                   
                   {/* Machine Specs */}
-                  <div className="flex items-center justify-between gap-2 pt-2 sm:pt-3 border-t border-neutral-200 dark:border-neutral-700">
+                  <div className="flex items-center justify-between gap-2 pt-2 sm:pt-3 border-t border-gray-200 dark:border-gray-700">
                     <div className="flex flex-col items-center flex-1">
-                      <span className="flex items-center gap-0.5 sm:gap-1 text-[8px] sm:text-[10px] text-neutral-400 uppercase font-black mb-1">
+                      <span className="flex items-center gap-0.5 sm:gap-1 text-[8px] sm:text-[10px] text-gray-400 uppercase font-black mb-1">
                         <CapacityIcon /> Capacity
                       </span>
                       <span className="text-[10px] sm:text-xs font-black text-primary dark:text-white">{machine.capacity}</span>
                     </div>
-                    <div className="w-px h-5 sm:h-6 bg-neutral-200 dark:border-neutral-700"></div>
+                    <div className="w-px h-5 sm:h-6 bg-gray-200 dark:border-gray-700"></div>
                     <div className="flex flex-col items-center flex-1">
-                      <span className="flex items-center gap-0.5 sm:gap-1 text-[8px] sm:text-[10px] text-neutral-400 uppercase font-black mb-1">
+                      <span className="flex items-center gap-0.5 sm:gap-1 text-[8px] sm:text-[10px] text-gray-400 uppercase font-black mb-1">
                         <PowerIcon /> Power
                       </span>
                       <span className="text-[10px] sm:text-xs font-black text-primary dark:text-white">{machine.power}</span>
@@ -181,7 +218,7 @@ export default function FeaturedMachines() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -100 }}
               transition={{ duration: 0.3 }}
-              className="bg-white dark:bg-neutral-800 rounded-2xl overflow-hidden shadow-lg"
+              className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg"
             >
               <div className="relative h-64 sm:h-72 md:h-80 overflow-hidden">
                 <Image
@@ -199,28 +236,28 @@ export default function FeaturedMachines() {
               </div>
 
               <div className="p-3 sm:p-4">
-                <h3 className="text-lg sm:text-xl font-black text-neutral-900 dark:text-white mb-2">
+                <h3 className="text-lg sm:text-xl font-black text-gray-900 dark:text-orange-400 mb-2">
                   {featuredMachines[currentSlide].name}
                 </h3>
-                  <p className="text-neutral-600 dark:text-neutral-400 text-xs sm:text-sm mb-3 sm:mb-4">
+                  <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm mb-3 sm:mb-4">
                     {featuredMachines[currentSlide].shortDescription}
                   </p>
                 
                 {/* Info */}
               <div className="p-4 sm:p-6 md:p-8">
-                <h3 className="text-base sm:text-lg md:text-xl font-black text-primary dark:text-white mb-4 sm:mb-6 uppercase text-center border-b border-neutral-200 dark:border-neutral-700 pb-3 sm:pb-4">
+                <h3 className="text-base sm:text-lg md:text-xl font-black text-primary dark:text-orange-400 mb-4 sm:mb-6 uppercase text-center border-b border-gray-200 dark:border-gray-700 pb-3 sm:pb-4">
                   {featuredMachines[currentSlide].name}
                 </h3>
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex flex-col items-center flex-1">
-                    <span className="flex items-center gap-0.5 sm:gap-1 text-[8px] sm:text-[10px] text-neutral-400 uppercase font-black mb-1">
+                    <span className="flex items-center gap-0.5 sm:gap-1 text-[8px] sm:text-[10px] text-gray-400 uppercase font-black mb-1">
                       <CapacityIcon /> Capacity
                     </span>
                     <span className="text-[10px] sm:text-xs font-black text-primary dark:text-white">{featuredMachines[currentSlide].capacity}</span>
                   </div>
-                  <div className="w-px h-6 sm:h-8 bg-neutral-200 dark:bg-neutral-700"></div>
+                  <div className="w-px h-6 sm:h-8 bg-gray-200 dark:bg-gray-700"></div>
                   <div className="flex flex-col items-center flex-1">
-                    <span className="flex items-center gap-0.5 sm:gap-1 text-[8px] sm:text-[10px] text-neutral-400 uppercase font-black mb-1">
+                    <span className="flex items-center gap-0.5 sm:gap-1 text-[8px] sm:text-[10px] text-gray-400 uppercase font-black mb-1">
                       <PowerIcon /> Power
                     </span>
                     <span className="text-[10px] sm:text-xs font-black text-primary dark:text-white">{featuredMachines[currentSlide].power}</span>
@@ -242,13 +279,13 @@ export default function FeaturedMachines() {
           {/* Carousel Controls */}
           <button
             onClick={prevSlide}
-            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/90 dark:bg-neutral-800/90 p-2 rounded-full shadow-lg"
+            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/90 dark:bg-gray-800/90 p-2 rounded-full shadow-lg"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
           <button
             onClick={nextSlide}
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/90 dark:bg-neutral-800/90 p-2 rounded-full shadow-lg"
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/90 dark:bg-gray-800/90 p-2 rounded-full shadow-lg"
           >
             <ChevronRight className="w-5 h-5" />
           </button>
@@ -262,7 +299,7 @@ export default function FeaturedMachines() {
                 className={`h-2 rounded-full transition-all duration-300 ${
                   currentSlide === idx
                     ? 'w-8 bg-primary'
-                    : 'w-2 bg-neutral-300 dark:bg-neutral-600'
+                    : 'w-2 bg-gray-300 dark:bg-gray-600'
                 }`}
               />
             ))}

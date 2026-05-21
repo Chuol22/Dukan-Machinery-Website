@@ -74,9 +74,9 @@ export default function ChatbotWidget({ position = 'bottom-right' }: ChatbotWidg
                 ${isRight ? 'right-0' : 'left-0'}
                 w-[90vw] sm:w-[380px] md:w-[400px]
                 h-[500px] max-h-[70vh]
-                bg-white dark:bg-neutral-900
+                bg-white dark:bg-gray-900
                 rounded-xl shadow-xl overflow-hidden
-                border border-neutral-200 dark:border-neutral-700
+                border border-gray-200 dark:border-gray-700
               `}
             >
               <ChatWindow onClose={handleClose} onMinimize={handleMinimize} />

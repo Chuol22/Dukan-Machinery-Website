@@ -78,7 +78,7 @@ export default function ChatMessage({ message }: ChatMessageProps) {
       {/* Avatar */}
       {isBot && (
         <div className="flex-shrink-0 self-end mb-1">
-          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-orange-600 to-orange-500 flex items-center justify-center shadow-md border-2 border-white dark:border-neutral-800">
+          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-orange-600 to-orange-500 flex items-center justify-center shadow-md border-2 border-white dark:border-gray-800">
             <Bot className="w-5 h-5 text-white" />
           </div>
         </div>
@@ -89,7 +89,7 @@ export default function ChatMessage({ message }: ChatMessageProps) {
         <div
           className={`relative px-4 py-3 md:px-5 md:py-3.5 rounded-2xl shadow-sm transition-all ${
             isBot
-              ? 'bg-white dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 rounded-bl-none border border-neutral-200/50 dark:border-neutral-700/50'
+              ? 'bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-bl-none border border-gray-200/50 dark:border-gray-700/50'
               : 'bg-gradient-to-br from-orange-500 to-orange-600 text-white rounded-br-none shadow-orange-500/20'
           }`}
         >
@@ -100,7 +100,7 @@ export default function ChatMessage({ message }: ChatMessageProps) {
           {/* Timestamp */}
           <div
             className={`text-[10px] mt-1.5 font-medium uppercase tracking-wider ${
-              isBot ? 'text-neutral-400' : 'text-white/60'
+              isBot ? 'text-gray-400' : 'text-white/60'
             }`}
           >
             {new Date(message.timestamp).toLocaleTimeString([], { 
@@ -115,22 +115,22 @@ export default function ChatMessage({ message }: ChatMessageProps) {
           <div className="flex gap-1.5 mt-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200 px-1">
             <button
               onClick={handleCopy}
-              className="p-1.5 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition-colors border border-transparent hover:border-neutral-200 dark:hover:border-neutral-700"
+              className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors border border-transparent hover:border-gray-200 dark:hover:border-gray-700"
               title="Copy message"
             >
               {isCopied ? (
                 <CheckCheck className="w-3.5 h-3.5 text-green-500" />
               ) : (
-                <Copy className="w-3.5 h-3.5 text-neutral-400" />
+                <Copy className="w-3.5 h-3.5 text-gray-400" />
               )}
             </button>
-            <div className="w-[1px] h-3 bg-neutral-200 dark:bg-neutral-700 self-center mx-0.5" />
+            <div className="w-[1px] h-3 bg-gray-200 dark:bg-gray-700 self-center mx-0.5" />
             <button
               onClick={() => handleFeedback('like')}
-              className={`p-1.5 rounded-lg transition-colors border border-transparent hover:border-neutral-200 dark:hover:border-neutral-700 ${
+              className={`p-1.5 rounded-lg transition-colors border border-transparent hover:border-gray-200 dark:hover:border-gray-700 ${
                 feedback === 'like'
                   ? 'text-orange-500 bg-orange-500/5'
-                  : 'text-neutral-400 hover:text-orange-500'
+                  : 'text-gray-400 hover:text-orange-500'
               }`}
               title="Helpful"
             >
@@ -138,10 +138,10 @@ export default function ChatMessage({ message }: ChatMessageProps) {
             </button>
             <button
               onClick={() => handleFeedback('dislike')}
-              className={`p-1.5 rounded-lg transition-colors border border-transparent hover:border-neutral-200 dark:hover:border-neutral-700 ${
+              className={`p-1.5 rounded-lg transition-colors border border-transparent hover:border-gray-200 dark:hover:border-gray-700 ${
                 feedback === 'dislike'
                   ? 'text-red-500 bg-red-500/5'
-                  : 'text-neutral-400 hover:text-red-500'
+                  : 'text-gray-400 hover:text-red-500'
               }`}
               title="Not helpful"
             >
@@ -154,7 +154,7 @@ export default function ChatMessage({ message }: ChatMessageProps) {
       {/* User Avatar */}
       {!isBot && (
         <div className="flex-shrink-0 self-end mb-1">
-          <div className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center shadow-md border-2 border-white dark:border-neutral-800">
+          <div className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center shadow-md border-2 border-white dark:border-gray-800">
             <User className="w-5 h-5 text-white" />
           </div>
         </div>

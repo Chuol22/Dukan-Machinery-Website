@@ -30,16 +30,16 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
     value,
     ...props 
   }, ref) => {
-    const baseStyles = 'w-full px-4 py-2 text-base bg-neutral-50 dark:bg-neutral-900 border rounded-lg focus:outline-none focus:ring-2 transition-all duration-200 appearance-none cursor-pointer'
+    const baseStyles = 'w-full px-4 py-2 text-base bg-gray-50 dark:bg-gray-900 border rounded-lg focus:outline-none focus:ring-2 transition-all duration-200 appearance-none cursor-pointer'
     
     const stateStyles = error
       ? 'border-red-500 focus:ring-red-500'
-      : 'border-neutral-200 dark:border-neutral-700 focus:border-primary focus:ring-primary'
+      : 'border-gray-200 dark:border-gray-700 focus:border-primary focus:ring-primary'
 
     return (
       <div className="w-full">
         {label && (
-          <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             {label}
             {required && <span className="text-red-500 ml-1">*</span>}
           </label>
@@ -62,7 +62,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
               </option>
             ))}
           </select>
-          <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-neutral-400 pointer-events-none" />
+          <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
         </div>
         
         {error && (
@@ -73,7 +73,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
         )}
         
         {helperText && !error && (
-          <p className="mt-1 text-sm text-neutral-500">{helperText}</p>
+          <p className="mt-1 text-sm text-gray-500">{helperText}</p>
         )}
       </div>
     )

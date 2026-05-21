@@ -95,7 +95,7 @@ export default function TestimonialsPage() {
     <div className="min-h-screen bg-white dark:bg-gray-900 flex flex-col">
       <main ref={ref} className="flex-grow">
         {/* Hero Section */}
-        <section className="relative bg-gray-50 dark:bg-gray-900 pt-32 pb-16 overflow-hidden">
+        <section className="relative bg-gray-50 dark:bg-gray-900 pt-24 pb-8 overflow-hidden">
           <div className="absolute inset-0">
             <div className="absolute top-20 right-10 w-72 h-72 bg-orange-100 dark:bg-orange-900/20 rounded-full blur-3xl opacity-30" />
             <div className="absolute bottom-20 left-10 w-72 h-72 bg-green-100 dark:bg-green-900/20 rounded-full blur-3xl opacity-30" />
@@ -244,7 +244,7 @@ export default function TestimonialsPage() {
         </section>
 
         {/* About Dukan Machinery Section */}
-        <section className="py-20 bg-neutral-50 dark:bg-gray-800/50">
+        <section className="py-20 bg-gray-50 dark:bg-gray-800/50">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
