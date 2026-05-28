@@ -68,12 +68,12 @@ export default function HeroSection() {
   }, []);
 
   // Handle video loading
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.addEventListener('canplay', () => setVideoLoaded(true));
-      videoRef.current.play().catch(e => console.log('Video autoplay failed:', e));
-    }
-  }, []);
+    useEffect(() => {
+      if (videoRef.current) {
+        videoRef.current.addEventListener('canplay', () => setVideoLoaded(true));
+        videoRef.current.play().catch(e => console.log('Video autoplay failed:', e));
+      }
+    }, []);
 
   return (
     <div className="min-h-screen bg-green-800 dark:bg-gray-900 -mt-16 lg:-mt-20">
@@ -94,13 +94,13 @@ export default function HeroSection() {
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
               videoLoaded ? 'opacity-100' : 'opacity-0'
             }`}
-            poster="/images/hero/dkmlogo.jpg"
+            poster="/images/hero/dkmlogo.png"
           >
             <source src="/videos/machines/Chicken Feed Mill Machine.mp4" type="video/mp4" />
           </video>
 
           <div className="absolute inset-0 bg-black/60" />
-          <div className="absolute inset-0 bg-linear-to-r from-green-900/50 via-green-800/30 to-orange-100" />
+          <div className="absolute inset-0 bg-linear-to-r from-green-900/50 via-green-800/20 to-black-100" />
           <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-black-100" />
         </div>
 
@@ -162,7 +162,7 @@ export default function HeroSection() {
               >
                 <Link
                   href="/machines"
-                  className="group relative px-5 sm:px-6 md:px-8 lg:px-10 py-3 sm:py-3.5 md:py-4 bg-linear-to-r from-orange-600 to-orange-500 text-white font-black rounded-xl sm:rounded-2xl transition-all duration-300 uppercase text-xs sm:text-sm md:text-base tracking-wider shadow-2xl shadow-orange-600/30 hover:shadow-2xl hover:shadow-orange-600/50 hover:-translate-y-1 active:translate-y-0 hover:from-orange-500 hover:to-orange-400 min-w-[140px] sm:min-w-[160px] md:min-w-[200px] flex items-center justify-center gap-2"
+                  className="group relative px-5 sm:px-6 md:px-8 lg:px-10 py-3 sm:py-3.5 md:py-4 bg-linear-to-r from-orange-600 to-orange-500 text-white font-black rounded-xl sm:rounded-2xl transition-all duration-300 uppercase text-xs sm:text-sm md:text-base tracking-wider shadow-2xl shadow-orange-600/30 hover:shadow-2xl hover:shadow-orange-600/50 hover:-translate-y-1 active:translate-y-0 hover:from-orange-500 hover:to-orange-400 min-w-35 sm:min-w-40 md:min-w-50 flex items-center justify-center gap-2"
                 >
                   <span>View Machines</span>
                   <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform duration-300" />
@@ -170,7 +170,7 @@ export default function HeroSection() {
 
                 <Link
                   href="/order"
-                  className="group relative px-5 sm:px-6 md:px-8 lg:px-10 py-3 sm:py-3.5 md:py-4 bg-white/10 backdrop-blur-md border-2 border-white/60 text-white font-black rounded-xl sm:rounded-2xl transition-all duration-300 uppercase text-xs sm:text-sm md:text-base tracking-wider hover:bg-white hover:text-gray-900 hover:border-white hover:shadow-2xl hover:-translate-y-1 active:translate-y-0 min-w-[140px] sm:min-w-[160px] md:min-w-[200px] flex items-center justify-center gap-2"
+                  className="group relative px-5 sm:px-6 md:px-8 lg:px-10 py-3 sm:py-3.5 md:py-4 bg-white/10 backdrop-blur-md border-2 border-white/60 text-white font-black rounded-xl sm:rounded-2xl transition-all duration-300 uppercase text-xs sm:text-sm md:text-base tracking-wider hover:bg-white hover:text-gray-900 hover:border-white hover:shadow-2xl hover:-translate-y-1 active:translate-y-0 min-w-35 sm:min-w-40 md:min-w-55 flex items-center justify-center gap-2"
                 >
                   <span>Order Custom</span>
                   <Settings className="w-3 h-3 sm:w-4 sm:h-4 group-hover:rotate-90 transition-transform duration-300" />

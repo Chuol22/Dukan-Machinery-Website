@@ -1,4 +1,5 @@
-export type SocialPlatform = 'whatsapp' | 'telegram' | 'tiktok' | 'instagram'
+export type SocialPlatform = 'whatsapp' | 'telegram' | 'tiktok' | 'email'
+
 
 export type SocialLinkConfig = {
   [K in SocialPlatform]: {
@@ -20,12 +21,13 @@ export const socialLinks: SocialLinkConfig = {
   },
   tiktok: {
     label: 'TikTok',
-    href: 'https://www.tiktok.com/@dukanmachinery',
+    href: 'https://www.tiktok.com/@dukanmachinery?_r=1&_t=ZS-96Xyddw3DIT',
   },
-  instagram: {
-    label: 'Instagram',
-    // TODO: replace with your Instagram profile link
-    href: 'https://www.instagram.com/dukanmachinery/',
+  email: {
+    label: 'Email',
+    href: 'mailto:geletupro@gmail.com',
   },
 }
 
+
+ 

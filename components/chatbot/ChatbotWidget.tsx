@@ -72,8 +72,8 @@ export default function ChatbotWidget({ position = 'bottom-right' }: ChatbotWidg
               className={`
                 absolute bottom-16
                 ${isRight ? 'right-0' : 'left-0'}
-                w-[90vw] sm:w-[380px] md:w-[400px]
-                h-[500px] max-h-[70vh]
+                w-[90vw] sm:w-95 md:w-100
+                h-125 max-h-[70vh]
                 bg-white dark:bg-gray-900
                 rounded-xl shadow-xl overflow-hidden
                 border border-gray-200 dark:border-gray-700

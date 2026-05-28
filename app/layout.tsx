@@ -12,7 +12,7 @@ import { GoogleTranslateScript } from '@/components/GoogleTranslateScript';
 
 export const metadata: Metadata = {
   title: {
-    default: 'Dukan Machinery - Premium Industrial Equipment Solutions',
+    default: 'Dukan Machinery - Agricultural Industrial Equipment Solutions',
     template: '%s | Dukan Machinery'
   },
   description: 'Leading manufacturer of premium feed processing machinery and industrial equipment. Custom solutions for agricultural and construction needs with 5+ years of engineering excellence.',
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     siteName: 'Dukan Machinery',
     images: [
       {
-        url: '/dkmlogo.png',
+        url: '/images/hero/dkmlogo.png',
         width: 1200,
         height: 630,
         alt: 'Dukan Machinery - Industrial Equipment',
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Dukan Machinery - Industrial Equipment Solutions',
     description: 'Leading manufacturer of premium feed processing machinery and industrial equipment.',
-    images: ['/dkmlogo.png'],
+    images: ['/images/hero/dkmlogo.png'],
     creator: '@dukanmachinery',
   },
   robots: {

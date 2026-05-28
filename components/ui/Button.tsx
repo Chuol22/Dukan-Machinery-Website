@@ -1,17 +1,15 @@
 'use client'
 
 import { forwardRef } from 'react'
-import { motion, MotionProps } from 'framer-motion'
 import { Loader2 } from 'lucide-react'
 
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>, MotionProps {
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'success'
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
   loading?: boolean
   icon?: React.ReactNode
   iconPosition?: 'left' | 'right'
   fullWidth?: boolean
-  children: React.ReactNode
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -24,10 +22,10 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     fullWidth = false,
     children, 
     className = '', 
-    disabled,
+    disabled = false,
     ...props 
   }, ref) => {
-    const baseStyles = 'inline-flex items-center justify-center font-semibold transition-all duration-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] min-w-[44px]'
+    const baseStyles = 'inline-flex items-center justify-center font-semibold transition-all duration-300 transform hover:scale-105 active:scale-95 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 min-h-[44px] min-w-[44px]'
     
     const variants = {
       primary: 'bg-primary text-white hover:bg-primary-dark focus:ring-primary',
@@ -47,10 +45,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     }
     
     return (
-      <motion.button
+      <button
         ref={ref}
-        whileTap={{ scale: 0.97 }}
-        whileHover={{ scale: 1.02 }}
         className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${fullWidth ? 'w-full' : ''} ${className}`}
         disabled={disabled || loading}
         {...props}
@@ -59,7 +55,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {!loading && icon && iconPosition === 'left' && icon}
         <span>{children}</span>
         {!loading && icon && iconPosition === 'right' && icon}
-      </motion.button>
+      </button>
     )
   }
 )

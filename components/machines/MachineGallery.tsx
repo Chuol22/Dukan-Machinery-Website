@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
+import OptimizedImage from '@/components/shared/OptimizedImage';
 
 interface MachineGalleryProps {
   images: string[];
@@ -32,10 +33,11 @@ export default function MachineGallery({ images, productName }: MachineGalleryPr
               className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-105"
             />
           ) : (
-            <img 
-              src={images[selectedImage]} 
+            <OptimizedImage
+              src={images[selectedImage]}
               alt={productName}
               className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-105"
+              style={{ objectFit: 'contain' }}
             />
           )}
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
@@ -65,7 +67,12 @@ export default function MachineGallery({ images, productName }: MachineGalleryPr
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <img src={image} alt={`${productName} ${index + 1}`} className="w-full h-full object-cover" />
+                <OptimizedImage
+                  src={image}
+                  alt={`${productName} ${index + 1}`}
+                  className="w-full h-full object-cover"
+                  style={{ objectFit: 'cover' }}
+                />
               )}
               </button>
             ))}
@@ -76,14 +83,20 @@ export default function MachineGallery({ images, productName }: MachineGalleryPr
       {/* Lightbox Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center" onClick={() => setIsModalOpen(false)}>
-          <button 
+          <button
+            type="button"
+            aria-label="Close image preview"
+            title="Close"
             onClick={() => setIsModalOpen(false)}
             className="absolute top-4 right-4 text-white hover:text-orange-500 transition z-10"
           >
             <X size={32} />
           </button>
           
-          <button 
+          <button
+            type="button"
+            aria-label="Previous image"
+            title="Previous image"
             onClick={(e) => {
               e.stopPropagation();
               setSelectedImage((prev) => (prev > 0 ? prev - 1 : images.length - 1));
@@ -104,15 +117,18 @@ export default function MachineGallery({ images, productName }: MachineGalleryPr
               onClick={(e) => e.stopPropagation()}
             />
           ) : (
-            <img 
-              src={images[selectedImage]} 
+            <OptimizedImage
+              src={images[selectedImage]}
               alt={productName}
               className="max-w-[90vw] max-h-[90vh] object-contain"
-              onClick={(e) => e.stopPropagation()}
+              style={{ objectFit: 'contain' }}
             />
           )}
 
-          <button 
+          <button
+            type="button"
+            aria-label="Next image"
+            title="Next image"
             onClick={(e) => {
               e.stopPropagation();
               setSelectedImage((prev) => (prev < images.length - 1 ? prev + 1 : 0));

@@ -125,7 +125,7 @@ export default function InsightsPage() {
       filtered = filtered.filter(post =>
         post.title.toLowerCase().includes(searchLower) ||
         post.excerpt.toLowerCase().includes(searchLower) ||
-        post.tags.some(tag => tag.toLowerCase().includes(searchLower))
+        post.tags.some((tag: string) => tag.toLowerCase().includes(searchLower))
       )
     }
 
@@ -208,7 +208,7 @@ export default function InsightsPage() {
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 flex flex-col">
-      <main className="flex-grow pt-24">
+      <main className="grow pt-24">
         {/* Hero Section */}
       <section className="relative overflow-hidden bg-white dark:bg-gray-900 py-16">
           

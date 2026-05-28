@@ -13,7 +13,6 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,
-    "ignoreDeprecations": "6.0",
 
     "plugins": [
       {
@@ -37,5 +36,3 @@
   ],
   "exclude": ["node_modules"]
 }
-
- 

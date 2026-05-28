@@ -1,0 +1,25 @@
+{
+  "name": "Dukan Machinery",
+  "short_name": "Dukan",
+  "description": "Premium industrial equipment solutions - feed processing machinery and custom industrial machines.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "theme_color": "#166534",
+  "background_color": "#166534",
+  "icons": [
+    {
+      "src": "/images/hero/dkmlogo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/hero/dkmlogo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
+

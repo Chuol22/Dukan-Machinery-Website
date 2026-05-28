@@ -143,7 +143,7 @@ export default function CustomRequestForm({ onSubmit }: CustomRequestFormProps) 
             Request ID: <span className="font-mono font-semibold">CUST-{Date.now()}</span>
           </p>
           <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-            We've sent a confirmation to {formData.contactInfo.email}
+            We have sent a confirmation to {formData.contactInfo.email}
           </p>
         </div>
         <button
@@ -341,7 +341,7 @@ export default function CustomRequestForm({ onSubmit }: CustomRequestFormProps) 
               htmlFor="budget-range-select"
               className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
             >
-              Estimated Budget (USD)
+              Estimated Budget (ETB)
             </label>
             <select
               id="budget-range-select"
@@ -350,11 +350,11 @@ export default function CustomRequestForm({ onSubmit }: CustomRequestFormProps) 
               className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
             >
               <option value="">Select budget range...</option>
-              <option value="10k-50k">$10,000 - $50,000</option>
-              <option value="50k-100k">$50,000 - $100,000</option>
-              <option value="100k-250k">$100,000 - $250,000</option>
-              <option value="250k-500k">$250,000 - $500,000</option>
-              <option value="500k+">$500,000+</option>
+              <option value="10k-50k">ETB 10,000 - ETB 50,000</option>
+              <option value="50k-100k">ETB 50,000 - ETB 100,000</option>
+              <option value="100k-250k">ETB 100,000 - ETB 250,000</option>
+              <option value="250k-500k">ETB 250,000 - ETB 500,000</option>
+              <option value="500k+">ETB 500,00+</option>
             </select>
           </div>
 
@@ -472,7 +472,7 @@ export default function CustomRequestForm({ onSubmit }: CustomRequestFormProps) 
         <button
           onClick={handleSubmit}
           disabled={isSubmitting}
-          className="w-full px-6 py-3 bg-gradient-to-r from-primary to-primary-dark text-white rounded-full font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50 flex items-center justify-center gap-2"
+          className="w-full px-6 py-3 bg-linear-to-r from-primary to-primary-dark text-white rounded-full font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50 flex items-center justify-center gap-2"
         >
           {isSubmitting ? (
             <>
@@ -488,7 +488,7 @@ export default function CustomRequestForm({ onSubmit }: CustomRequestFormProps) 
         </button>
 
         <p className="text-xs text-center text-gray-500">
-          Our team will respond within 48 hours. All information is kept confidential.
+          Our team will respond within 24 hours. All information is kept confidential.
         </p>
       </div>
     </div>

@@ -18,6 +18,7 @@ export default function Header() {
 
   const navItems = [
     { name: 'Home', href: '/' },
+    { name: 'About Us', href: '/about' },
     { name: 'Machines', href: '/machines' },
     { name: 'Order', href: '/order' },
     { name: 'Process', href: '/process' },
@@ -64,7 +65,7 @@ export default function Header() {
             <Link href="/" className="flex items-center space-x-2 group shrink-0">
               {/* Logo Image */}
               {!logoError ? (
-                <div className="relative w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16">
+                <div className="relative w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14">
                   <Image
                     src="/images/hero/dkmlogo.png"
                     alt="Dukan Machinery Logo"
@@ -77,7 +78,7 @@ export default function Header() {
               ) : (
                 <div className="relative w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16">
                   <Image
-                    src="/images/dkmlogo.png"
+                    src="/images/hero/dkmlogo.png"
                     alt="Dukan Machinery Logo"
                     fill
                     className="object-contain"
@@ -90,7 +91,7 @@ export default function Header() {
               <div className="hidden sm:flex flex-col leading-tight">
                 <span className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl font-black tracking-tighter text-green-700 dark:text-gray-100 uppercase whitespace-nowrap">DUKAN</span>
                 <span className="text-[6px] sm:text-[7px] md:text-[8px] font-black text-orange-600 dark:text-orange-400 uppercase tracking-[0.2em] whitespace-nowrap">Machinery</span>
-                <div className='hidden md:block text-orange-400 text-xs font-black rounded-full'>Agri-Industrial</div>
+                <div className='hidden md:block text-orange-600 text-xs font-black rounded-full'>Agri-Industrial</div>
               </div>
             </Link>
 
@@ -132,7 +133,7 @@ export default function Header() {
             {/* Mobile menu button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="lg:hidden p-2 sm:p-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+              className="lg:hidden p-2 sm:p-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors min-h-11 min-w-11 flex items-center justify-center"
               aria-label="Toggle menu"
             >
               {isMobileMenuOpen ? (

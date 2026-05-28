@@ -27,7 +27,7 @@ interface MachineSpecsTableProps {
   machine: Machine;
 }
 
-const SpecCard = ({ icon, label, value, color }: any) => (
+const SpecCard = ({ icon, label, value, color }: { icon: React.ReactNode; label: string; value: string; color: string }) => (
   <div className={`bg-gradient-to-br ${color} p-3 rounded-lg text-white shadow-lg hover:scale-105 transition-transform duration-300`}>
     <div className="text-lg sm:text-xl mb-1">{icon}</div>
     <p className="text-[10px] sm:text-xs opacity-90">{label}</p>
@@ -83,8 +83,8 @@ export default function MachineSpecsTable({ machine }: MachineSpecsTableProps) {
             <span className="text-lg">📦</span>
             {'detailPage.specifications.general'}
           </h4>
-          <div className="space-y-2">
-            <InfoRow label={'detailPage.specifications.model'} value={machine.name.spli' '.slice(0, 2).join(' ')} />
+            <div className="space-y-2">
+            <InfoRow label={'detailPage.specifications.model'} value={machine.name} />
             <InfoRow label={'detailPage.specifications.machineType'} value={machine.type || 'Industrial'} />
             <InfoRow label={'detailPage.specifications.material'} value={machine.material || 'Industrial Grade'} />
             <InfoRow label={'detailPage.specifications.warranty'} value={machine.warranty || '18 months'} />

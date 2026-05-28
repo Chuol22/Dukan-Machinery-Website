@@ -28,12 +28,19 @@ export const LanguageSelector: React.FC = () => {
         className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition-all duration-200 border border-gray-200 dark:border-gray-700"
         aria-label="Select language"
       >
-        <span className="text-xl">{currentLang.flag}</span>
+        <span
+          aria-hidden="true"
+          className="w-6 h-6 flex items-center justify-center rounded-full bg-white/5 overflow-hidden"
+        >
+          <img src={currentLang.flag} alt="" className="w-full h-full object-contain" />
+        </span>
         <span className="text-sm font-medium hidden sm:inline text-gray-700 dark:text-gray-200">
           {currentLang.nativeName}
         </span>
-        <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
-      </button>
+        <ChevronDown
+          className={`w-4 h-4 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+        />
+      </button> 
 
       <AnimatePresence>
         {isOpen && (
@@ -53,10 +60,17 @@ export const LanguageSelector: React.FC = () => {
                     setIsOpen(false);
                   }}
                   className={`w-full flex items-center gap-3 px-4 py-2.5 text-left hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-150 ${
-                    lang.code === currentLang.code ? 'bg-orange-50 dark:bg-orange-900/20' : ''
+                    lang.code === currentLang.code
+                      ? "bg-orange-50 dark:bg-orange-900/20"
+                      : ""
                   }`}
                 >
-                  <span className="text-xl">{lang.flag}</span>
+                  <span
+                    aria-hidden="true"
+                    className="w-6 h-6 flex items-center justify-center rounded-full bg-white/5 overflow-hidden"
+                  >
+                    <img src={lang.flag} alt="" className="w-full h-full object-contain" />
+                  </span>
                   <div className="flex-1">
                     <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
                       {lang.name}
@@ -77,3 +91,4 @@ export const LanguageSelector: React.FC = () => {
     </div>
   );
 };
+

@@ -175,7 +175,7 @@ export default function WhyDukan() {
 
         {/* Trust badge */}
         <div className="mt-12 sm:mt-16 text-center">
-          <p className="text-green-800 dark:text-green-400 text-xs sm:text-sm uppercase font-black tracking-[0.1em] sm:tracking-[0.2em]">
+          <p className="text-green-800 dark:text-green-400 text-xs sm:text-sm uppercase font-black tracking-widest sm:tracking-[0.2em]">
             Trusted by{' '}
             <span className="text-orange-600 dark:text-orange-400">100+</span>{' '}
             businesses worldwide

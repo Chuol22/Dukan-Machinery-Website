@@ -89,7 +89,7 @@ export default function CTABanner() {
                 variants={itemVariants}
                 className="flex items-center justify-center gap-1.5 sm:gap-2 bg-white dark:bg-gray-800 backdrop-blur-sm border border-gray-200 dark:border-gray-700 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2"
               >
-                <CheckCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-orange-600 flex-shrink-0" />
+                <CheckCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-orange-600 shrink-0" />
                 <span className="text-[10px] sm:text-xs md:text-sm text-green-700 dark:text-gray-200 font-black">{benefit}</span>
               </motion.div>
             ))}
@@ -100,19 +100,11 @@ export default function CTABanner() {
             variants={itemVariants}
             className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-8 sm:mb-10 md:mb-12"
           >
-            <Link href={'/order'}>
-              <Button 
-                size="lg" 
-                className="bg-orange-400 hover:bg-orange-300 text-white shadow-xl hover:shadow-2xl transition-all duration-300 group animate-pulse-slow animate-shake text-xs sm:text-sm md:text-base"
-              >
-                {'buttons.consultation'}
-              </Button>
-            </Link>
             <Link href={'/contact'}>
               <Button 
                 size="lg" 
                 variant="outline" 
-                className="border-orange-600 text-green-600 dark:border-orange-400 dark:text-green-400 hover:bg-orange-300 dark:hover:bg-orange-400/20 backdrop-blur-sm text-xs sm:text-sm md:text-base"
+                className="border-orange-600 text-white font-black dark:border-orange-400 dark:text-green-400 bg-orange-400 hover:bg-orange-300 dark:hover:bg-orange-400/20 backdrop-blur-sm text-xs sm:text-sm md:text-base"
               >
                 Contact Sales
               </Button>

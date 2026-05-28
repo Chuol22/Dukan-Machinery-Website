@@ -56,7 +56,7 @@ export default function Footer() {
                 href="https://facebook.com/DukanMachinery"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-orange-600 flex items-center justify-center hover:bg-orange-500 transition-all duration-300 hover:scale-110 animate-float"
+                className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-orange-600 flex items-center justify-center hover:bg-blue-500 transition-all duration-300 hover:scale-110 animate-bounce"
                 aria-label="Facebook"
               >
                 <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="currentColor" viewBox="0 0 512 512">
@@ -67,16 +67,16 @@ export default function Footer() {
                 href="https://t.me/DukanmachineryEt"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-orange-600 flex items-center justify-center hover:bg-orange-500 transition-all duration-300 hover:scale-110 animate-float"
+                className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-orange-600 flex items-center justify-center hover:bg-blue-500 transition-all duration-300 hover:scale-110 animate-bounce"
                 aria-label="Telegram"
               >
                 <Send className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </a>
               <a
-                href="https://www.tiktok.com/@dukanmachinery"
+                href="https://www.tiktok.com/@dukanmachinery?_r=1&_t=ZS-96Xyddw3DIT"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-orange-600 flex items-center justify-center hover:bg-orange-500 transition-all duration-300 hover:scale-110 animate-float"
+                className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-orange-600 flex items-center justify-center hover:bg-gray-800 transition-all duration-300 hover:scale-110 animate-bounce"
                 aria-label="TikTok"
               >
                 <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="currentColor" viewBox="0 0 448 512">
@@ -87,7 +87,7 @@ export default function Footer() {
                 href="https://wa.me/251912713823"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-orange-600 flex items-center justify-center hover:bg-orange-500 transition-all duration-300 hover:scale-110 animate-float"
+                className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-orange-600 flex items-center justify-center hover:bg-green-500 transition-all duration-300 hover:scale-110 animate-bounce"
                 aria-label="WhatsApp"
               >
                 <MessageCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
@@ -96,7 +96,7 @@ export default function Footer() {
                 href="https://linkedin.com/company/dukan-machinery"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-orange-600 flex items-center justify-center hover:bg-orange-500 transition-all duration-300 hover:scale-110 animate-float"
+                className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-orange-600 flex items-center justify-center hover:bg-blue-500 transition-all duration-300 hover:scale-110 animate-bounce"
                 aria-label="LinkedIn"
               >
                 <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -109,27 +109,26 @@ export default function Footer() {
           {/* Column 2: Contact Information */}
           <div className="space-y-3 sm:space-y-4">
             <h3 className="text-base sm:text-lg font-bold text-white dark:text-gray-100 border-l-3 border-orange-500 dark:border-orange-400 pl-3">
-              {'contactInfo'}
+              Contact Info
             </h3>
             <ul className="space-y-2 text-xs sm:text-sm">
               <li className="flex items-start gap-2 sm:gap-3">
-                <Phone className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-orange-500 mt-0.5 flex-shrink-0 animate-float" />
+                <Phone className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-orange-500 mt-0.5 shrink-0 animate-float" />
                 <div>
-                  <p className="text-white/80">Main: +251 900 000 000</p>
-                  <p className="text-white/60 text-[10px] sm:text-xs">Alt: +251 700 000 000</p>
+                  <p className="text-white/80">Main: +251 912 713 823</p>
+                  <p className="text-white/60 text-[10px] sm:text-xs">Alt: +251 97 561  474</p>
                 </div>
               </li>
               <li className="flex items-start gap-2 sm:gap-3">
-                <Mail className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-orange-500 mt-0.5 flex-shrink-0 animate-float" />
+                <Mail className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-orange-500 mt-0.5 shrink-0 animate-float" />
                 <div>
-                  <p className="text-white/80">info@dukanmachinery.com</p>
-                  <p className="text-white/60 text-[10px] sm:text-xs">sales@dukanmachinery.com</p>
+                  <p className="text-white/60 text-[10px] sm:text-xs">cnyuondak@gmail.com</p>
                 </div>
               </li>
               <li className="flex items-start gap-2 sm:gap-3">
-                <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-orange-500 mt-0.5 flex-shrink-0 animate-float" />
+                <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-orange-500 mt-0.5 shrink-0 animate-float" />
                 <div>
-                  <p className="text-white/80">Selam Building, Gerji Sub City</p>
+                  <p className="text-white/80">Selam Building | Kality</p>
                   <p className="text-white/60 text-[10px] sm:text-xs">Addis Ababa, Ethiopia</p>
                 </div>
               </li>
@@ -139,7 +138,7 @@ export default function Footer() {
           {/* Column 3: Quick Links */}
           <div className="space-y-3 sm:space-y-4">
             <h3 className="text-base sm:text-lg font-bold text-white dark:text-gray-100 border-l-3 border-orange-500 dark:border-orange-400 pl-3">
-              {'quickLinks'}
+              Quick Links
             </h3>
             <ul className="space-y-2 text-xs sm:text-sm">
               <li>
@@ -180,7 +179,7 @@ export default function Footer() {
         <div className="border-t border-white/10 pt-6 sm:pt-8 flex flex-col md:flex-row justify-between items-center gap-3 sm:gap-4">
           <div className="text-center md:text-left">
             <p className="text-white/60 text-xs sm:text-sm">
-              {currentYear} Dukan Machinery. {'copyright'}
+              {currentYear} Dukan Machinery. All rights reserved.
             </p>
           </div>
           <div className="flex items-center gap-3 sm:gap-4">
@@ -189,7 +188,7 @@ export default function Footer() {
               className="flex items-center gap-1.5 sm:gap-2 text-white/80 hover:text-orange-500 transition-colors duration-300 group"
               aria-label="Scroll to top"
             >
-              <span className="text-[10px] sm:text-xs md:text-sm font-black">{'backToTop'}</span>
+              <span className="text-[10px] sm:text-xs md:text-sm font-black">Back to top</span>
               <ArrowUp className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:-translate-y-1 transition-transform duration-300" />
             </button>
           </div>

@@ -3,8 +3,7 @@
 import Link from 'next/link'
 import { useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { MessageCircle, Send, Music2, Camera, Share2 } from 'lucide-react'
-
+import { MessageCircle, Send, Music2, Mail, Share2 } from 'lucide-react'
 
 import { socialLinks, type SocialPlatform } from '@/config/socialLinks'
 
@@ -12,7 +11,7 @@ type FloatingSocialProps = {
   position?: 'bottom-right' | 'bottom-left'
 }
 
-const PLATFORM_ORDER: SocialPlatform[] = ['whatsapp', 'telegram', 'tiktok', 'instagram']
+const PLATFORM_ORDER: SocialPlatform[] = ['whatsapp', 'telegram', 'tiktok', 'email']
 
 export default function FloatingSocial({ position = 'bottom-right' }: FloatingSocialProps) {
   const isRight = position === 'bottom-right'
@@ -45,19 +44,16 @@ export default function FloatingSocial({ position = 'bottom-right' }: FloatingSo
           border: 'border-[#111111]/40',
           icon: 'text-[#111111]',
         }
-      case 'instagram':
+      case 'email':
         return {
-          ring: 'focus-visible:ring-[#E1306C]',
-          border: 'border-[#E1306C]/40',
-          icon: 'text-[#E1306C]',
+          ring: 'focus-visible:ring-[#60A5FA]',
+          border: 'border-[#60A5FA]/40',
+          icon: 'text-[#fa6077]',
         }
     }
   }
 
   const platformIcon = (id: SocialPlatform) => {
-    // NOTE: lucide-react may not include brand-specific instagram icon in your version.
-    // For now we keep a camera-like icon; if you want a perfect Instagram glyph,
-    // we can swap to an SVG later.
     switch (id) {
       case 'whatsapp':
         return <MessageCircle className="w-4 h-4" aria-hidden="true" />
@@ -65,26 +61,21 @@ export default function FloatingSocial({ position = 'bottom-right' }: FloatingSo
         return <Send className="w-4 h-4" aria-hidden="true" />
       case 'tiktok':
         return <Music2 className="w-4 h-4" aria-hidden="true" />
-      case 'instagram':
-        return <Camera className="w-4 h-4" aria-hidden="true" />
+      case 'email':
+        return <Mail className="w-4 h-4" aria-hidden="true" />
+
     }
   }
 
   return (
     <div className={`fixed z-9998 bottom-6 ${isRight ? 'right-6' : 'left-6'} `}>
       <AnimatePresence initial={false}>
-        {/*
-          Chatbot-like expanded panel.
-          Default state is collapsed to keep the UI clean.
-          (We avoid state to keep logic minimal and focus on accessibility.)
-        */}
+        {/* expanded panel placeholder (intentionally empty) */}
       </AnimatePresence>
 
       <div className="flex flex-col items-center gap-2">
-        {/* Accessible label for screen readers */}
         <span className="sr-only">Social media links</span>
 
-        {/* Always-visible compact group (better accessibility than hover-only) */}
         <div className={`flex flex-col gap-2 ${isRight ? 'items-end' : 'items-start'}`}>
           {platforms.map((p, index) => {
             const delay = index * 60
@@ -105,22 +96,21 @@ export default function FloatingSocial({ position = 'bottom-right' }: FloatingSo
                   className={
                     'inline-flex items-center justify-center w-8 h-8 rounded-full shadow-md transition-all duration-300 ' +
                     'bg-white/10 hover:bg-white/60 border ' +
-                    platformStyle(p.id).border + ' ' +
+                    platformStyle(p.id).border +
+                    ' ' +
                     'focus:outline-none focus-visible:ring-2 ' +
-                    platformStyle(p.id).ring + ' focus-visible:ring-offset-2 focus-visible:ring-offset-transparent animate-pulse-slow animate-float animate-fade-in-up'
+                    platformStyle(p.id).ring +
+                    ' focus-visible:ring-offset-2 focus-visible:ring-offset-transparent animate-pulse-slow animate-float animate-fade-in-up'
                   }
                 >
-                  {/* colored backplate */}
                   <span className="absolute opacity-0" aria-hidden="true" />
-                  <span className={platformStyle(p.id).icon}>
-                    {platformIcon(p.id)}
-                  </span>
+                  <span className={platformStyle(p.id).icon}>{platformIcon(p.id)}</span>
+                  <span className="sr-only">{p.label}</span>
                 </Link>
               </motion.div>
             )
           })}
 
-          {/* Main floating hint button (optional but keeps chatbot-icon feel) */}
           <div className="mt-1">
             <button
               type="button"
@@ -131,19 +121,20 @@ export default function FloatingSocial({ position = 'bottom-right' }: FloatingSo
                 'transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent '
               }
               onClick={() => {
-                // No-op: icons are already visible.
-                // Keep button for consistent “chatbot icon” placement/affordance.
+                // icons are already visible; intentionally no-op
               }}
             >
               <Share2 className="w-5 h-5 text-white" aria-hidden="true" />
             </button>
           </div>
         </div>
+
       </div>
 
-      {/* Respect reduced motion */}
       <style jsx global>{`
+
         @media (prefers-reduced-motion: reduce) {
+
           .motion-reduce,
           * {
             scroll-behavior: auto !important;
@@ -153,4 +144,3 @@ export default function FloatingSocial({ position = 'bottom-right' }: FloatingSo
     </div>
   )
 }
-
