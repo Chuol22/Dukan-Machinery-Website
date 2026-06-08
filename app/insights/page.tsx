@@ -157,7 +157,7 @@ export default function InsightsPage() {
       filtered = filtered.filter(post =>
         post.title.toLowerCase().includes(searchLower) ||
         post.excerpt.toLowerCase().includes(searchLower) ||
-        post.tags.some(tag => tag.toLowerCase().includes(searchLower))
+        post.tags.some((tag: string) => tag.toLowerCase().includes(searchLower))
       )
     }
 
