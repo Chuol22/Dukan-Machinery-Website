@@ -1,24 +1,28 @@
 'use client';
 
+// Hero banner — video background, typing headline, and primary CTAs
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Settings, ChevronRight } from 'lucide-react';
 
 export default function HeroSection() {
+  // Layout & media state
   const [headerHeight, setHeaderHeight] = useState(0);
   const [videoLoaded, setVideoLoaded] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Typing animation state — cycles through headline suffixes
   const [typedText, setTypedText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
   const [loopIndex, setLoopIndex] = useState(0);
-  const videoRef = useRef<HTMLVideoElement>(null);
 
   const words = ['for great Solutions', 'Equipment', 'of Modern Technology', 'for great Innovation'];
   const typingSpeed = 200;
   const deletingSpeed = 50;
   const pauseTime = 2000;
 
-  // Typing animation
+  // Typewriter effect: type word → pause → delete → next word
   useEffect(() => {
     let timer: NodeJS.Timeout;
     const currentWord = words[loopIndex % words.length];
@@ -43,7 +47,7 @@ export default function HeroSection() {
     return () => clearTimeout(timer);
   }, [typedText, isDeleting, loopIndex]);
 
-  // Detect header height dynamically
+  // Offset content below fixed navbar (updates on resize)
   useEffect(() => {
     const updateHeaderHeight = () => {
       const header = document.querySelector('header');
@@ -67,8 +71,8 @@ export default function HeroSection() {
     };
   }, []);
 
-  // Handle video loading
-    useEffect(() => {
+  // Autoplay background video once ready
+  useEffect(() => {
       if (videoRef.current) {
         videoRef.current.addEventListener('canplay', () => setVideoLoaded(true));
         videoRef.current.play().catch(e => console.log('Video autoplay failed:', e));
@@ -77,9 +81,8 @@ export default function HeroSection() {
 
   return (
     <div className="min-h-screen bg-green-800 dark:bg-gray-900 -mt-16 lg:-mt-20">
-      {/* Hero Section with Video Background */}
       <div className="relative overflow-hidden">
-        {/* Video Background Container */}
+        {/* Layered video background with dark gradient overlays */}
         <div className="absolute inset-0">
           {!videoLoaded && (
             <div className="absolute inset-0 bg-linear-to-r from-green-800 via-green-800 to-orange-100 animate-pulse" />
@@ -104,7 +107,7 @@ export default function HeroSection() {
           <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-black-100" />
         </div>
 
-        {/* Content */}
+        {/* Foreground content — headline, tagline, action buttons */}
         <div
           className="relative"
           style={{
@@ -119,6 +122,7 @@ export default function HeroSection() {
               transition={{ duration: 0.8, ease: 'easeOut' }}
               className="max-w-5xl mx-auto text-center"
             >
+              {/* Main headline + animated "Machinery …" suffix */}
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -138,6 +142,7 @@ export default function HeroSection() {
                 </div>
               </motion.h1>
 
+              {/* Value proposition card */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -154,6 +159,7 @@ export default function HeroSection() {
                 </div>
               </motion.div>
 
+              {/* Primary CTAs — catalog browse & custom order */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

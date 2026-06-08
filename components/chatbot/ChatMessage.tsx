@@ -1,5 +1,6 @@
 'use client'
 
+// ChatMessage — single message bubble with markdown and actions
 import { motion } from 'framer-motion'
 import { Bot, User, CheckCheck, Copy, ThumbsUp, ThumbsDown } from 'lucide-react'
 import { useState } from 'react'
@@ -22,17 +23,14 @@ export default function ChatMessage({ message }: ChatMessageProps) {
 
   const handleFeedback = (type: 'like' | 'dislike') => {
     setFeedback(type)
-    // Here you would send feedback to your analytics
     console.log(`Feedback for message: ${type}`)
   }
 
-  // Format message content with markdown-like styling
+  // Parse paragraphs, lists, and bold text
   const formatMessage = (content: string) => {
-    // Split into paragraphs
     const paragraphs = content.split('\n\n')
     
     return paragraphs.map((paragraph, idx) => {
-      // Check if it's a list item
       if (paragraph.trim().startsWith('- ') || paragraph.trim().startsWith('* ')) {
         const items = paragraph.split('\n').filter(line => line.trim().startsWith('- ') || line.trim().startsWith('* '))
         return (
@@ -75,7 +73,7 @@ export default function ChatMessage({ message }: ChatMessageProps) {
       transition={{ duration: 0.3, ease: 'easeOut' }}
       className={`flex gap-3 group ${isBot ? 'justify-start' : 'justify-end'}`}
     >
-      {/* Avatar */}
+      {/* Bot avatar */}
       {isBot && (
         <div className="flex-shrink-0 self-end mb-1">
           <div className="w-9 h-9 rounded-full bg-gradient-to-br from-orange-600 to-orange-500 flex items-center justify-center shadow-md border-2 border-white dark:border-gray-800">
@@ -84,7 +82,7 @@ export default function ChatMessage({ message }: ChatMessageProps) {
         </div>
       )}
 
-      {/* Message Content */}
+      {/* Message bubble */}
       <div className={`max-w-[85%] flex flex-col ${isBot ? 'items-start' : 'items-end'}`}>
         <div
           className={`relative px-4 py-3 md:px-5 md:py-3.5 rounded-2xl shadow-sm transition-all ${
@@ -110,7 +108,7 @@ export default function ChatMessage({ message }: ChatMessageProps) {
           </div>
         </div>
 
-        {/* Action Buttons for Bot Messages */}
+        {/* Copy and feedback actions */}
         {isBot && (
           <div className="flex gap-1.5 mt-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200 px-1">
             <button
@@ -151,7 +149,7 @@ export default function ChatMessage({ message }: ChatMessageProps) {
         )}
       </div>
 
-      {/* User Avatar */}
+      {/* User avatar */}
       {!isBot && (
         <div className="flex-shrink-0 self-end mb-1">
           <div className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center shadow-md border-2 border-white dark:border-gray-800">

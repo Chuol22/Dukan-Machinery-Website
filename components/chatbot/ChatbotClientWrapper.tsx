@@ -1,13 +1,13 @@
-// components/chatbot/ChatbotClientWrapper.tsx
 'use client';
 
+// ChatbotClientWrapper — client-side dynamic loader for chatbot widget
 import dynamic from 'next/dynamic';
 
-// Dynamically import ChatbotWidget with ssr: false
+// Lazy-load widget to avoid SSR hydration issues
 const ChatbotWidget = dynamic(
   () => import('./ChatbotWidget'),
   {
-    ssr: false,  // ✅ This is now allowed because we're in a Client Component
+    ssr: false,
     loading: () => null,
   }
 );

@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+// Machine detail page — gallery, specs tabs, and related machines
+import React, { useState, use } from 'react';
 import { notFound, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -26,15 +27,17 @@ const TabButton = ({ active, onClick, children, icon }: any) => (
   </button>
 );
 
-export default function MachineDetailPage({ params }: { params: { slug: string } }) {
+export default function MachineDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const router = useRouter();
-  const machine = getMachineBySlug(params.slug);
-  const [activeTab, setActiveTab] = useState('specifications');
+  const { slug } = use(params);
+  const machine = getMachineBySlug(slug);
+  const [activeTab, setActiveTab] = useState('specifications'); // specs | process | features
 
   if (!machine) {
     notFound();
   }
 
+  // Tab labels for specs, process flow, and features
   const tabs = [
     { id: 'specifications', label: 'Specifications', icon: <span className="text-sm">📊</span> },
     { id: 'process', label: 'Process Diagram', icon: <span className="text-sm">⚙️</span> },

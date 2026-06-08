@@ -1,5 +1,6 @@
 'use client';
 
+// MachineFilters — sticky filter bar with search and category selects
 import React from 'react';
 
 import { Filter, Search, X } from 'lucide-react';
@@ -31,6 +32,7 @@ export default function MachineFilters({
   setShowFilters,
   totalMachines
 }: MachineFiltersProps) {
+  // Filter dropdown options
   const categories = ['All', 'Cattle', 'Poultry', 'Goat', 'General Purpose'];
   const stages = ['All', 'Preparation', 'Processing', 'Packaging'];
   const capacities = ['All', 'Small', 'Medium', 'Large'];

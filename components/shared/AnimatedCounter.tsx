@@ -1,6 +1,6 @@
-// components/shared/AnimatedCounter.tsx
 'use client'
 
+// Count-up animation — animates a number when scrolled into view
 import { useEffect, useState, useRef } from 'react'
 
 interface AnimatedCounterProps {

@@ -1,5 +1,6 @@
 'use client';
 
+// Image wrapper — Next.js Image with fill/fallback and video detection
 import React from 'react';
 import NextImage from 'next/image';
 

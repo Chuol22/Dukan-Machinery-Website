@@ -1,5 +1,6 @@
 'use client'
 
+// Light/dark theme toggle button — cycles through theme modes
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Sun, Moon, Monitor } from 'lucide-react'
@@ -27,6 +28,7 @@ export default function ModeToggle() {
 
   const Icon = getThemeIcon()
 
+  // Avoid hydration mismatch before client theme loads
   if (!mounted) {
     return (
       <button className="p-1.5 rounded-lg bg-gray-100 dark:bg-gray-800 w-8 h-8 min-h-[44px] min-w-[44px] flex items-center justify-center" />

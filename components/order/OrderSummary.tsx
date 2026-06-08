@@ -1,7 +1,8 @@
-//OrderSummary
 'use client'
 
-import { Download, Mail, Package, CheckCircle, AlertCircle, CreditCard, Shield } from 'lucide-react'
+// OrderSummary — post-submit confirmation with order details and next steps
+import { Download, Mail, Package, CheckCircle, AlertCircle, CreditCard, Shield, ShoppingBag } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 
 interface OrderSummaryProps {
   orderData: any
@@ -9,6 +10,9 @@ interface OrderSummaryProps {
 }
 
 export default function OrderSummary({ orderData, type }: OrderSummaryProps) {
+  const router = useRouter()
+  
+  // Download order JSON as a file
   const handleDownload = () => {
     const dataStr = JSON.stringify(orderData, null, 2)
     const link = document.createElement('a')
@@ -17,13 +21,11 @@ export default function OrderSummary({ orderData, type }: OrderSummaryProps) {
     link.click()
   }
 
-  const CONTACT_EMAIL = 'cnyuondak@gmail.com'
-  const CONTACT_PHONE = '+251 960 779 507'
+  const CONTACT_EMAIL = 'geletupro@gmail.com'
+  const CONTACT_PHONE = '+251 912 713 823'
 
-
+  // Open mail client with pre-filled order details
   const handleEmail = () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const order: any = orderData
     const safeOrderId = (orderData as { orderId?: number | string } | undefined)?.orderId ?? ''
 
     const buildBody = () => {
@@ -84,8 +86,9 @@ export default function OrderSummary({ orderData, type }: OrderSummaryProps) {
     )}&body=${body}`
   }
 
-
-
+  const handlePlaceAnotherOrder = () => {
+    router.push('/machines')
+  }
 
   const getStatusIcon = () => {
     if (orderData.status === 'confirmed') return <CheckCircle className="w-16 h-16 text-green-500" />
@@ -93,6 +96,7 @@ export default function OrderSummary({ orderData, type }: OrderSummaryProps) {
     return <Package className="w-16 h-16 text-primary" />
   }
 
+  // Status headline based on order state
   const getStatusText = () => {
     if (orderData.status === 'confirmed') return 'Order Confirmed'
     if (orderData.status === 'cancelled') return 'Order Cancelled'
@@ -101,6 +105,27 @@ export default function OrderSummary({ orderData, type }: OrderSummaryProps) {
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden">
+      {/* Success Banner - Shows prominently that order is placed */}
+      <div className="m-4 mb-0 p-4 rounded-xl bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-800">
+        <div className="flex items-start gap-3">
+          <CheckCircle className="w-6 h-6 text-green-600 dark:text-green-400 shrink-0 mt-0.5" />
+          <div className="flex-1">
+            <h4 className="font-bold text-green-800 dark:text-green-300 text-lg">Order Placed Successfully!</h4>
+            <p className="text-sm text-green-700 dark:text-green-400 mt-1">
+              Your order has been received and is pending review. Our team will contact you within 24 hours.
+            </p>
+            <button
+              onClick={handlePlaceAnotherOrder}
+              className="mt-3 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-semibold transition-colors inline-flex items-center gap-2"
+            >
+              <ShoppingBag className="w-4 h-4" />
+              Place Another Order
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Order status header */}
       <div className="bg-linear-to-r from-primary to-primary-dark px-6 py-8 text-white text-center">
         {getStatusIcon()}
         <h2 className="text-2xl font-bold mt-4">{getStatusText()}</h2>
@@ -111,6 +136,7 @@ export default function OrderSummary({ orderData, type }: OrderSummaryProps) {
       </div>
 
       <div className="p-6 md:p-8">
+        {/* Download and email actions */}
         <div className="flex justify-end gap-3 mb-6 print:hidden">
           <button
             onClick={handleDownload}
@@ -125,6 +151,7 @@ export default function OrderSummary({ orderData, type }: OrderSummaryProps) {
         </div>
 
         <div className="space-y-6">
+          {/* Customer details */}
           <div>
             <h3 className="text-lg font-semibold mb-3">Customer Information</h3>
             <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
@@ -143,6 +170,7 @@ export default function OrderSummary({ orderData, type }: OrderSummaryProps) {
             </div>
           </div>
 
+          {/* Order line items */}
           <div>
             <h3 className="text-lg font-semibold mb-3">Order Items</h3>
             <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
@@ -192,6 +220,7 @@ export default function OrderSummary({ orderData, type }: OrderSummaryProps) {
 
           {orderData.paymentMethod && (
             <div>
+              {/* Payment method */}
               <h3 className="text-lg font-semibold mb-3">Payment Information</h3>
               <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
                 <div className="flex items-center gap-2">
@@ -202,6 +231,7 @@ export default function OrderSummary({ orderData, type }: OrderSummaryProps) {
             </div>
           )}
 
+          {/* Post-order timeline */}
           <div className="border-t pt-6">
             <h3 className="text-lg font-semibold mb-3">Next Steps</h3>
             <div className="space-y-3">
@@ -228,13 +258,13 @@ export default function OrderSummary({ orderData, type }: OrderSummaryProps) {
             </div>
           </div>
 
+          {/* Support contact info */}
           <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 flex items-start gap-3">
             <Shield className="w-5 h-5 text-blue-500 shrink-0" />
             <div>
               <p className="text-sm font-medium text-blue-800">Need help with your order?</p>
               <p className="text-sm text-blue-600 mt-1">
                 Contact us at <strong>{CONTACT_EMAIL}</strong> or call <strong>{CONTACT_PHONE}</strong>
-
               </p>
             </div>
           </div>
@@ -243,4 +273,3 @@ export default function OrderSummary({ orderData, type }: OrderSummaryProps) {
     </div>
   )
 }
-

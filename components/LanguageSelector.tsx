@@ -1,5 +1,6 @@
 "use client";
 
+// Language dropdown — switches site language via Google Translate
 import React, { useState, useRef } from "react";
 import { ChevronDown, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";

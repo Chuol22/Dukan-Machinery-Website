@@ -1,3 +1,4 @@
+// BlogFilters — search and filter controls for blog listing
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
@@ -27,6 +28,7 @@ interface FilterOptions {
   dateRange: 'all' | 'week' | 'month' | 'year'
 }
 
+// Sort dropdown options
 const sortOptions = [
   { value: 'newest', label: 'Newest First', icon: Clock },
   { value: 'oldest', label: 'Oldest First', icon: Calendar },
@@ -34,6 +36,7 @@ const sortOptions = [
   { value: 'trending', label: 'Trending', icon: TrendingUp },
 ]
 
+// Date range dropdown options
 const dateRangeOptions = [
   { value: 'all', label: 'All Time' },
   { value: 'week', label: 'Last Week' },
@@ -43,6 +46,7 @@ const dateRangeOptions = [
 
 export default function BlogFilters({ onFilterChange, categories, tags, totalPosts }: BlogFiltersProps) {
   const [isOpen, setIsOpen] = useState(false)
+  // Current filter values
   const [filters, setFilters] = useState<FilterOptions>({
     search: '',
     category: '',
@@ -52,6 +56,7 @@ export default function BlogFilters({ onFilterChange, categories, tags, totalPos
   })
   const [activeFiltersCount, setActiveFiltersCount] = useState(0)
 
+  // Count active non-default filters for badge
   useEffect(() => {
     let count = 0
     if (filters.category) count++
@@ -61,12 +66,14 @@ export default function BlogFilters({ onFilterChange, categories, tags, totalPos
     setActiveFiltersCount(count)
   }, [filters])
 
+  // Update single filter and notify parent
   const handleFilterChange = (key: keyof FilterOptions, value: string) => {
     const newFilters = { ...filters, [key]: value }
     setFilters(newFilters)
     onFilterChange(newFilters)
   }
 
+  // Reset all filters to defaults
   const clearFilters = () => {
     const resetFilters: FilterOptions = {
       search: '',

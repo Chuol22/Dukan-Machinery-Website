@@ -1,5 +1,6 @@
 'use client'
 
+// ChatbotButton — floating toggle with pulse and unread badge
 import { motion, AnimatePresence } from 'framer-motion'
 import { MessageCircle, X, Minimize2, ChevronUp } from 'lucide-react'
 
@@ -16,6 +17,7 @@ export default function ChatbotButton({
   hasUnread, 
   onMinimizedRestore 
 }: ChatbotButtonProps) {
+  // Button scale and spring animation
   const buttonVariants = {
     initial: { scale: 0 },
     animate: { scale: 1, transition: { type: 'spring' as const, stiffness: 260, damping: 20 } },
@@ -23,6 +25,7 @@ export default function ChatbotButton({
     tap: { scale: 0.95 },
   }
 
+  // Attention-grabbing pulse ring when closed
   const pulseVariants = {
     initial: { scale: 1, opacity: 0.7 },
     animate: {
@@ -44,7 +47,7 @@ export default function ChatbotButton({
 
   return (
     <div className="relative">
-      {/* Pulse Ring */}
+      {/* Pulse ring */}
       {!isOpen && (
         <motion.div
           variants={pulseVariants}
@@ -55,7 +58,7 @@ export default function ChatbotButton({
         />
       )}
 
-      {/* Unread Badge */}
+      {/* Unread badge */}
       <AnimatePresence>
         {hasUnread && !isOpen && (
           <motion.div
@@ -70,7 +73,7 @@ export default function ChatbotButton({
         )}
       </AnimatePresence>
 
-      {/* Main Button */}
+      {/* Main button */}
       <motion.button
         variants={buttonVariants}
         initial="initial"
@@ -115,7 +118,7 @@ export default function ChatbotButton({
         </AnimatePresence>
       </motion.button>
 
-      {/* Tooltip */}
+      {/* Hover tooltip */}
       {!isOpen && (
         <motion.div
           initial={{ opacity: 0, x: 10 }}

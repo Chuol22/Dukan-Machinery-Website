@@ -1,5 +1,6 @@
 'use client';
 
+// ChatbotWidget — floating chat panel with open/minimize state
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ChatbotButton from './ChatbotButton';
@@ -11,11 +12,13 @@ interface ChatbotWidgetProps {
 }
 
 export default function ChatbotWidget({ position = 'bottom-right' }: ChatbotWidgetProps) {
+  // Panel visibility and unread indicator state
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [hasUnread, setHasUnread] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Show unread badge after 30s when chat is closed
   useEffect(() => {
     if (!isOpen && !isMinimized) {
       timerRef.current = setTimeout(() => setHasUnread(true), 30000);
@@ -32,6 +35,7 @@ export default function ChatbotWidget({ position = 'bottom-right' }: ChatbotWidg
     };
   }, [isOpen, isMinimized]);
 
+  // Toggle open/closed and clear unread
   const handleToggle = useCallback(() => {
     setIsOpen(prev => !prev);
     setIsMinimized(false);
@@ -61,7 +65,7 @@ export default function ChatbotWidget({ position = 'bottom-right' }: ChatbotWidg
   return (
     <ChatProvider>
       <div className={`fixed z-[9999] bottom-6 ${isRight ? 'right-6' : 'left-6'}`}>
-        {/* CHAT WINDOW */}
+        {/* Chat window */}
         <AnimatePresence>
           {isOpen && !isMinimized && (
             <motion.div
@@ -84,7 +88,7 @@ export default function ChatbotWidget({ position = 'bottom-right' }: ChatbotWidg
           )}
         </AnimatePresence>
 
-        {/* BUTTON */}
+        {/* Toggle button */}
         <ChatbotButton
           onClick={handleToggle}
           isOpen={isOpen || isMinimized}

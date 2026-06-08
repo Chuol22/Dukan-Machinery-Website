@@ -1,5 +1,6 @@
 'use client'
 
+// Site navbar — logo, nav links, language selector, and mobile menu
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -16,6 +17,7 @@ export default function Header() {
   const [logoError, setLogoError] = useState(false)
   const pathname = usePathname()
 
+  // Main site navigation links
   const navItems = [
     { name: 'Home', href: '/' },
     { name: 'About Us', href: '/about' },
@@ -27,6 +29,7 @@ export default function Header() {
     { name: 'Contact', href: '/contact' },
   ]
 
+  // Toggle solid background after scrolling past top
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20)

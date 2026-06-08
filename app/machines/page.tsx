@@ -1,11 +1,13 @@
 'use client';
 
+// Machines catalog page — filters, search, grid, and inline detail preview
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import MachineFilters from '@/components/machines/MachineFilters';
 import MachinesCatalog from '@/components/machines/MachinesCatalog';
 import MachineDetailsPreview from '@/components/machines/MachineDetailsPreview';
-import { machinesData } from '@/data/machinesData';
+import { useEffect } from 'react';
+import { machinesData, type Machine } from '@/data/machinesData';
 
 export default function MachinesPage() {
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -15,6 +17,7 @@ export default function MachinesPage() {
   const [showFilters, setShowFilters] = useState(false);
   const [selectedMachineId, setSelectedMachineId] = useState<number | null>(machinesData[0]?.id || null);
 
+  // Apply category, type, capacity, and search filters
   const filteredMachines = machinesData.filter(machine => {
     const matchesCategory = selectedCategory === 'All' || machine.category === selectedCategory;
     const matchesStage = selectedStage === 'All' || machine.type === selectedStage;
@@ -31,6 +34,7 @@ export default function MachinesPage() {
     return matchesCategory && matchesStage && matchesSearch && matchesCapacity;
   });
 
+  // Select machine and scroll to inline preview panel
   const handleViewDetails = (machineId: number) => {
     setSelectedMachineId(machineId);
     setTimeout(() => {

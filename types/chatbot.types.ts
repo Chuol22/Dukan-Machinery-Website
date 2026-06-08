@@ -1,3 +1,4 @@
+// chatbot.types.ts — chat message and context types
 export interface Message {
   id: string
   role: 'user' | 'assistant'

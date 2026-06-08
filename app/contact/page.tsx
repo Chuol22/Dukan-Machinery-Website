@@ -1,16 +1,19 @@
 "use client";
 
+// Contact page — FAQ accordions, contact channels, and social links
 import React, { useState } from "react";
 import { FaWhatsapp, FaTelegram, FaTiktok } from "react-icons/fa";
 
 export default function ContactPage() {
   const [openFaqs, setOpenFaqs] = useState<Record<string, boolean>>({});
 
+  // Toggle individual FAQ item open/closed
   const toggleFaq = (category: string | number, index: number) => {
     const key = `${category}-${index}`;
     setOpenFaqs((prev: Record<string, boolean>) => ({ ...prev, [key]: !prev[key] }));
   };
 
+  // FAQ content grouped by topic
   const faqCategories = [
     {
       title: "General Questions",
@@ -178,11 +181,11 @@ export default function ContactPage() {
                       <h3 className="font-semibold mb-1">Email</h3>
                       <p className="text-gray-600 dark:text-gray-300">
                         <a
-                          href="mailto:cnyuondak@gmail.com"
+                          href="mailto:geletupro@gmail.com"
                           className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-green-50 hover:bg-green-100 transition-colors"
                         >
                           <span className="w-2.5 h-2.5 rounded-full bg-green-600 inline-block" />
-                          <span>cnyuondak@gmail.com</span>
+                          <span>geletupro@gmail.com</span>
                         </a>
                       </p>
                     </div>

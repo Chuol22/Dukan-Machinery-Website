@@ -1,6 +1,6 @@
-// components/MobileMenu.tsx
 'use client'
 
+// Slide-out mobile navigation panel with theme and language controls
 import { useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -18,6 +18,7 @@ interface MobileMenuProps {
 export default function MobileMenu({ isOpen, onClose, navItems }: MobileMenuProps) {
   const pathname = usePathname()
 
+  // Auto-close menu when route changes
   useEffect(() => {
     if (isOpen) {
       onClose()

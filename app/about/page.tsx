@@ -1,5 +1,6 @@
 'use client'
 
+// About page — company story, stats, values, and team highlights
 import React from 'react'
 import Link from 'next/link'
 

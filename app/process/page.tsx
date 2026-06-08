@@ -1,6 +1,6 @@
-// components/home/ProcessSteps.tsx (With Hover Details)
 'use client'
 
+// Process page — standalone 4-step ordering workflow with hover details
 import { motion, useInView } from 'framer-motion'
 import { useRef, useState } from 'react'
 import { 
@@ -11,6 +11,7 @@ import {
   CheckCircle
 } from 'lucide-react'
 
+// Four ordering steps — each expands on hover
 const processSteps = [
   {
     step: "01",

@@ -1,13 +1,9 @@
-// app/layout.tsx
+// layout.tsx — root layout, metadata, and global providers
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { changaOne } from './fonts';
-import Navbar from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
-import ScrollToTop from '@/components/layout/ScrollToTop';
-import ChatbotClientWrapper from '@/components/chatbot/ChatbotClientWrapper';
-import FloatingSocial from '@/components/social/FloatingSocial';
+import MainLayoutWrapper from '@/components/layout/MainLayoutWrapper';
 import { GoogleTranslateScript } from '@/components/GoogleTranslateScript';
 
 export const metadata: Metadata = {
@@ -83,14 +79,7 @@ export default function RootLayout({
           {/* Hidden div for Google Translate - required */}
           <div id="google_translate_element" style={{ display: 'none' }} />
           <GoogleTranslateScript />
-          <Navbar />
-          <main className="pt-16 lg:pt-20 min-h-screen">
-            {children}
-          </main>
-          <Footer />
-          <ScrollToTop />
-          <ChatbotClientWrapper />
-          <FloatingSocial />
+          <MainLayoutWrapper>{children}</MainLayoutWrapper>
         </ThemeProvider>
       </body>
     </html>

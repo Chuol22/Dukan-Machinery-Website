@@ -1,5 +1,6 @@
 'use client';
 
+// MachineGallery — main image viewer with thumbnails and lightbox
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import OptimizedImage from '@/components/shared/OptimizedImage';
@@ -10,6 +11,7 @@ interface MachineGalleryProps {
 }
 
 export default function MachineGallery({ images, productName }: MachineGalleryProps) {
+  // Current slide and full-screen lightbox state
   const [selectedImage, setSelectedImage] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
 

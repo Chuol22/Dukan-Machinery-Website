@@ -1,5 +1,6 @@
 'use client'
 
+// NewsletterSignup — email subscription form with compact variant
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
@@ -26,6 +27,7 @@ export default function NewsletterSignup({ variant = 'default', className = '' }
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState('')
 
+  // Subscription perks shown in default layout
   const benefits = [
     { icon: TrendingUp, text: 'Weekly industry insights' },
     { icon: Zap, text: 'New product launches' },
@@ -36,6 +38,7 @@ export default function NewsletterSignup({ variant = 'default', className = '' }
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
+    // Validate email presence and format
     if (!email) {
       setErrorMessage('Please enter your email address')
       setStatus('error')
@@ -64,6 +67,7 @@ export default function NewsletterSignup({ variant = 'default', className = '' }
     }, 1500)
   }
 
+  // Inline compact layout for sidebars
   if (variant === 'compact') {
     return (
       <motion.div
@@ -71,6 +75,7 @@ export default function NewsletterSignup({ variant = 'default', className = '' }
         animate={{ opacity: 1, y: 0 }}
         className={`bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl p-6 ${className}`}
       >
+        {/* Icon and form */}
         <div className="flex items-start gap-4">
           <div className="flex-shrink-0">
             <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center">
@@ -103,6 +108,7 @@ export default function NewsletterSignup({ variant = 'default', className = '' }
           </div>
         </div>
         
+        {/* Status feedback */}
         <AnimatePresence>
           {status === 'success' && (
             <motion.div

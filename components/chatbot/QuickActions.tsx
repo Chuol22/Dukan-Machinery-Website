@@ -1,5 +1,6 @@
 'use client'
 
+// QuickActions — preset question buttons for new chats
 import { motion } from 'framer-motion'
 import { 
   Package, 
@@ -16,6 +17,7 @@ interface QuickActionsProps {
   onActionClick: (action: string) => void
 }
 
+// Pre-filled queries sent on click
 const quickActions = [
   {
     id: 'machines',
@@ -62,6 +64,7 @@ export default function QuickActions({ onActionClick }: QuickActionsProps) {
 
   return (
     <div className="space-y-2">
+      {/* Section label */}
       <div className="flex items-center gap-2">
         <HelpCircle className="w-4 h-4 text-orange-500" />
         <span className="text-xs font-black text-gray-500 dark:text-gray-400">
@@ -69,6 +72,7 @@ export default function QuickActions({ onActionClick }: QuickActionsProps) {
         </span>
       </div>
       
+      {/* Action buttons */}
       <motion.div
         variants={containerVariants}
         initial="hidden"
@@ -85,7 +89,6 @@ export default function QuickActions({ onActionClick }: QuickActionsProps) {
             className="group relative overflow-hidden"
           >
             <div className="relative px-3 py-2 bg-gray-100 dark:bg-gray-800 rounded-xl hover:shadow-md transition-all duration-300">
-              {/* Gradient Hover Effect */}
               <div className={`absolute inset-0 bg-gradient-to-r ${action.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
               
               <div className="relative flex items-center gap-2">

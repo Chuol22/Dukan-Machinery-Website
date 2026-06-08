@@ -1,6 +1,6 @@
-// app/components/GoogleTranslateScript.tsx
 "use client";
 
+// Loads Google Translate widget and patches DOM to prevent React crashes
 import { useEffect, useRef } from 'react';
 
 declare global {

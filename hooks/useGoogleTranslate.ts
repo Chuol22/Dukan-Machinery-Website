@@ -1,134 +1,59 @@
-// app/hooks/useGoogleTranslate.ts
-"use client";
+// useGoogleTranslate.ts — sync UI with Google Translate widget
+'use client';
 
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
-interface Language {
+export type Language = {
   code: string;
   name: string;
   nativeName: string;
-  // Use emoji to guarantee the "flag" always appears.
-  // Language recognition is done via `code` (Google Translate cookies).
   flag: string;
-  dir?: 'ltr' | 'rtl';  
-}
+};
 
-const languages: Language[] = [
-  { code: 'en', name: 'English', nativeName: 'English', flag: '/flags/gb.png' },
-  { code: 'am', name: 'Amharic', nativeName: 'አማርኛ', flag: '/flags/et.png' },
-  { code: 'om', name: 'Oromiffa', nativeName: 'Afaan Oromo', flag: '/flags/et.png' },
-  { code: 'fr', name: 'French', nativeName: 'Français', flag: '/flags/fr.png' },
+// Supported site languages
+const LANGUAGES: Language[] = [
+  { code: 'en', name: 'English', nativeName: 'English', flag: 'https://flagcdn.com/w40/gb.png' },
+  { code: 'am', name: 'Amharic', nativeName: 'አማርኛ', flag: 'https://flagcdn.com/w40/et.png' },
+  { code: 'om', name: 'Oromo', nativeName: 'Afaan Oromoo', flag: 'https://flagcdn.com/w40/et.png' },
+  { code: 'ti', name: 'Tigrinya', nativeName: 'ትግርኛ', flag: 'https://flagcdn.com/w40/er.png' },
+  { code: 'so', name: 'Somali', nativeName: 'Soomaali', flag: 'https://flagcdn.com/w40/so.png' },
+  { code: 'fr', name: 'French', nativeName: 'Français', flag: 'https://flagcdn.com/w40/fr.png' },
 ];
 
-const setCookie = (name: string, value: string, days = 365) => {
-  const date = new Date();
-  date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-
-  document.cookie = `${name}=${value}; expires=${date.toUTCString()}; path=/; SameSite=Lax`;
-
-  if (typeof window !== 'undefined') {
-    const hostname = window.location.hostname;
-    if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
-      document.cookie = `${name}=${value}; expires=${date.toUTCString()}; path=/; domain=${hostname}; SameSite=Lax`;
-    }
-  }
-};
-
-const getCookie = (name: string): string | null => {
-  if (typeof document === 'undefined') return null;
-  const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-  return match ? match[2] : null;
-};
-
-export function useGoogleTranslate() {
-  const [currentLang, setCurrentLang] = useState<Language>(languages[0]);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [isTranslating, setIsTranslating] = useState(false);
-  const initRef = useRef(false);
-
-  useEffect(() => {
-    if (initRef.current) return;
-    initRef.current = true;
-
-    const savedLang = getCookie('GOOGLE_TRANSLATE_LANG');
-    if (savedLang) {
-      const lang = languages.find((l) => l.code === savedLang);
-      if (lang) {
-        const hostname = window.location.hostname;
-        const isLocalhost = hostname === 'localhost' || hostname === '127.0.0.1';
-
-        if (lang.code !== 'en') {
-          document.cookie = `googtrans=/en/${lang.code}; path=/; SameSite=Lax`;
-          if (!isLocalhost) {
-            document.cookie = `googtrans=/en/${lang.code}; path=/; domain=${hostname}; SameSite=Lax`;
-          }
-        } else {
-          document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-          if (!isLocalhost) {
-            document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${hostname};`;
-          }
-        }
-
-        window.setTimeout(() => setCurrentLang(lang), 0);
-      }
-    }
-
-    const checkGoogleTranslate = setInterval(() => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      if ((window as any).google?.translate?.TranslateElement) {
-        setIsLoaded(true);
-        clearInterval(checkGoogleTranslate);
-      }
-    }, 50);
-
-    const timeout = setTimeout(() => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      if ((window as any).google?.translate) {
-        setIsLoaded(true);
-      }
-    }, 2000);
-
-    return () => {
-      clearInterval(checkGoogleTranslate);
-      clearTimeout(timeout);
-    };
-  }, []);
-
-  const changeLanguage = useCallback(
-    (lang: Language) => {
-      if (lang.code === currentLang.code) return;
-
-      setIsTranslating(true);
-      setCurrentLang(lang);
-
-      setCookie('GOOGLE_TRANSLATE_LANG', lang.code);
-
-      const hostname = window.location.hostname;
-      const isLocalhost = hostname === 'localhost' || hostname === '127.0.0.1';
-
-      if (lang.code === 'en') {
-        document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-        if (!isLocalhost) {
-          document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${hostname};`;
-        }
-      } else {
-        document.cookie = `googtrans=/en/${lang.code}; path=/; SameSite=Lax`;
-        if (!isLocalhost) {
-          document.cookie = `googtrans=/en/${lang.code}; path=/; domain=${hostname}; SameSite=Lax`;
-        }
-      }
-
-      window.location.reload();
-    },
-    [currentLang.code],
-  );
-
-  return {
-    currentLang,
-    isLoaded,
-    isTranslating,
-    changeLanguage,
-    languages,
-  };
+function getGoogleTranslateSelect(): HTMLSelectElement | null {
+  return document.querySelector('.goog-te-combo') as HTMLSelectElement | null;
 }
 
+export function useGoogleTranslate() {
+  const [currentLang, setCurrentLang] = useState<Language>(LANGUAGES[0]);
+
+  // Drive the hidden Google Translate select
+  const changeLanguage = useCallback((lang: Language) => {
+    const select = getGoogleTranslateSelect();
+    if (select) {
+      select.value = lang.code;
+      select.dispatchEvent(new Event('change'));
+    }
+    setCurrentLang(lang);
+    document.documentElement.lang = lang.code;
+    document.documentElement.dir = lang.code === 'ar' ? 'rtl' : 'ltr';
+  }, []);
+
+  // Poll widget when user changes language outside our UI
+  useEffect(() => {
+    const syncFromWidget = () => {
+      const select = getGoogleTranslateSelect();
+      if (!select?.value) return;
+      const match = LANGUAGES.find((l) => l.code === select.value);
+      if (match && match.code !== currentLang.code) {
+        setCurrentLang(match);
+        document.documentElement.lang = match.code;
+      }
+    };
+
+    const interval = setInterval(syncFromWidget, 1000);
+    return () => clearInterval(interval);
+  }, [currentLang.code]);
+
+  return { currentLang, changeLanguage, languages: LANGUAGES };
+}

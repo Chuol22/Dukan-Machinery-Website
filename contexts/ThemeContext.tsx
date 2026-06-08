@@ -1,9 +1,9 @@
-// contexts/ThemeContext.tsx
+// ThemeContext.tsx — light/dark theme state and persistence
 'use client'
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react'
 
-
+// User-selectable theme; effectiveTheme resolves light to system preference
 type Theme = 'light' | 'dark'
 
 interface ThemeContextType {
@@ -16,6 +16,7 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
+  // Hydrate from localStorage on first client render
   const [theme, setTheme] = useState<Theme>(() => {
     if (typeof window === 'undefined') return 'light'
     const savedTheme = localStorage.getItem('theme') as Theme | null
@@ -23,12 +24,9 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   })
   const [systemTheme, setSystemTheme] = useState<'light' | 'dark'>('light')
 
-
-
-
-  // Calculate effective theme
   const effectiveTheme = theme === 'light' ? systemTheme : theme
 
+  // Track OS color-scheme and sync initial dark class
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
     const updateSystemTheme = (matches: boolean) => {
@@ -37,14 +35,11 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
     updateSystemTheme(mediaQuery.matches)
 
-    // Apply saved theme class immediately (state already initialized lazily).
     const savedTheme = localStorage.getItem('theme') as Theme | null
     const isValid = savedTheme && ['light', 'dark'].includes(savedTheme)
     if (isValid) {
       document.documentElement.classList.toggle('dark', savedTheme === 'dark')
     }
-
-
 
     const handleChange = (event: MediaQueryListEvent) => {
       updateSystemTheme(event.matches)
@@ -55,14 +50,11 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     return () => mediaQuery.removeEventListener('change', handleChange)
   }, [])
 
-
-
-
+  // Apply dark class and persist user choice
   useEffect(() => {
     const root = document.documentElement
     root.classList.toggle('dark', effectiveTheme === 'dark')
 
-    // Persist selected theme (light/dark/system)
     localStorage.setItem('theme', theme)
   }, [theme, effectiveTheme])
 
@@ -74,7 +66,6 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     })
   }
 
-
   return (
     <ThemeContext.Provider value={{ theme, effectiveTheme, toggleTheme, setTheme }}>
       {children}
@@ -82,6 +73,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   )
 }
 
+// Hook for consuming theme context
 export function useTheme() {
   const context = useContext(ThemeContext)
   if (context === undefined) {

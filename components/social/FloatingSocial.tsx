@@ -1,5 +1,6 @@
 'use client'
 
+// Fixed social icon stack — WhatsApp, Telegram, TikTok, email links
 import Link from 'next/link'
 import { useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -100,7 +101,7 @@ export default function FloatingSocial({ position = 'bottom-right' }: FloatingSo
                     ' ' +
                     'focus:outline-none focus-visible:ring-2 ' +
                     platformStyle(p.id).ring +
-                    ' focus-visible:ring-offset-2 focus-visible:ring-offset-transparent animate-pulse-slow animate-float animate-fade-in-up'
+                    ' focus-visible:ring-offset-2 focus-visible:ring-offset-transparent animate-pulse-slow animate-float animate-fade-up'
                   }
                 >
                   <span className="absolute opacity-0" aria-hidden="true" />

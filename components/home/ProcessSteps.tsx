@@ -1,6 +1,6 @@
-// components/home/ProcessSteps.tsx (With Hover Details)
 'use client'
 
+// Ordering process — 4 steps with hover-to-reveal detail lists
 import { motion, useInView } from 'framer-motion'
 import { useRef, useState } from 'react'
 
@@ -19,6 +19,7 @@ export default function ProcessSteps() {
   const isInView = useInView(ref, { once: true, amount: 0.2 })
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
 
+  // Step content — expands on hover to show bullet details
   const steps = [
     {
       step: '01',
@@ -46,6 +47,7 @@ export default function ProcessSteps() {
     }
   ]
 
+  // Attach Lucide icon to each step
   const processSteps = steps.map((step, index) => ({
     ...step,
     icon: icons[index]

@@ -1,3 +1,5 @@
+// machinesData.ts — static catalog of industrial machines
+// Machine product shape for catalog and detail pages
 export interface Machine {
   id: number;
   slug: string;
@@ -29,6 +31,7 @@ export interface Machine {
   price: string;
 }
 
+// Full machine catalog for listings and detail pages
 export const machinesData: Machine[] = [
   {
     id: 1,
@@ -494,14 +497,17 @@ export const machinesData: Machine[] = [
   }
 ];
 
+// Lookup single machine by URL slug
 export function getMachineBySlug(slug: string): Machine | undefined {
   return machinesData.find(machine => machine.slug === slug);
 }
 
+// All slugs for static generation
 export function getAllMachineSlugs(): string[] {
   return machinesData.map(machine => machine.slug);
 }
 
+// Same-category machines excluding current
 export function getRelatedMachines(currentId: number, category: string, limit: number = 3): Machine[] {
   return machinesData
     .filter(machine => machine.id !== currentId && machine.category === category)

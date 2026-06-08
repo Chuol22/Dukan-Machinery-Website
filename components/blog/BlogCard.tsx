@@ -1,5 +1,6 @@
 'use client'
 
+// BlogCard — article preview card with featured and grid layouts
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -31,6 +32,7 @@ interface BlogCardProps {
 }
 
 export default function BlogCard({ post, featured = false }: BlogCardProps) {
+  // Like and bookmark interaction state
   const [isLiked, setIsLiked] = useState(false)
   const [isBookmarked, setIsBookmarked] = useState(false)
   const [likesCount, setLikesCount] = useState(post?.likes || 0)
@@ -48,6 +50,7 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
     setIsBookmarked(!isBookmarked)
   }
 
+  // Relative date label (Today, Yesterday, etc.)
   const formatDate = (dateString: string) => {
     if (!dateString) return 'Recent'
     const date = new Date(dateString)
@@ -68,6 +71,7 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
   const authorAvatar = post?.author?.avatar || ''
   const authorInitial = authorName.charAt(0).toUpperCase()
 
+  // Large horizontal layout for featured posts
   if (featured) {
     return (
       <motion.article
@@ -213,6 +217,7 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
     )
   }
 
+  // Standard vertical card for grid listings
   return (
     <motion.article
       initial={{ opacity: 0, y: 30 }}

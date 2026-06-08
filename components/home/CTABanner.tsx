@@ -1,5 +1,6 @@
 'use client'
 
+// Bottom CTA banner — benefits list and contact button
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 
@@ -8,9 +9,10 @@ import { ArrowRight, CheckCircle, Clock } from 'lucide-react'
 import Button from '@/components/ui/Button'
 
 export default function CTABanner() {
-    const ref = useRef(null)
+  const ref = useRef(null)
   const isInView = useInView(ref, { once: true, amount: 0.3 })
 
+  // Selling points displayed as pill badges
   const benefits = [
     'Free Consultation',
     'Custom Solutions',
@@ -20,6 +22,7 @@ export default function CTABanner() {
     'Competitive Pricing'
   ]
 
+  // Staggered fade-in for heading, benefits, and buttons
   const containerVariants = {
     hidden: { opacity: 0, scale: 0.95 },
     visible: {
@@ -43,7 +46,7 @@ export default function CTABanner() {
 
   return (
     <section ref={ref} className="relative py-16 sm:py-20 md:py-24 overflow-hidden bg-white dark:bg-gray-900">
-      {/* Background Gradient */}
+      {/* Decorative blurred gradient background */}
       <div className="absolute inset-0 bg-white dark:bg-gray-900">
         {/* Animated Background Pattern */}
         <div className="absolute inset-0 opacity-10">

@@ -1,5 +1,6 @@
 'use client';
 
+// RelatedMachines — same-category machine suggestions grid
 import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
@@ -12,6 +13,7 @@ interface RelatedMachinesProps {
 }
 
 export default function RelatedMachines({ currentMachineId, category }: RelatedMachinesProps) {
+  // Fetch related machines excluding current
   const relatedMachines = getRelatedMachines(currentMachineId, category);
 
   if (relatedMachines.length === 0) return null;
@@ -19,9 +21,11 @@ export default function RelatedMachines({ currentMachineId, category }: RelatedM
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pb-12">
       <div className="pt-8 border-t border-gray-200 dark:border-gray-700">
+        {/* Section title */}
         <h3 className="text-2xl font-black text-green-700 dark:text-white mb-6 text-center">
           Related Machines
         </h3>
+        {/* Related machine cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {relatedMachines.map((machine, index) => (
             <motion.div

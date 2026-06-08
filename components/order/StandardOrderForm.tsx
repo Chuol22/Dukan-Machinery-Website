@@ -1,5 +1,6 @@
 'use client'
 
+// StandardOrderForm — four-step wizard for catalog machine orders
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
@@ -13,7 +14,6 @@ import {
   Truck,
   CreditCard,
   FileText,
-  CheckCircle,
   Send,
 } from 'lucide-react'
 import Image from 'next/image'
@@ -47,11 +47,10 @@ export interface StandardOrderData {
   termsAccepted: boolean
 }
 
-// Helper component for safe image rendering
-function SafeMachineImage({ src, alt, machineName }: { src?: string; alt: string; machineName: string }) {
+// Machine thumbnail with fallback placeholder on load error
+function SafeMachineImage({ src, alt }: { src?: string; alt: string }) {
   const [imgError, setImgError] = useState(false)
-  
-  // If no src or image failed to load, show placeholder
+
   if (!src || imgError) {
     return (
       <div className="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
@@ -73,6 +72,7 @@ function SafeMachineImage({ src, alt, machineName }: { src?: string; alt: string
 }
 
 export default function StandardOrderForm({ onSubmit, preselectedMachineId }: StandardOrderFormProps) {
+  // Wizard step and form state
   const [currentStep, setCurrentStep] = useState(1)
   const [formData, setFormData] = useState<StandardOrderData>({
     machineId: preselectedMachineId || '',
@@ -95,10 +95,12 @@ export default function StandardOrderForm({ onSubmit, preselectedMachineId }: St
   })
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
 
+  // Selected machine from catalog
   const selectedMachine = machinesData.find(m => m.id === Number(formData.machineId))
 
+  // Parse price string (ranges or single value) to number
   const priceToNumber = (price: unknown): number => {
     if (typeof price === 'number') return price
     if (!price) return 0
@@ -119,12 +121,13 @@ export default function StandardOrderForm({ onSubmit, preselectedMachineId }: St
   const unitPriceNumber = priceToNumber(selectedMachine?.price)
   const totalPrice = unitPriceNumber * formData.quantity
 
-  // Helper to get image source from machine data
+  // Prefer gallery image, fall back to main product image
   const getMachineImageSrc = (machine: typeof selectedMachine): string | undefined => {
     if (!machine) return undefined
     return machine.gallery?.[0] || machine.image || undefined
   }
 
+  // Per-step field validation
   const validateStep = (step: number): boolean => {
     const newErrors: Record<string, string> = {}
 
@@ -169,83 +172,54 @@ export default function StandardOrderForm({ onSubmit, preselectedMachineId }: St
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
+  // POST order to API, then notify parent on success
   const handleSubmit = async () => {
     if (!validateStep(4)) return
 
-    // IMPORTANT: use a human-readable email body (NOT JSON dump)
-    const sanitize = (v: unknown) => {
-      if (v === null || v === undefined) return '-'
-      return String(v)
-    }
-
-
+    setSubmitError(null)
     setIsSubmitting(true)
 
-    setTimeout(() => {
-      const orderId = Date.now()
+    const orderId = `DUK-${preselectedMachineId || formData.machineId || '0'}-${formData.quantity}`
 
-      const submissionData = {
-        ...formData,
-        machineName: selectedMachine?.name,
-        unitPrice: unitPriceNumber,
-        totalPrice: totalPrice,
-        orderId,
-        status: 'pending'
+    const submissionData: StandardOrderData & {
+      machineName?: string
+      unitPrice: number
+      totalPrice: number
+      orderId: string
+      status: string
+    } = {
+      ...formData,
+      machineName: selectedMachine?.name,
+      unitPrice: unitPriceNumber,
+      totalPrice: totalPrice,
+      orderId,
+      status: 'pending',
+    }
+
+    try {
+      const res = await fetch('/api/send-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(submissionData),
+      })
+
+      if (!res.ok) {
+        const body = await res.json().catch(() => null)
+        throw new Error(body?.message ?? `Failed to submit order (HTTP ${res.status})`)
       }
-
-      // Persist for demo
-      const orders = JSON.parse(localStorage.getItem('orders') || '[]')
-      orders.push({ ...submissionData, date: new Date().toISOString() })
-      localStorage.setItem('orders', JSON.stringify(orders))
 
       setIsSubmitting(false)
-      setIsSubmitted(true)
+      // Only tell the parent. Parent's showSummary state controls what renders next.
       onSubmit?.(submissionData)
-
-      // Open email immediately so the company receives the request
-      try {
-        const companyEmail = 'cnyuondak@gmail.com'
-        const subject = `New Order Request - Dukan Machinery (DUK-${orderId})`
-
-        const body = [
-          `Thank you for your order!`,
-          ``,
-          `Order ID: ${orderId}`,
-          `Type: standard`,
-          ``,
-          `--- Machine ---`,
-          `Machine: ${submissionData.machineName || submissionData.machineId || '-'}`,
-          `Machine ID: ${submissionData.machineId || '-'}`,
-          `Quantity: ${submissionData.quantity}`,
-          `Unit Price (numeric): ${submissionData.unitPrice ?? 0}`,
-          `Total Price (numeric): ${submissionData.totalPrice ?? 0}`,
-          ``,
-          `--- Customer ---`,
-          `Name: ${submissionData.customerInfo?.fullName || '-'}`,
-          `Company: ${submissionData.customerInfo?.companyName || '-'}`,
-          `Email: ${submissionData.customerInfo?.email || '-'}`,
-          `Phone: ${submissionData.customerInfo?.phone || '-'}`,
-          `City: ${submissionData.customerInfo?.city || '-'}`,
-          `Address: ${submissionData.customerInfo?.address || '-'}`,
-          ``,
-          `--- Delivery ---`,
-          `Preferred Date: ${submissionData.deliveryInfo?.preferredDate || '-'}`,
-          `Delivery Address: ${submissionData.deliveryInfo?.deliveryAddress || '-'}`,
-          `Special Instructions: ${submissionData.deliveryInfo?.specialInstructions || '-'}`,
-          ``,
-          `--- Payment ---`,
-          `Payment Method: ${submissionData.paymentMethod || '-'}`,
-          `Terms Accepted: ${submissionData.termsAccepted ? 'Yes' : 'No'}`,
-        ].join('%0A')
-        window.location.href = `mailto:${companyEmail}?subject=${encodeURIComponent(subject)}&body=${body}`
-      } catch (e) {
-        console.error('Failed to open mail client', e)
-      }
-    }, 2000)
+    } catch (e) {
+      console.error('Order submission failed:', e)
+      const message = e instanceof Error ? e.message : 'An error occurred while submitting your order. Please try again.'
+      setSubmitError(message)
+      setIsSubmitting(false)
+    }
   }
 
-
-  const updateFormData = (field: string, value: any) => {
+  const updateFormData = (field: string, value: unknown) => {
     setFormData(prev => ({ ...prev, [field]: value }))
     if (errors[field]) {
       setErrors(prev => {
@@ -284,46 +258,51 @@ export default function StandardOrderForm({ onSubmit, preselectedMachineId }: St
     }
   }
 
-  if (isSubmitted) {
-    return (
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 text-center"
-      >
-        <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
-          <CheckCircle className="w-10 h-10 text-white" />
-        </div>
-        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-          Order Submitted Successfully!
-        </h3>
-        <p className="text-gray-600 dark:text-gray-400 mb-6">
-          Thank you for your order. Our team will contact you within 24 hours.
-        </p>
-        <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 mb-6">
-          <p className="text-sm text-gray-600 dark:text-gray-400">
-            Order Reference: <span className="font-mono font-semibold">DUK-{formData.machineId || '0000'}</span>
-          </p>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-            A confirmation email has been sent to {formData.customerInfo.email}
-          </p>
-        </div>
-        <button
-          onClick={() => window.location.href = '/'}
-          className="px-6 py-3 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition-colors"
-        >
-          Return to Home
-        </button>
-      </motion.div>
-    )
+  const handleReset = () => {
+    setIsSubmitting(false)
+    setSubmitError(null)
+    setErrors({})
+    setCurrentStep(1)
+    setFormData({
+      machineId: preselectedMachineId || '',
+      quantity: 1,
+      customerInfo: {
+        fullName: '',
+        companyName: '',
+        email: '',
+        phone: '',
+        address: '',
+        city: '',
+      },
+      deliveryInfo: {
+        preferredDate: '',
+        deliveryAddress: '',
+        specialInstructions: '',
+      },
+      paymentMethod: 'bank_transfer',
+      termsAccepted: false,
+    })
   }
 
   return (
     <div className="bg-gray-50 dark:bg-gray-900 rounded-2xl p-8 shadow-xl">
+      {/* Form title */}
       <h3 className="text-2xl font-black text-orange-500 dark:text-white mb-6 text-center">
         Place Your Order
       </h3>
-      
+
+      {/* Submission error banner */}
+      {submitError && (
+        <div className="mb-6 p-4 rounded-xl border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950/30 text-red-700 dark:text-red-400 text-sm font-semibold flex items-start gap-3">
+          <span className="text-lg leading-none">⚠️</span>
+          <div>
+            <p className="font-bold mb-0.5">Order submission failed</p>
+            <p className="font-normal text-red-600 dark:text-red-400">{submitError}</p>
+          </div>
+        </div>
+      )}
+
+      {/* Step progress indicator */}
       <div className="flex justify-between mb-8">
         {[1, 2, 3, 4].map((step) => (
           <div key={step} className="flex-1 text-center">
@@ -341,9 +320,10 @@ export default function StandardOrderForm({ onSubmit, preselectedMachineId }: St
           </div>
         ))}
       </div>
-      
+
       <div className="space-y-5">
         <AnimatePresence mode="wait">
+          {/* Step 1 — Product selection */}
           {currentStep === 1 && (
             <motion.div
               key="step1"
@@ -377,7 +357,6 @@ export default function StandardOrderForm({ onSubmit, preselectedMachineId }: St
                 )}
               </div>
 
-              {/* Machine Preview - FIXED IMAGE DISPLAY */}
               {selectedMachine && (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
@@ -386,10 +365,9 @@ export default function StandardOrderForm({ onSubmit, preselectedMachineId }: St
                 >
                   <div className="flex gap-4">
                     <div className="relative w-24 h-24 rounded-lg overflow-hidden shrink-0 bg-gray-100 dark:bg-gray-700">
-                      <SafeMachineImage 
+                      <SafeMachineImage
                         src={getMachineImageSrc(selectedMachine)}
                         alt={selectedMachine.name}
-                        machineName={selectedMachine.name}
                       />
                     </div>
                     <div className="flex-1">
@@ -409,7 +387,6 @@ export default function StandardOrderForm({ onSubmit, preselectedMachineId }: St
                 </motion.div>
               )}
 
-              {/* Quantity */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Quantity
@@ -443,7 +420,6 @@ export default function StandardOrderForm({ onSubmit, preselectedMachineId }: St
                 )}
               </div>
 
-              {/* Order Summary Preview */}
               {selectedMachine && (
                 <div className="bg-orange-50 dark:bg-orange-900/20 rounded-lg p-4">
                   <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
@@ -468,7 +444,7 @@ export default function StandardOrderForm({ onSubmit, preselectedMachineId }: St
             </motion.div>
           )}
 
-          {/* Step 2: Customer Information */}
+          {/* Step 2 — Customer information */}
           {currentStep === 2 && (
             <motion.div
               key="step2"
@@ -584,7 +560,7 @@ export default function StandardOrderForm({ onSubmit, preselectedMachineId }: St
             </motion.div>
           )}
 
-          {/* Step 3: Delivery Information */}
+          {/* Step 3 — Delivery details */}
           {currentStep === 3 && (
             <motion.div
               key="step3"
@@ -648,7 +624,7 @@ export default function StandardOrderForm({ onSubmit, preselectedMachineId }: St
             </motion.div>
           )}
 
-          {/* Step 4: Payment & Review */}
+          {/* Step 4 — Payment and review */}
           {currentStep === 4 && (
             <motion.div
               key="step4"
@@ -759,6 +735,7 @@ export default function StandardOrderForm({ onSubmit, preselectedMachineId }: St
           )}
         </AnimatePresence>
 
+        {/* Back / Continue / Submit navigation */}
         <div className="flex justify-between mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
           <button
             onClick={handleBack}
@@ -768,7 +745,7 @@ export default function StandardOrderForm({ onSubmit, preselectedMachineId }: St
           >
             Back
           </button>
-          
+
           {currentStep < 4 ? (
             <button
               onClick={handleNext}

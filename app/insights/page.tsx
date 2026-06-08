@@ -1,5 +1,6 @@
 'use client'
 
+// Insights/blog page — post listing with filters and newsletter signup
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { TrendingUp, Clock, Eye } from 'lucide-react'

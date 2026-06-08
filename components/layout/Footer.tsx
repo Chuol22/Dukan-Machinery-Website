@@ -1,5 +1,6 @@
 'use client';
 
+// Site footer — brand info, contact details, quick links, and scroll-to-top
 import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
@@ -122,7 +123,7 @@ export default function Footer() {
               <li className="flex items-start gap-2 sm:gap-3">
                 <Mail className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-orange-500 mt-0.5 shrink-0 animate-float" />
                 <div>
-                  <p className="text-white/60 text-[10px] sm:text-xs">cnyuondak@gmail.com</p>
+                  <p className="text-white/60 text-[10px] sm:text-xs">geletupro@gmail.com</p>
                 </div>
               </li>
               <li className="flex items-start gap-2 sm:gap-3">

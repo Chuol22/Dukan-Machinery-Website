@@ -1,3 +1,4 @@
+// ChatbotContext.tsx — chat message state and AI reply flow
 'use client'
 
 import { createContext, useState, useCallback, ReactNode, useContext } from 'react'
@@ -18,7 +19,6 @@ export function ChatProvider({ children }: { children: ReactNode }) {
   const [isProcessing, setIsProcessing] = useState(false)
 
   const sendMessage = useCallback(async (content: string) => {
-    // Add user message
     const userMessage: Message = {
       id: Date.now().toString(),
       role: 'user',
@@ -28,7 +28,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
     setMessages(prev => [...prev, userMessage])
     setIsProcessing(true)
 
-    // Simulate AI thinking
+    // Rule-based AI response with brief delay for UX
     setTimeout(() => {
       const response = getAIResponse(content)
       const botMessage: Message = {
@@ -60,6 +60,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
   )
 }
 
+// Hook for chat UI components
 export function useChatbot() {
   const context = useContext(ChatbotContext)
   if (!context) {

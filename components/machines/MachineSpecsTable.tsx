@@ -1,5 +1,6 @@
 'use client';
 
+// MachineSpecsTable — gradient highlight cards and grouped spec rows
 import React from 'react';
 
 interface Machine {
@@ -27,6 +28,7 @@ interface MachineSpecsTableProps {
   machine: Machine;
 }
 
+// Gradient card for a single key spec (capacity, power, etc.)
 const SpecCard = ({ icon, label, value, color }: { icon: React.ReactNode; label: string; value: string; color: string }) => (
   <div className={`bg-gradient-to-br ${color} p-3 rounded-lg text-white shadow-lg hover:scale-105 transition-transform duration-300`}>
     <div className="text-lg sm:text-xl mb-1">{icon}</div>
@@ -35,6 +37,7 @@ const SpecCard = ({ icon, label, value, color }: { icon: React.ReactNode; label:
   </div>
 );
 
+// Label/value row inside a spec group
 const InfoRow = ({ label, value }: any) => (
   <div className="flex justify-between items-center py-2 px-3 bg-white dark:bg-gray-800 rounded-lg text-xs sm:text-sm">
     <span className="font-bold text-gray-600 dark:text-gray-400">{label}:</span>
@@ -50,6 +53,7 @@ export default function MachineSpecsTable({ machine }: MachineSpecsTableProps) {
         {'detailPage.techSpecs'}
       </h3>
       
+      {/* Key spec highlight cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 mb-6">
         <SpecCard 
           icon="⚙️"
@@ -77,7 +81,9 @@ export default function MachineSpecsTable({ machine }: MachineSpecsTableProps) {
         />
       </div>
 
+      {/* Grouped spec tables */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* General info */}
         <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4">
           <h4 className="font-black text-green-700 dark:text-white text-sm sm:text-base mb-3 flex items-center gap-2">
             <span className="text-lg">📦</span>
@@ -91,6 +97,7 @@ export default function MachineSpecsTable({ machine }: MachineSpecsTableProps) {
           </div>
         </div>
 
+        {/* Performance metrics */}
         <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4">
           <h4 className="font-black text-green-700 dark:text-white text-sm sm:text-base mb-3 flex items-center gap-2">
             <span className="text-lg">🎯</span>
@@ -104,6 +111,7 @@ export default function MachineSpecsTable({ machine }: MachineSpecsTableProps) {
           </div>
         </div>
 
+        {/* Operational specs */}
         <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4">
           <h4 className="font-black text-green-700 dark:text-white text-sm sm:text-base mb-3 flex items-center gap-2">
             <span className="text-lg">🔧</span>
@@ -117,6 +125,7 @@ export default function MachineSpecsTable({ machine }: MachineSpecsTableProps) {
           </div>
         </div>
 
+        {/* Input/output material flow */}
         <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4">
           <h4 className="font-black text-green-700 dark:text-white text-sm sm:text-base mb-3 flex items-center gap-2">
             <span className="text-lg">💧</span>

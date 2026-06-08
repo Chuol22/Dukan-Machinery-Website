@@ -1,5 +1,6 @@
 'use client'
 
+// Client testimonials preview — grid of review cards + trust badges
 import { motion, useInView } from 'framer-motion'
 import { useRef, useState } from 'react'
 
@@ -10,6 +11,7 @@ export default function TestimonialsSection() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, amount: 0.1 })
 
+  // Static client reviews (shown as cards)
   const testimonialsTranslations = [
     {
       name: 'Henok',
@@ -67,7 +69,7 @@ export default function TestimonialsSection() {
           </h2>
         </motion.div>
 
-        {/* Testimonials Grid */}
+        {/* Review cards — one per client */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {testimonials.map((testimonial, index) => (
             <motion.div
@@ -78,7 +80,7 @@ export default function TestimonialsSection() {
               whileHover={{ y: -8 }}
               className="group relative bg-green-200 dark:bg-gray-800 rounded-2xl p-4 sm:p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700 hover:border-orange-200 dark:hover:border-orange-200"
             >
-              {/* Quote Icon Background */}
+              {/* Decorative quote watermark */}
               <div className="absolute top-4 sm:top-6 right-4 sm:right-6 opacity-10 group-hover:opacity-20 transition-opacity">
                 <Quote className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-orange-600" />
               </div>
@@ -98,7 +100,7 @@ export default function TestimonialsSection() {
                 &ldquo;{testimonial.content}&rdquo;
               </p>
 
-              {/* Author Info */}
+              {/* Client name, role, and location */}
               <div className="flex items-center gap-3 sm:gap-4">
                 <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-linear-to-br from-orange-500 to-orange-600 flex items-center justify-center text-white font-bold text-sm sm:text-base shadow-md">
                   {testimonial.initials}
@@ -122,7 +124,7 @@ export default function TestimonialsSection() {
           ))}
         </div>
 
-        {/* Trust Badges */}
+        {/* Aggregate rating summary */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : {}}

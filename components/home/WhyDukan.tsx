@@ -1,5 +1,6 @@
 'use client'
 
+// "Why Dukan" section — competitive advantages and animated company stats
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 import {
@@ -15,6 +16,7 @@ import {
 
 import { AnimatedCounter } from '@/components/shared/AnimatedCounter'
 
+// Static advantage cards (icons assigned by index in JSX)
 const advantages = [
   {
     icon: CheckCircle,
@@ -50,6 +52,7 @@ export default function WhyDukan() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, amount: 0.2 })
 
+  // Advantage cards — title, description, and highlight stat
   const advantages = [
     {
       title: 'Capacity Accuracy',
@@ -84,6 +87,7 @@ export default function WhyDukan() {
     lessDowntime: 'Less Downtime',
   }
 
+  // Animated counters shown in the green stats bar
   const stats = [
     { value: 50, suffix: '+', label: statsTranslations.machinesInstalled, icon: Settings },
     { value: 96, suffix: '%', label: statsTranslations.customerSatisfaction, icon: Users },

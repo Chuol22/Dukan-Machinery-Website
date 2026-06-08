@@ -1,0 +1,282 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id            String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  slug          String     @unique
+  name          String
+  description   String?
+  image         String?
+  parent_id     String?    @db.Uuid
+  display_order Int        @default(0)
+  is_active     Boolean    @default(true)
+  created_at    DateTime   @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime   @default(now()) @db.Timestamptz(6)
+  parent        Category?  @relation("CategoryToParent", fields: [parent_id], references: [id])
+  children      Category[] @relation("CategoryToParent")
+  machines      Machine[]
+
+  @@index([parent_id])
+  @@index([slug])
+  @@index([is_active])
+}
+
+model Machine {
+  id                  String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  slug                String         @unique
+  sku                 String         @unique
+  name                String
+  short_description   String?
+  description         String?
+  image               String?
+  gallery             String[]       @default([])
+  videos              String[]       @default([])
+  category_id         String         @db.Uuid
+  type                String
+  brand               String?
+  model               String?
+  specifications      Json?          @default("{}")
+  input               String?
+  output              String?
+  process             String?
+  features            String[]       @default([])
+  applications        String[]       @default([])
+  price               Float          @default(0)
+  compare_at_price    Float?
+  cost_price          Float?
+  stock_quantity      Int            @default(0)
+  low_stock_threshold Int            @default(5)
+  is_available        Boolean        @default(true)
+  is_featured         Boolean        @default(false)
+  is_new              Boolean        @default(false)
+  meta_title          String?
+  meta_description    String?
+  meta_keywords       String?
+  status              String         @default("draft")
+  created_at          DateTime       @default(now()) @db.Timestamptz(6)
+  updated_at          DateTime       @default(now()) @updatedAt @db.Timestamptz(6)
+  published_at        DateTime?      @db.Timestamptz(6)
+  cart_items          CartItem[]
+  category            Category       @relation(fields: [category_id], references: [id])
+  order_items         OrderItem[]
+  reviews             Review[]
+  wishlist_items      WishlistItem[]
+
+  @@index([slug])
+  @@index([sku])
+  @@index([category_id])
+  @@index([type])
+  @@index([brand])
+  @@index([status])
+  @@index([is_available])
+  @@index([is_featured])
+  @@index([price])
+  @@index([created_at(sort: Desc)])
+}
+
+model Profile {
+  id            String         @id @db.Uuid
+  email         String         @unique
+  name          String?
+  phone         String?
+  company       String?
+  tax_id        String?
+  avatar_url    String?
+  role          String         @default("customer")
+  created_at    DateTime       @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime       @default(now()) @updatedAt @db.Timestamptz(6)
+  addresses     Address[]
+  cart          Cart?
+  notifications Notification[]
+  orders        Order[]
+  reviews       Review[]
+  wishlist      Wishlist?
+
+  @@index([email])
+  @@index([role])
+}
+
+model Address {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  profile_id     String   @db.Uuid
+  type           String   @default("shipping")
+  street         String
+  city           String
+  state          String
+  zip_code       String
+  country        String
+  is_default     Boolean  @default(false)
+  created_at     DateTime @default(now()) @db.Timestamptz(6)
+  profile        Profile  @relation(fields: [profile_id], references: [id], onDelete: Cascade)
+  billing_orders Order[]  @relation("OrderBillingAddress")
+  orders         Order[]  @relation("OrderShippingAddress")
+
+  @@index([profile_id])
+}
+
+model Order {
+  id                      String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  order_number            String         @unique
+  profile_id              String         @db.Uuid
+  customer_name           String
+  customer_email          String
+  customer_phone          String?
+  shipping_address_id     String         @db.Uuid
+  billing_address_id      String?        @db.Uuid
+  subtotal                Float
+  shipping_cost           Float          @default(0)
+  tax_amount              Float          @default(0)
+  discount_amount         Float          @default(0)
+  total                   Float
+  status                  String         @default("pending")
+  payment_status          String         @default("unpaid")
+  payment_method          String?
+  /// Standard + admin/UI consistency
+  type                    String         @default("standard")
+  terms_accepted          Boolean        @default(false)
+  preferred_delivery_date DateTime?      @db.Timestamptz(6)
+  delivery_address_text   String?
+  special_instructions    String?
+  notes                   String?
+  admin_notes             String?
+  tracking_number         String?
+  shipped_at              DateTime?      @db.Timestamptz(6)
+  delivered_at            DateTime?      @db.Timestamptz(6)
+  created_at              DateTime       @default(now()) @db.Timestamptz(6)
+  updated_at              DateTime       @default(now()) @updatedAt @db.Timestamptz(6)
+  notifications           Notification[]
+  billing_address         Address?       @relation("OrderBillingAddress", fields: [billing_address_id], references: [id])
+  profile                 Profile        @relation(fields: [profile_id], references: [id])
+  shipping_address        Address        @relation("OrderShippingAddress", fields: [shipping_address_id], references: [id])
+  items                   OrderItem[]
+
+  @@index([order_number])
+  @@index([profile_id])
+  @@index([status])
+  @@index([payment_status])
+  @@index([created_at(sort: Desc)])
+}
+
+model OrderItem {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  order_id      String   @db.Uuid
+  machine_id    String   @db.Uuid
+  quantity      Int
+  price         Float
+  total         Float
+  product_name  String
+  product_sku   String
+  product_image String?
+  created_at    DateTime @default(now()) @db.Timestamptz(6)
+  machine       Machine  @relation(fields: [machine_id], references: [id])
+  order         Order    @relation(fields: [order_id], references: [id], onDelete: Cascade)
+
+  @@index([order_id])
+  @@index([machine_id])
+}
+
+model Cart {
+  id         String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  profile_id String     @unique @db.Uuid
+  created_at DateTime   @default(now()) @db.Timestamptz(6)
+  updated_at DateTime   @default(now()) @updatedAt @db.Timestamptz(6)
+  profile    Profile    @relation(fields: [profile_id], references: [id], onDelete: Cascade)
+  items      CartItem[]
+}
+
+model CartItem {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  cart_id    String   @db.Uuid
+  machine_id String   @db.Uuid
+  quantity   Int      @default(1)
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  updated_at DateTime @default(now()) @updatedAt @db.Timestamptz(6)
+  cart       Cart     @relation(fields: [cart_id], references: [id], onDelete: Cascade)
+  machine    Machine  @relation(fields: [machine_id], references: [id], onDelete: Cascade)
+
+  @@unique([cart_id, machine_id])
+  @@index([cart_id])
+  @@index([machine_id])
+}
+
+model Wishlist {
+  id         String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  profile_id String         @unique @db.Uuid
+  created_at DateTime       @default(now()) @db.Timestamptz(6)
+  profile    Profile        @relation(fields: [profile_id], references: [id], onDelete: Cascade)
+  items      WishlistItem[]
+}
+
+model WishlistItem {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  wishlist_id String   @db.Uuid
+  machine_id  String   @db.Uuid
+  created_at  DateTime @default(now()) @db.Timestamptz(6)
+  machine     Machine  @relation(fields: [machine_id], references: [id], onDelete: Cascade)
+  wishlist    Wishlist @relation(fields: [wishlist_id], references: [id], onDelete: Cascade)
+
+  @@unique([wishlist_id, machine_id])
+  @@index([wishlist_id])
+  @@index([machine_id])
+}
+
+model Review {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  profile_id  String   @db.Uuid
+  machine_id  String   @db.Uuid
+  rating      Int      @default(5)
+  title       String?
+  comment     String?
+  is_verified Boolean  @default(false)
+  is_approved Boolean  @default(false)
+  created_at  DateTime @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime @default(now()) @updatedAt @db.Timestamptz(6)
+  machine     Machine  @relation(fields: [machine_id], references: [id], onDelete: Cascade)
+  profile     Profile  @relation(fields: [profile_id], references: [id], onDelete: Cascade)
+
+  @@unique([profile_id, machine_id])
+  @@index([machine_id, is_approved])
+  @@index([rating])
+  @@index([created_at(sort: Desc)])
+}
+
+model Notification {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  profile_id String?  @db.Uuid
+  order_id   String?  @db.Uuid
+  type       String
+  title      String
+  message    String
+  read       Boolean  @default(false)
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  order      Order?   @relation(fields: [order_id], references: [id], onDelete: Cascade)
+  profile    Profile? @relation(fields: [profile_id], references: [id], onDelete: Cascade)
+
+  @@index([profile_id])
+  @@index([order_id])
+  @@index([read])
+  @@index([created_at(sort: Desc)])
+}
+
+model ContactSubmission {
+  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name         String
+  email        String
+  phone        String?
+  subject      String
+  message      String
+  order_number String?
+  status       String    @default("unread")
+  replied_at   DateTime? @db.Timestamptz(6)
+  created_at   DateTime  @default(now()) @db.Timestamptz(6)
+
+  @@index([status])
+  @@index([created_at(sort: Desc)])
+  @@index([email])
+}

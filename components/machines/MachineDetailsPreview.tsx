@@ -1,5 +1,6 @@
 'use client';
 
+// MachineDetailsPreview — tabbed detail panel with thumbnail machine picker
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -26,6 +27,7 @@ interface MachineDetailsPreviewProps {
   allMachines: Machine[];
 }
 
+// Tab nav button with active underline state
 const TabButton = ({ active, onClick, children, icon }: any) => (
   <button
     onClick={onClick}
@@ -40,6 +42,7 @@ const TabButton = ({ active, onClick, children, icon }: any) => (
   </button>
 );
 
+// Single maintenance task row with priority badge
 const MaintenanceItem = ({ title, priority, frequency }: any) => {
   const priorityColors: Record<string, string> = {
     High: 'bg-red-100 text-red-700',
@@ -71,12 +74,15 @@ const MaintenanceItem = ({ title, priority, frequency }: any) => {
 };
 
 export default function MachineDetailsPreview({ machineId, allMachines }: MachineDetailsPreviewProps) {
+  // Active tab and selected thumbnail index
   const [activeTab, setActiveTab] = useState('maintenance');
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
+  // Lookup machine from catalog by ID
   const machine = allMachines.find(m => m.id === machineId);
   if (!machine) return null;
 
+  // Detail panel tab definitions
   const tabs = [
     { id: 'specifications', label: 'Specifications', icon: '📊' },
     { id: 'process', label: 'Process Diagram', icon: '⚙️' },
@@ -84,6 +90,7 @@ export default function MachineDetailsPreview({ machineId, allMachines }: Machin
     { id: 'warranty', label: 'Warranty', icon: '🛡️' },
   ];
 
+  // Scheduled maintenance checklist
   const maintenanceTasks = [
     { title: 'Clean blades and rollers', priority: 'High', frequency: 'Daily' },
     { title: 'Lubricate bearings', priority: 'Medium', frequency: 'Weekly' },

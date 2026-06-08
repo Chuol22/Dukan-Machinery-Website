@@ -1,5 +1,5 @@
+// socialLinks.ts — central social and contact URLs
 export type SocialPlatform = 'whatsapp' | 'telegram' | 'tiktok' | 'email'
-
 
 export type SocialLinkConfig = {
   [K in SocialPlatform]: {
@@ -8,8 +8,6 @@ export type SocialLinkConfig = {
   }
 }
 
-// Central place to update social URLs/usernames later.
-// Keep this file framework-agnostic and use absolute links.
 export const socialLinks: SocialLinkConfig = {
   whatsapp: {
     label: 'WhatsApp',
@@ -29,5 +27,3 @@ export const socialLinks: SocialLinkConfig = {
   },
 }
 
-
- 

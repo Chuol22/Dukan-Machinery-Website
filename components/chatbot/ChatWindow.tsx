@@ -1,5 +1,6 @@
 'use client'
 
+// ChatWindow — chat panel with messages, quick actions, and input
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
@@ -27,7 +28,7 @@ export default function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
 
   const { messages, sendMessage, clearMessages, isProcessing } = useChatbot()
 
-  // ✅ Smooth auto-scroll
+  // Auto-scroll to latest message
   useEffect(() => {
     if (messagesRef.current) {
       messagesRef.current.scrollTo({
@@ -61,7 +62,7 @@ export default function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
   return (
     <div className="flex flex-col h-full bg-white dark:bg-gray-900">
 
-      {/* HEADER */}
+      {/* Header */}
       <div className="flex-shrink-0 bg-gradient-to-r from-orange-600 via-orange-500 to-orange-600 px-4 py-3 rounded-t-2xl shadow-md">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -89,7 +90,7 @@ export default function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
         </div>
       </div>
 
-      {/* MESSAGES AREA */}
+      {/* Messages area */}
       <div className="flex-1 flex flex-col overflow-hidden bg-gray-50/50 dark:bg-gray-950/20 backdrop-blur-[2px]">
 
         <div
@@ -102,7 +103,7 @@ export default function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
               <ChatMessage key={msg.id || i} message={msg} />
             ))}
 
-            {/* ✅ TYPING INDICATOR */}
+            {/* Typing indicator */}
             {isProcessing && (
               <motion.div
                 initial={{ opacity: 0, y: 10, scale: 0.95 }}
@@ -124,7 +125,7 @@ export default function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
           </AnimatePresence>
         </div>
 
-        {/* QUICK ACTIONS */}
+        {/* Quick actions — shown on new chat */}
         {messages.length <= 1 && (
           <div className="px-4 py-2 bg-gradient-to-t from-white via-white to-transparent dark:from-neutral-900 dark:via-neutral-900">
             <QuickActions onActionClick={handleQuickAction} />
@@ -133,7 +134,7 @@ export default function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
 
       </div>
 
-      {/* INPUT */}
+      {/* Message input */}
       <div className="p-4 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900">
         <div className="flex gap-3 items-center bg-gray-100 dark:bg-gray-800 rounded-2xl p-1 focus-within:ring-2 focus-within:ring-orange-500/20 transition-all">
           <input

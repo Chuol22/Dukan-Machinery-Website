@@ -1,10 +1,11 @@
-// app/testimonials/page.tsx
+// Testimonials page — full client reviews with ratings and trust indicators
 'use client'
 
 import { useState, useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { Star, Building2, Calendar, Quote, ChevronRight, Award } from 'lucide-react'
 
+// Static client review data
 const testimonials = [
   {
     id: 1,

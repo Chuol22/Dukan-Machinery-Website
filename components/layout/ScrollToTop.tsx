@@ -1,5 +1,6 @@
 'use client'
 
+// Floating scroll-to-top button — appears after scrolling down
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowUp } from 'lucide-react'

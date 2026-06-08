@@ -1,5 +1,6 @@
 'use client'
 
+// Reusable button — variants, sizes, loading spinner, and optional icon
 import { forwardRef } from 'react'
 import { Loader2 } from 'lucide-react'
 
