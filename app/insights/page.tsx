@@ -8,8 +8,39 @@ import BlogCard from '@/components/blog/BlogCard'
 import BlogFilters from '@/components/blog/BlogFilters'
 import NewsletterSignup from '@/components/blog/NewsletterSignup'
 
+interface BlogAuthor {
+  name: string
+  avatar: string
+  bio: string
+}
+
+interface BlogPost {
+  id: string
+  slug: string
+  title: string
+  excerpt: string
+  content: string
+  featuredImage: string
+  author: BlogAuthor
+  category: string
+  tags: string[]
+  readTime: number
+  publishedAt: string
+  views: number
+  likes: number
+  featured: boolean
+}
+
+interface FilterOptions {
+  search: string
+  category: string
+  tag: string
+  sortBy: 'newest' | 'oldest' | 'popular' | 'trending'
+  dateRange: 'all' | 'week' | 'month' | 'year'
+}
+
 // Helper function to ensure all posts have complete author data
-const ensureCompletePostData = (posts: any[]) => {
+const ensureCompletePostData = (posts: BlogPost[]): BlogPost[] => {
   return posts.map(post => ({
     ...post,
     author: {
@@ -21,7 +52,7 @@ const ensureCompletePostData = (posts: any[]) => {
 }
 
 // Blog posts data with local image paths
-const rawBlogPosts = [
+const rawBlogPosts: BlogPost[] = [
   {
     id: '1',
     slug: 'choosing-right-feed-mill',
@@ -113,12 +144,12 @@ const allCategories = [...new Set(blogPosts.map(post => post.category))]
 const allTags = [...new Set(blogPosts.flatMap(post => post.tags))]
 
 export default function InsightsPage() {
-  const [filteredPosts, setFilteredPosts] = useState(blogPosts)
-  const [featuredPost, setFeaturedPost] = useState(blogPosts.find(p => p.featured) || blogPosts[0])
-  const [regularPosts, setRegularPosts] = useState(blogPosts.filter(p => !p.featured))
+  const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>(blogPosts)
+  const [featuredPost, setFeaturedPost] = useState<BlogPost>(blogPosts.find(p => p.featured) || blogPosts[0])
+  const [regularPosts, setRegularPosts] = useState<BlogPost[]>(blogPosts.filter(p => !p.featured))
 
-  const handleFilterChange = (filters: any) => {
-    let filtered = [...blogPosts]
+  const handleFilterChange = (filters: FilterOptions) => {
+    let filtered: BlogPost[] = [...blogPosts]
 
     // Search filter
     if (filters.search) {
@@ -126,7 +157,7 @@ export default function InsightsPage() {
       filtered = filtered.filter(post =>
         post.title.toLowerCase().includes(searchLower) ||
         post.excerpt.toLowerCase().includes(searchLower) ||
-        post.tags.some((tag: string) => tag.toLowerCase().includes(searchLower))
+        post.tags.some(tag => tag.toLowerCase().includes(searchLower))
       )
     }
 
