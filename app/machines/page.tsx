@@ -1,28 +1,99 @@
 'use client';
 
 // Machines catalog page — filters, search, grid, and inline detail preview
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import MachineFilters from '@/components/machines/MachineFilters';
 import MachinesCatalog from '@/components/machines/MachinesCatalog';
 import MachineDetailsPreview from '@/components/machines/MachineDetailsPreview';
-import { useEffect } from 'react';
-import { machinesData, type Machine } from '@/data/machinesData';
+import { machinesData } from '@/data/machinesData';
+
+type PublicMachine = {
+  id: string | number;
+  slug: string;
+  name: string;
+  image: string;
+  gallery?: string[];
+  category: string;
+  type: string;
+  capacity: string;
+  power: string;
+  input: string;
+  output: string;
+  process: string;
+  price: string;
+  available?: boolean;
+  availability_status?: string;
+  motor_type?: string;
+  weight?: string;
+  dimensions?: string;
+  voltage?: string;
+  warranty?: string;
+  description?: string;
+  features?: string[];
+  applications?: string[];
+};
 
 export default function MachinesPage() {
+  const [machines, setMachines] = useState<PublicMachine[]>(machinesData as PublicMachine[]);
+  const [categories, setCategories] = useState<string[]>(['All']);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedStage, setSelectedStage] = useState('All');
   const [selectedCapacity, setSelectedCapacity] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
   const [showFilters, setShowFilters] = useState(false);
-  const [selectedMachineId, setSelectedMachineId] = useState<number | null>(machinesData[0]?.id || null);
+  const [selectedMachineId, setSelectedMachineId] = useState<string | number | null>(machinesData[0]?.id || null);
+
+  useEffect(() => {
+    const loadCatalog = async () => {
+      try {
+        const [machinesRes, categoriesRes] = await Promise.all([
+          fetch('/api/machines'),
+          fetch('/api/categories'),
+        ]);
+
+        if (machinesRes.ok) {
+          const data = await machinesRes.json();
+          if (Array.isArray(data.machines) && data.machines.length > 0) {
+            setMachines(data.machines as PublicMachine[]);
+          }
+        }
+
+        if (categoriesRes.ok) {
+          const data = await categoriesRes.json();
+          const names = Array.isArray(data.categories)
+            ? data.categories
+                .map((category: { name?: string }) => category.name)
+                .filter(Boolean)
+            : [];
+          setCategories(['All', ...names]);
+        }
+      } catch {
+        setMachines(machinesData as PublicMachine[]);
+        setCategories(['All', ...Array.from(new Set(machinesData.map((machine) => machine.category)))]);
+      }
+    };
+
+    void loadCatalog();
+  }, []);
+
+  useEffect(() => {
+    if (!machines.length) {
+      setSelectedMachineId(null);
+      return;
+    }
+
+    if (!selectedMachineId || !machines.some((machine) => String(machine.id) === String(selectedMachineId))) {
+      setSelectedMachineId(machines[0].id);
+    }
+  }, [machines, selectedMachineId]);
 
   // Apply category, type, capacity, and search filters
-  const filteredMachines = machinesData.filter(machine => {
+  const filteredMachines = machines.filter((machine) => {
     const matchesCategory = selectedCategory === 'All' || machine.category === selectedCategory;
     const matchesStage = selectedStage === 'All' || machine.type === selectedStage;
     const matchesSearch = machine.name.toLowerCase().includes(searchTerm.toLowerCase());
-    
+
     let matchesCapacity = true;
     if (selectedCapacity !== 'All') {
       const capacityValue = parseInt(machine.capacity) || 0;
@@ -30,16 +101,16 @@ export default function MachinesPage() {
       else if (selectedCapacity === 'Medium (500-2000 kg/hr)') matchesCapacity = capacityValue >= 500 && capacityValue <= 2000;
       else if (selectedCapacity === 'Large (>2000 kg/hr)') matchesCapacity = capacityValue > 2000;
     }
-    
+
     return matchesCategory && matchesStage && matchesSearch && matchesCapacity;
   });
 
   // Select machine and scroll to inline preview panel
-  const handleViewDetails = (machineId: number) => {
+  const handleViewDetails = (machineId: string | number) => {
     setSelectedMachineId(machineId);
     setTimeout(() => {
-      document.getElementById('machine-details-preview')?.scrollIntoView({ 
-        behavior: 'smooth' 
+      document.getElementById('machine-details-preview')?.scrollIntoView({
+        behavior: 'smooth',
       });
     }, 100);
   };
@@ -87,6 +158,7 @@ export default function MachinesPage() {
         showFilters={showFilters}
         setShowFilters={setShowFilters}
         totalMachines={filteredMachines.length}
+        availableCategories={categories}
       />
 
       {/* Machines Catalog Section */}
@@ -97,9 +169,9 @@ export default function MachinesPage() {
 
       {/* Machine Details Preview Section */}
       {selectedMachineId && (
-        <MachineDetailsPreview 
+        <MachineDetailsPreview
           machineId={selectedMachineId}
-          allMachines={machinesData}
+          allMachines={machines}
         />
       )}
     </div>

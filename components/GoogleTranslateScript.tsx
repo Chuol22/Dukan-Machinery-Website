@@ -30,7 +30,7 @@ export function GoogleTranslateScript() {
     // it tries to remove is no longer a direct child.
     // We patch removeChild and insertBefore to silently catch this.
     // ---------------------------------------------------------
-    if (typeof Node === 'function' && Node.prototype && !(window as any).__googleTranslatePatched) {
+    if (typeof Node === 'function' && Node.prototype && !(window as unknown as { __googleTranslatePatched?: boolean }).__googleTranslatePatched) {
       const originalRemoveChild = Node.prototype.removeChild;
       Node.prototype.removeChild = function <T extends Node>(child: T): T {
         if (child.parentNode !== this) {
@@ -46,7 +46,7 @@ export function GoogleTranslateScript() {
         }
         return originalInsertBefore.apply(this, [newNode, referenceNode]) as T;
       };
-      (window as any).__googleTranslatePatched = true;
+      (window as unknown as { __googleTranslatePatched?: boolean }).__googleTranslatePatched = true;
     }
 
     // Prevent double initialization

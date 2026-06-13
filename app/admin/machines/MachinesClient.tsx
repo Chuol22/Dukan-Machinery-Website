@@ -6,8 +6,13 @@ import { Machine as StaticMachine } from '@/data/machinesData';
 import CloudinaryImage from '@/components/CloudinaryImage';
 
 // Extend the static Machine type to match the DB/API payload.
-// The API supports `available`, but the static machinesData model does not.
-type Machine = StaticMachine & { available?: boolean };
+// The API supports `available`, `availability_status`, and `motor_type`.
+type Machine = StaticMachine & { 
+  available?: boolean; 
+  availability_status?: string; 
+  motor_type?: string;
+  inventory_status?: 'available' | 'out_of_stock' | 'reserved' | 'maintenance' | 'coming_soon' | 'discontinued';
+};
 
 import {
   Package,
@@ -44,6 +49,8 @@ export default function MachinesClient({ openAddOnMount = false }: { openAddOnMo
   const [formData, setFormData] = useState<Partial<Machine>>({});
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [categoryOptions, setCategoryOptions] = useState<{ id: string; name: string }[]>([]);
+  const [loadingCategories, setLoadingCategories] = useState(false);
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -72,9 +79,26 @@ export default function MachinesClient({ openAddOnMount = false }: { openAddOnMo
     }
   };
 
+  const loadCategories = async () => {
+    try {
+      setLoadingCategories(true);
+      const res = await fetch('/api/admin/categories');
+      if (!res.ok) return;
+      const data = await res.json();
+      setCategoryOptions(data.categories ?? []);
+    } catch {
+      setCategoryOptions([]);
+    } finally {
+      setLoadingCategories(false);
+    }
+  };
+
   useEffect(() => {
     // Defer to avoid linter warning about setState in effect body
-    void Promise.resolve().then(() => loadMachines());
+    void Promise.resolve().then(() => {
+      void loadMachines();
+      void loadCategories();
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -135,6 +159,8 @@ export default function MachinesClient({ openAddOnMount = false }: { openAddOnMo
       image: '',
       gallery: [],
       available: true,
+      availability_status: 'available',
+      motor_type: '',
     });
     setFormErrors({});
     setShowAddForm(true);
@@ -220,12 +246,13 @@ export default function MachinesClient({ openAddOnMount = false }: { openAddOnMo
     }
   };
 
-  const toggleAvailability = async (machine: Machine) => {
+  const updateAvailability = async (machine: Machine, status: string) => {
     try {
+      const nextStatus = status || 'available';
       const res = await fetch(`/api/machines/${machine.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...machine, available: !machine.available }),
+        body: JSON.stringify({ ...machine, availability_status: nextStatus, available: !['out_of_stock', 'maintenance', 'discontinued'].includes(nextStatus) }),
       });
 
       if (!res.ok) {
@@ -239,7 +266,7 @@ export default function MachinesClient({ openAddOnMount = false }: { openAddOnMo
           m.id === machine.id ? { ...data.machine } as Machine : m
         )
       );
-      showToast(`${machine.name} is now ${!machine.available ? 'available' : 'unavailable'}.`, 'success');
+      showToast(`${machine.name} status updated to ${nextStatus.replace(/_/g, ' ')}.`, 'success');
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Failed to update availability';
       showToast(msg, 'error');
@@ -448,28 +475,23 @@ export default function MachinesClient({ openAddOnMount = false }: { openAddOnMo
 
                       {/* Status */}
                       <td className="py-4 px-4">
-                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold ${machine.available
-                          ? 'bg-green-50 dark:bg-green-950/40 text-green-700 dark:text-green-400 border border-green-200/50 dark:border-green-800/50'
-                          : 'bg-gray-100 dark:bg-gray-800 text-gray-500 border border-gray-200 dark:border-gray-700'
-                          }`}>
-                          {machine.available ? 'Available' : 'Unavailable'}
-                        </span>
+                        <select
+                          value={machine.availability_status || (machine.available ? 'available' : 'out_of_stock')}
+                          onChange={(event) => updateAvailability(machine, event.target.value)}
+                          className="rounded-lg border border-gray-200 bg-white px-2 py-1.5 text-xs font-semibold text-gray-700 dark:border-gray-800 dark:bg-gray-950 dark:text-gray-300"
+                        >
+                          <option value="available">Available</option>
+                          <option value="reserved">Reserved</option>
+                          <option value="out_of_stock">Out of stock</option>
+                          <option value="maintenance">Maintenance</option>
+                          <option value="coming_soon">Coming soon</option>
+                          <option value="discontinued">Discontinued</option>
+                        </select>
                       </td>
 
                       {/* Actions */}
                       <td className="py-4 px-4 text-right">
                         <div className="flex items-center justify-end space-x-1.5">
-                          <button
-                            onClick={() => toggleAvailability(machine)}
-                            title={machine.available ? 'Mark unavailable' : 'Mark available'}
-                            aria-label={machine.available ? 'Mark unavailable' : 'Mark available'}
-                            className={`p-1.5 rounded-lg text-xs font-semibold transition-colors ${machine.available
-                              ? 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-amber-100 dark:hover:bg-amber-950/30 hover:text-amber-700 dark:hover:text-amber-400'
-                              : 'bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-950/50'
-                              }`}
-                          >
-                            {machine.available ? <ToggleRight className="w-4 h-4" /> : <ToggleLeft className="w-4 h-4" />}
-                          </button>
                           <button
                             onClick={() => handleEditMachine(machine)}
                             title="Edit machine"
@@ -631,13 +653,17 @@ export default function MachinesClient({ openAddOnMount = false }: { openAddOnMo
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1.5">Category *</label>
-                  <input
-                    type="text"
+                  <select
                     value={formData.category || ''}
                     onChange={(e) => updateField('category', e.target.value)}
                     className="w-full px-4 py-2.5 text-sm rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
-                    placeholder="e.g. Feed Processing"
-                  />
+                    disabled={loadingCategories}
+                  >
+                    <option value="">Select a category</option>
+                    {categoryOptions.map((category) => (
+                      <option key={category.id} value={category.name}>{category.name}</option>
+                    ))}
+                  </select>
                   {formErrors.category && <p className="mt-1 text-xs text-red-500">{formErrors.category}</p>}
                 </div>
                 <div>
@@ -650,6 +676,34 @@ export default function MachinesClient({ openAddOnMount = false }: { openAddOnMo
                     placeholder="e.g. Pellet"
                   />
                   {formErrors.type && <p className="mt-1 text-xs text-red-500">{formErrors.type}</p>}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1.5">Motor Type</label>
+                  <input
+                    type="text"
+                    value={formData.motor_type || ''}
+                    onChange={(e) => updateField('motor_type', e.target.value)}
+                    className="w-full px-4 py-2.5 text-sm rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    placeholder="e.g. 15 kW electric"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1.5">Inventory Status</label>
+                  <select
+                    value={formData.availability_status || 'available'}
+                    onChange={(e) => updateField('availability_status', e.target.value)}
+                    className="w-full px-4 py-2.5 text-sm rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  >
+                    <option value="available">Available</option>
+                    <option value="reserved">Reserved</option>
+                    <option value="out_of_stock">Out of stock</option>
+                    <option value="maintenance">Maintenance</option>
+                    <option value="coming_soon">Coming soon</option>
+                    <option value="discontinued">Discontinued</option>
+                  </select>
                 </div>
               </div>
 

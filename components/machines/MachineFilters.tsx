@@ -17,6 +17,7 @@ interface MachineFiltersProps {
   showFilters: boolean;
   setShowFilters: (value: boolean) => void;
   totalMachines: number;
+  availableCategories?: string[];
 }
 
 export default function MachineFilters({
@@ -30,10 +31,11 @@ export default function MachineFilters({
   setSearchTerm,
   showFilters,
   setShowFilters,
-  totalMachines
+  totalMachines,
+  availableCategories = []
 }: MachineFiltersProps) {
   // Filter dropdown options
-  const categories = ['All', 'Cattle', 'Poultry', 'Goat', 'General Purpose'];
+  const categories = ['All', ...availableCategories.filter((value) => value && value !== 'All')];
   const stages = ['All', 'Preparation', 'Processing', 'Packaging'];
   const capacities = ['All', 'Small', 'Medium', 'Large'];
 

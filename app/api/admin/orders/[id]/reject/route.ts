@@ -20,10 +20,22 @@ export async function POST(
     // First get the order using Prisma
     const order = await prisma.order.findUnique({
       where: { id },
-      include: {
-        items: true,
-        profile: true,
-      }
+      select: {
+        id: true,
+        order_number: true,
+        status: true,
+        total: true,
+        customer_name: true,
+        customer_email: true,
+        customer_phone: true,
+        profile_id: true,
+        items: {
+          select: {
+            product_name: true,
+            quantity: true,
+          },
+        },
+      },
     });
 
     if (!order) {

@@ -3,6 +3,44 @@ import { NextResponse } from 'next/server';
 import { verifyAdminSession } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 
+export async function PUT(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params;
+    const session = await verifyAdminSession();
+    if (!session) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const body = await request.json();
+    const adminNotes = body?.admin_notes !== undefined ? String(body.admin_notes) : undefined;
+    const assignedTo = body?.assigned_to !== undefined ? String(body.assigned_to) : undefined;
+
+    const existing = await prisma.order.findUnique({ where: { id } });
+    if (!existing) {
+      return NextResponse.json({ error: 'Order not found' }, { status: 404 });
+    }
+
+    const mergedNotes = [existing.admin_notes, adminNotes].filter(Boolean).join('\n\n');
+    const nextAssigned = assignedTo ?? existing.admin_notes?.split('Assigned to:')?.[1]?.split('\n')?.[0]?.trim() ?? null;
+
+    const order = await prisma.order.update({
+      where: { id },
+      data: {
+        admin_notes: mergedNotes || null,
+        ...(nextAssigned ? { admin_notes: `${mergedNotes ? `${mergedNotes}\n\n` : ''}Assigned to: ${nextAssigned}`.trim() } : {}),
+      },
+    });
+
+    return NextResponse.json({ order });
+  } catch (error) {
+    console.error('Update order workflow error:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}
+
 export async function DELETE(
   request: Request,
   { params }: { params: Promise<{ id: string }> }

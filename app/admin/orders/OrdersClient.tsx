@@ -22,8 +22,14 @@ import {
   User,
   ShieldAlert,
   ExternalLink,
-  Trash2
+  Trash2,
 } from 'lucide-react';
+
+type QuotationRow = {
+  id: string;
+  status: string;
+  quotation_number: string;
+};
 
 type OrderRow = {
   id: string;
@@ -51,7 +57,10 @@ type OrderRow = {
   };
   paymentMethod: string;
   termsAccepted: boolean;
+  adminNotes?: string | null;
+  assignedTo?: string | null;
   createdAt: string;
+  quotations?: QuotationRow[];
 };
 
 export default function OrdersClient() {
@@ -68,6 +77,8 @@ export default function OrdersClient() {
 
   // Modal State
   const [selectedOrder, setSelectedOrder] = useState<OrderRow | null>(null);
+  const [workflowNote, setWorkflowNote] = useState('');
+  const [assignedTo, setAssignedTo] = useState('');
 
   // Feedback message state (Toast-like)
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
@@ -104,13 +115,13 @@ export default function OrdersClient() {
       };
 
       const normalizedOrders = (orders as unknown[]).map((order) => {
-        const o = order as { status?: unknown } & Record<string, unknown>;
+        const o = order as { status?: unknown } & Partial<OrderRow> & Record<string, unknown>;
+        const nextStatus = normalizeStatus(o.status);
         return {
-          ...(o as any),
-          status: normalizeStatus(o.status),
+          ...(o as OrderRow),
+          status: nextStatus,
         };
-      }) as unknown as OrderRow[];
-
+      });
 
       setRows(normalizedOrders);
     } catch (e) {
@@ -121,9 +132,11 @@ export default function OrdersClient() {
     }
   };
 
-
   useEffect(() => {
-    void loadOrders();
+    // Fire-and-forget load (defer to avoid sync setState during effect evaluation).
+    queueMicrotask(() => {
+      void loadOrders();
+    });
   }, []);
 
   // Open order detail when linked from notifications (?order=<id>)
@@ -132,10 +145,15 @@ export default function OrdersClient() {
     if (!orderId || rows.length === 0) return;
 
     const match = rows.find((r) => r.id === orderId);
-    if (match) setSelectedOrder(match);
+    if (!match) return;
+
+    // Defer setState to avoid cascading renders warning.
+    queueMicrotask(() => {
+      setSelectedOrder((prev) => (prev?.id === match.id ? prev : match));
+      setWorkflowNote((prev) => (prev === (match.adminNotes ?? '') ? prev : match.adminNotes ?? ''));
+      setAssignedTo((prev) => (prev === (match.assignedTo ?? '') ? prev : match.assignedTo ?? ''));
+    });
   }, [searchParams, rows]);
-
-
 
   // Compute stats from raw data
   const stats = useMemo(() => {
@@ -146,7 +164,14 @@ export default function OrdersClient() {
     const revenue = confirmedOrders.reduce((sum, r) => sum + (r.totalAmount ?? 0), 0);
     const acceptanceRate = total > 0 ? Math.round((confirmedOrders.length / total) * 100) : 0;
 
-    return { total, pending, revenue, acceptanceRate, confirmed: confirmedOrders.length, rejected: rejectedOrders.length };
+    return {
+      total,
+      pending,
+      revenue,
+      acceptanceRate,
+      confirmed: confirmedOrders.length,
+      rejected: rejectedOrders.length,
+    };
   }, [rows]);
 
   const onDecision = async (id: string, action: 'accept' | 'reject') => {
@@ -168,19 +193,52 @@ export default function OrdersClient() {
       const nextStatus = action === 'accept' ? 'confirmed' : 'rejected';
 
       // Update local state
-      setRows((prev) =>
-        prev.map((r) => (r.id === id ? { ...r, status: nextStatus } : r))
-      );
+      setRows((prev) => prev.map((r) => (r.id === id ? { ...r, status: nextStatus } : r)));
 
       // Update selected order in modal if active
-      if (selectedOrder && selectedOrder.id === id) {
-        setSelectedOrder((prev) => prev ? { ...prev, status: nextStatus } : null);
-      }
+      setSelectedOrder((prev) => (prev && prev.id === id ? { ...prev, status: nextStatus } : prev));
 
       showToast(`Order successfully ${nextStatus}!`, 'success');
 
       // Background refresh
-      loadOrders().catch(() => { });
+      loadOrders(false).catch(() => {});
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Unknown error';
+      showToast(msg, 'error');
+    } finally {
+      setSubmittingIds((prev) => ({ ...prev, [id]: false }));
+    }
+  };
+
+  const onSaveWorkflow = async (id: string) => {
+    if (submittingIds[id]) return;
+    setSubmittingIds((prev) => ({ ...prev, [id]: true }));
+
+    try {
+      const res = await fetch(`/api/admin/orders/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ admin_notes: workflowNote, assigned_to: assignedTo }),
+      });
+
+      if (!res.ok) {
+        const body = await res.json().catch(() => null);
+        throw new Error(body?.error ?? 'Failed to save workflow note');
+      }
+
+      setRows((prev) =>
+        prev.map((row) =>
+          row.id === id
+            ? { ...row, adminNotes: workflowNote || null, assignedTo: assignedTo || null }
+            : row
+        )
+      );
+      setSelectedOrder((prev) =>
+        prev && prev.id === id
+          ? { ...prev, adminNotes: workflowNote || null, assignedTo: assignedTo || null }
+          : prev
+      );
+      showToast('Workflow note saved', 'success');
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Unknown error';
       showToast(msg, 'error');
@@ -212,9 +270,7 @@ export default function OrdersClient() {
       setRows((prev) => prev.filter((r) => r.id !== id));
 
       // Close modal if this order was selected
-      if (selectedOrder && selectedOrder.id === id) {
-        setSelectedOrder(null);
-      }
+      setSelectedOrder((prev) => (prev && prev.id === id ? null : prev));
 
       showToast('Order deleted successfully', 'success');
 
@@ -222,7 +278,7 @@ export default function OrdersClient() {
       try {
         await fetch('/api/admin/notifications');
       } catch (e) {
-        console.error('Failed to refresh notifications:', e);
+        // ignore
       }
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Unknown error';
@@ -234,7 +290,6 @@ export default function OrdersClient() {
 
   // Filter and Sort Rows
   const filteredAndSortedRows = useMemo(() => {
-    // 1. Filter
     const filtered = rows.filter((row) => {
       // Status filter (statuses are normalized on loadOrders)
       const filterValue = statusFilter === 'NEW' ? 'pending' : statusFilter.toLowerCase();
@@ -264,7 +319,6 @@ export default function OrdersClient() {
       return true;
     });
 
-    // 2. Sort
     return [...filtered].sort((a, b) => {
       if (sortBy === 'newest') {
         return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
@@ -291,10 +345,13 @@ export default function OrdersClient() {
     <div className="space-y-8 animate-fade-in">
       {/* Toast Alert */}
       {toast && (
-        <div className={`fixed top-4 right-4 z-50 flex items-center space-x-3 px-4 py-3 rounded-xl border shadow-xl animate-slide-down ${toast.type === 'success'
-          ? 'bg-green-50 dark:bg-green-950/90 text-green-800 dark:text-green-300 border-green-200 dark:border-green-800'
-          : 'bg-red-50 dark:bg-red-950/90 text-red-800 dark:text-red-300 border-red-200 dark:border-red-800'
-          }`}>
+        <div
+          className={`fixed top-4 right-4 z-50 flex items-center space-x-3 px-4 py-3 rounded-xl border shadow-xl animate-slide-down ${
+            toast.type === 'success'
+              ? 'bg-green-50 dark:bg-green-950/90 text-green-800 dark:text-green-300 border-green-200 dark:border-green-800'
+              : 'bg-red-50 dark:bg-red-950/90 text-red-800 dark:text-red-300 border-red-200 dark:border-red-800'
+          }`}
+        >
           {toast.type === 'success' ? <Check className="w-5 h-5" /> : <ShieldAlert className="w-5 h-5" />}
           <span className="text-sm font-semibold">{toast.message}</span>
         </div>
@@ -320,48 +377,32 @@ export default function OrdersClient() {
                   <FileText className="w-4 h-4 text-orange-500" />
                   <span>Total Requests</span>
                 </td>
-                <td className="py-3.5 px-4 font-mono font-bold text-gray-950 dark:text-white">
-                  {loading ? '...' : stats.total}
-                </td>
-                <td className="py-3.5 px-4 text-gray-500 dark:text-gray-400">
-                  Submitted order inquiries
-                </td>
+                <td className="py-3.5 px-4 font-mono font-bold text-gray-950 dark:text-white">{loading ? '...' : stats.total}</td>
+                <td className="py-3.5 px-4 text-gray-500 dark:text-gray-400">Submitted order inquiries</td>
               </tr>
               <tr className="hover:bg-gray-50/80 dark:hover:bg-gray-900/40 transition-colors">
                 <td className="py-3.5 px-4 font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                   <Clock className="w-4 h-4 text-amber-500" />
                   <span>Pending Actions</span>
                 </td>
-                <td className="py-3.5 px-4 font-mono font-bold text-gray-950 dark:text-white">
-                  {loading ? '...' : stats.pending}
-                </td>
-                <td className="py-3.5 px-4 text-gray-500 dark:text-gray-400">
-                  Requires review decision
-                </td>
+                <td className="py-3.5 px-4 font-mono font-bold text-gray-950 dark:text-white">{loading ? '...' : stats.pending}</td>
+                <td className="py-3.5 px-4 text-gray-500 dark:text-gray-400">Requires review decision</td>
               </tr>
               <tr className="hover:bg-gray-50/80 dark:hover:bg-gray-900/40 transition-colors">
                 <td className="py-3.5 px-4 font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                   <Check className="w-4 h-4 text-green-500" />
                   <span>Confirmed Orders</span>
                 </td>
-                <td className="py-3.5 px-4 font-mono font-bold text-gray-950 dark:text-white">
-                  {loading ? '...' : stats.confirmed}
-                </td>
-                <td className="py-3.5 px-4 text-gray-500 dark:text-gray-400">
-                  Orders accepted by admin
-                </td>
+                <td className="py-3.5 px-4 font-mono font-bold text-gray-950 dark:text-white">{loading ? '...' : stats.confirmed}</td>
+                <td className="py-3.5 px-4 text-gray-500 dark:text-gray-400">Orders accepted by admin</td>
               </tr>
               <tr className="hover:bg-gray-50/80 dark:hover:bg-gray-900/40 transition-colors">
                 <td className="py-3.5 px-4 font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                   <Coins className="w-4 h-4 text-green-500" />
                   <span>Accepted Value</span>
                 </td>
-                <td className="py-3.5 px-4 font-mono font-bold text-gray-950 dark:text-white">
-                  {loading ? '...' : formatCurrency(stats.revenue)}
-                </td>
-                <td className="py-3.5 px-4 text-gray-500 dark:text-gray-400">
-                  Value of accepted contracts
-                </td>
+                <td className="py-3.5 px-4 font-mono font-bold text-gray-950 dark:text-white">{loading ? '...' : formatCurrency(stats.revenue)}</td>
+                <td className="py-3.5 px-4 text-gray-500 dark:text-gray-400">Value of accepted contracts</td>
               </tr>
               <tr className="hover:bg-gray-50/80 dark:hover:bg-gray-900/40 transition-colors">
                 <td className="py-3.5 px-4 font-semibold text-gray-900 dark:text-white flex items-center gap-2">
@@ -403,6 +444,7 @@ export default function OrdersClient() {
               <Filter className="w-4 h-4 text-gray-400" />
               <label className="sr-only">Status</label>
               <select
+                title="Filter orders by status"
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value as 'ALL' | 'NEW' | 'PENDING' | 'CONFIRMED' | 'REJECTED')}
                 className="bg-transparent text-gray-700 dark:text-gray-300 focus:outline-none pr-2 font-semibold cursor-pointer"
@@ -420,6 +462,7 @@ export default function OrdersClient() {
               <span className="text-gray-400 font-semibold">Sort:</span>
               <label className="sr-only">Sort order</label>
               <select
+                title="Sort orders"
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as 'newest' | 'oldest' | 'highest' | 'lowest')}
                 className="bg-transparent text-gray-700 dark:text-gray-300 focus:outline-none pr-2 font-semibold cursor-pointer"
@@ -483,7 +526,11 @@ export default function OrdersClient() {
                     <tr
                       key={row.id}
                       className="hover:bg-gray-50/80 dark:hover:bg-gray-900/40 transition-colors group cursor-pointer"
-                      onClick={() => setSelectedOrder(row)}
+                      onClick={() => {
+                        setSelectedOrder(row);
+                        setWorkflowNote(row.adminNotes ?? '');
+                        setAssignedTo(row.assignedTo ?? '');
+                      }}
                     >
                       {/* Order ID */}
                       <td className="py-4 px-4 font-mono font-bold text-gray-900 dark:text-white">
@@ -535,7 +582,11 @@ export default function OrdersClient() {
                       <td className="py-4 px-4 text-right" onClick={(e) => e.stopPropagation()}>
                         <div className="flex items-center justify-end space-x-2">
                           <button
-                            onClick={() => setSelectedOrder(row)}
+                            onClick={() => {
+                              setSelectedOrder(row);
+                              setWorkflowNote(row.adminNotes ?? '');
+                              setAssignedTo(row.assignedTo ?? '');
+                            }}
                             aria-label="View full request details"
                             title="View full request details"
                             className="p-1.5 rounded-lg border border-gray-200 dark:border-gray-800 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-500 hover:text-gray-850 dark:hover:text-white transition-colors cursor-pointer"
@@ -631,6 +682,8 @@ export default function OrdersClient() {
                 </h2>
               </div>
               <button
+                title="Close drawer"
+                aria-label="Close drawer"
                 onClick={() => setSelectedOrder(null)}
                 className="p-2 rounded-lg border border-gray-200 dark:border-gray-800 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors cursor-pointer"
               >
@@ -717,6 +770,53 @@ export default function OrdersClient() {
                 </div>
               </div>
 
+              {/* Request Information */}
+              <div>
+                <h3 className="text-xs font-black tracking-wider uppercase text-gray-500 dark:text-gray-400 mb-4 flex items-center space-x-2">
+                  <FileText className="w-4 h-4" />
+                  <span>Request Information</span>
+                </h3>
+                <div className="grid grid-cols-1 gap-4 bg-gray-50 dark:bg-gray-900/50 p-5 rounded-2xl border border-gray-200 dark:border-gray-800">
+                  <div className="flex items-start space-x-3">
+                    <FileText className="w-4 h-4 text-gray-400 mt-0.5" />
+                    <div>
+                      <p className="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Requirements</p>
+                      <p className="text-sm text-gray-700 dark:text-gray-300">{selectedOrder.deliveryInfo?.specialInstructions || selectedOrder.requirements || 'None specified'}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start space-x-3">
+                    <FileText className="w-4 h-4 text-gray-400 mt-0.5" />
+                    <div>
+                      <p className="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Notes</p>
+                      <p className="text-sm text-gray-700 dark:text-gray-300">{selectedOrder.adminNotes || selectedOrder.notes || 'None'}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start space-x-3">
+                    <Calendar className="w-4 h-4 text-gray-400 mt-0.5" />
+                    <div>
+                      <p className="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Submitted Date</p>
+                      <p className="text-sm text-gray-700 dark:text-gray-300">{selectedOrder.createdAt ? new Date(selectedOrder.createdAt).toLocaleDateString('en-US', {
+                        month: 'long',
+                        day: 'numeric',
+                        year: 'numeric'
+                      }) : 'N/A'}</p>
+                    </div>
+                  </div>
+
+                  {selectedOrder.assignedTo && (
+                    <div className="flex items-start space-x-3">
+                      <User className="w-4 h-4 text-gray-400 mt-0.5" />
+                      <div>
+                        <p className="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Assigned Staff</p>
+                        <p className="text-sm text-gray-700 dark:text-gray-300">{selectedOrder.assignedTo}</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
               {/* Delivery Requirements */}
               <div>
                 <h3 className="text-xs font-black tracking-wider uppercase text-gray-500 dark:text-gray-400 mb-4 flex items-center space-x-2">
@@ -769,8 +869,77 @@ export default function OrdersClient() {
               </div>
             </div>
 
-            {/* Sticky Action Footer */}
-            <div className="p-6 border-t border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50 flex gap-4">
+            <div className="p-6 border-t border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50 space-y-4">
+              <div className="rounded-2xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
+                <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
+                  <FileText className="h-4 w-4 text-orange-500" />
+                  Follow-up workflow
+                </div>
+                <label className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-gray-400">Internal note</label>
+                <textarea
+                  value={workflowNote}
+                  onChange={(event) => setWorkflowNote(event.target.value)}
+                  rows={3}
+                  className="w-full rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-900 dark:border-gray-800 dark:bg-gray-950 dark:text-white"
+                  placeholder="Add follow-up details for the sales team"
+                />
+                <label className="mt-3 mb-1.5 block text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-gray-400">Assigned owner</label>
+                <input
+                  value={assignedTo}
+                  onChange={(event) => setAssignedTo(event.target.value)}
+                  className="w-full rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-900 dark:border-gray-800 dark:bg-gray-950 dark:text-white"
+                  placeholder="Sales officer or team"
+                />
+                <button
+                  onClick={() => onSaveWorkflow(selectedOrder.id)}
+                  className="mt-3 inline-flex items-center gap-2 rounded-xl bg-orange-500 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-600"
+                >
+                  <Check className="h-4 w-4" />
+                  Save workflow note
+                </button>
+              </div>
+
+              <div className="flex gap-4 flex-wrap">
+              <button
+                onClick={() => {
+                  // Move to pending for workflow flexibility (requires backend support).
+                  void (async () => {
+                    if (submittingIds[selectedOrder.id]) return;
+
+                    setSubmittingIds((prev) => ({ ...prev, [selectedOrder.id]: true }));
+                    try {
+                      const res = await fetch(`/api/admin/orders/${selectedOrder.id}/pending`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                          admin_notes: workflowNote,
+                        }),
+                      });
+
+                      if (!res.ok) {
+                        const body = await res.json().catch(() => null);
+                        throw new Error(body?.error ?? body?.message ?? `Failed to move to pending (HTTP ${res.status})`);
+                      }
+
+                      setRows((prev) => prev.map((r) => (r.id === selectedOrder.id ? { ...r, status: 'pending' } : r)));
+                      setSelectedOrder((prev) => (prev ? { ...prev, status: 'pending' } : prev));
+                      showToast('Moved to pending', 'success');
+                    } catch (err) {
+                      const msg = err instanceof Error ? err.message : 'Failed to move to pending';
+                      showToast(msg, 'error');
+                    } finally {
+                      setSubmittingIds((prev) => ({ ...prev, [selectedOrder.id]: false }));
+                    }
+                  })();
+                }}
+                disabled={!!submittingIds[selectedOrder.id]}
+                title="Move this order back to pending"
+                className="flex-1 py-3 border border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-200 rounded-xl font-bold bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-950/20 disabled:opacity-40 disabled:pointer-events-none transition-all cursor-pointer min-h-12 flex items-center justify-center space-x-2"
+              >
+                <Clock className="w-5 h-5" />
+                <span>Move to Pending</span>
+              </button>
+
               <button
                 onClick={() => onDecision(selectedOrder.id, 'reject')}
                 disabled={selectedOrder.status.toLowerCase() !== 'pending' || !!submittingIds[selectedOrder.id]}
@@ -806,6 +975,7 @@ export default function OrdersClient() {
                   </>
                 )}
               </button>
+              </div>
             </div>
           </div>
         </div>

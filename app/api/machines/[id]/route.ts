@@ -44,13 +44,19 @@ export async function PUT(
       ...rest
     } = payload ?? {};
 
+    const deriveIsAvailable = (status: string): boolean => {
+      const s = String(status ?? '').toLowerCase();
+      return !['out_of_stock', 'maintenance', 'discontinued'].includes(s);
+    };
+
     const updateData: Record<string, unknown> = {
       name: rest.name,
       image: rest.image,
       gallery: normalizeStringArray(rest.gallery),
       features: normalizeStringArray(rest.features),
       applications: normalizeStringArray(rest.applications),
-      is_available: rest.available ?? true,
+      availability_status: rest.availability_status ?? rest.status ?? 'available',
+      is_available: deriveIsAvailable(rest.availability_status ?? rest.status ?? 'available'),
       description: rest.description || undefined,
       type: rest.type || undefined,
       input: rest.input || undefined,
@@ -63,6 +69,7 @@ export async function PUT(
         dimensions: rest.dimensions || '',
         voltage: rest.voltage || '',
         warranty: rest.warranty || '',
+        motor_type: rest.motor_type || '',
       },
     };
 
@@ -81,6 +88,22 @@ export async function PUT(
       include: { category: true },
     });
 
+    // Inventory alert notification (Requirement 13.5)
+    const availabilityStatus = String(
+      updateData.availability_status ?? machine.availability_status ?? 'available'
+    ).toLowerCase();
+
+    if (availabilityStatus === 'out_of_stock') {
+      await prisma.notification.create({
+        data: {
+          type: 'inventory_alert',
+          title: 'Inventory Alert',
+          message: `Machine ${machine.name} is out of stock.`,
+          read: false,
+        },
+      });
+    }
+
     const result = {
       id: machine.id,
       slug: machine.slug,
@@ -95,6 +118,8 @@ export async function PUT(
       dimensions: (machine.specifications as Record<string, string> | null)?.dimensions || '',
       voltage: (machine.specifications as Record<string, string> | null)?.voltage || '',
       warranty: (machine.specifications as Record<string, string> | null)?.warranty || '',
+      motor_type: (machine.specifications as Record<string, string> | null)?.motor_type || '',
+      availability_status: machine.availability_status || (machine.is_available ? 'available' : 'out_of_stock'),
       description: machine.description || '',
       features: machine.features || [],
       applications: machine.applications || [],

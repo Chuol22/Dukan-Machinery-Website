@@ -59,6 +59,7 @@ model Machine {
   meta_description    String?
   meta_keywords       String?
   status              String         @default("draft")
+  inventory_status    String         @default("available") // available, out_of_stock, reserved, maintenance, coming_soon, discontinued
   created_at          DateTime       @default(now()) @db.Timestamptz(6)
   updated_at          DateTime       @default(now()) @updatedAt @db.Timestamptz(6)
   published_at        DateTime?      @db.Timestamptz(6)
@@ -67,6 +68,7 @@ model Machine {
   order_items         OrderItem[]
   reviews             Review[]
   wishlist_items      WishlistItem[]
+  quotations          Quotation[]
 
   @@index([slug])
   @@index([sku])
@@ -74,6 +76,7 @@ model Machine {
   @@index([type])
   @@index([brand])
   @@index([status])
+  @@index([inventory_status])
   @@index([is_available])
   @@index([is_featured])
   @@index([price])
@@ -143,8 +146,13 @@ model Order {
   preferred_delivery_date DateTime?      @db.Timestamptz(6)
   delivery_address_text   String?
   special_instructions    String?
+  requirements            String?
   notes                   String?
   admin_notes             String?
+  internal_note           String?
+  assigned_staff          String?
+  attached_files          String[]       @default([])
+  submitted_date          DateTime?      @db.Timestamptz(6)
   tracking_number         String?
   shipped_at              DateTime?      @db.Timestamptz(6)
   delivered_at            DateTime?      @db.Timestamptz(6)
@@ -155,6 +163,7 @@ model Order {
   profile                 Profile        @relation(fields: [profile_id], references: [id])
   shipping_address        Address        @relation("OrderShippingAddress", fields: [shipping_address_id], references: [id])
   items                   OrderItem[]
+  quotations              Quotation[]
 
   @@index([order_number])
   @@index([profile_id])
@@ -179,6 +188,14 @@ model OrderItem {
 
   @@index([order_id])
   @@index([machine_id])
+}
+
+model MachineCategory {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  description String?
+  // Relationship is defined via Machine.category_id in this project.
+  createdAt   DateTime  @default(now())
 }
 
 model Cart {
@@ -264,6 +281,21 @@ model Notification {
   @@index([created_at(sort: Desc)])
 }
 
+model Inquiry {
+  id          String        @id @default(cuid())
+  type        InquiryType
+  customerName String
+  customerEmail String
+  customerPhone String?
+  subject     String?
+  message     String
+  machineId   String?
+  quantity    Int?
+  status      InquiryStatus @default(New)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
 model ContactSubmission {
   id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name         String
@@ -280,3 +312,68 @@ model ContactSubmission {
   @@index([created_at(sort: Desc)])
   @@index([email])
 }
+
+model Customer {
+  id            String    @id @default(cuid())
+  name          String
+  companyName   String?
+  phone         String
+  email         String    @unique
+  totalOrders   Int       @default(0)
+  lastOrderDate DateTime?
+  status        Status    @default(Active)
+  // This project stores order customer snapshot directly on Order (customer_name/customer_email/etc.)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+
+enum Status {
+  Active
+  Inactive
+}
+
+enum InquiryType {
+  Order
+  MachineInquiry
+  ContactMessage
+}
+
+enum InquiryStatus {
+  New
+  Read
+  Replied
+  Resolved
+}
+
+model Quotation {
+  id                String   @id @default(cuid())
+  quotation_number  String   @unique
+  order_id          String?  @db.Uuid
+  customer_name     String
+  customer_email    String
+  customer_phone    String?
+  machine_id        String?  @db.Uuid
+  machine_name      String
+  quantity          Int
+  requirements      String?
+  machine_cost      Float
+  shipping_cost     Float    @default(0)
+  installation_cost  Float    @default(0)
+  total_cost        Float
+  status            String   @default("draft")
+  pdf_url           String?
+  sent_at           DateTime? @db.Timestamptz(6)
+  approved_at       DateTime? @db.Timestamptz(6)
+  rejected_at       DateTime? @db.Timestamptz(6)
+  created_at        DateTime @default(now()) @db.Timestamptz(6)
+  updated_at        DateTime @default(now()) @updatedAt @db.Timestamptz(6)
+  order             Order?   @relation(fields: [order_id], references: [id])
+  machine           Machine? @relation(fields: [machine_id], references: [id])
+
+  @@index([order_id])
+  @@index([machine_id])
+  @@index([status])
+  @@index([created_at(sort: Desc)])
+}
+

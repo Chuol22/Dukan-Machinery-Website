@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
 
 interface Machine {
-  id: number;
+  id: string | number;
   slug: string;
   name: string;
   image: string;
@@ -23,7 +23,7 @@ interface Machine {
 }
 
 interface MachineDetailsPreviewProps {
-  machineId: number;
+  machineId: string | number;
   allMachines: Machine[];
 }
 
@@ -79,7 +79,7 @@ export default function MachineDetailsPreview({ machineId, allMachines }: Machin
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   // Lookup machine from catalog by ID
-  const machine = allMachines.find(m => m.id === machineId);
+  const machine = allMachines.find((m) => String(m.id) === String(machineId));
   if (!machine) return null;
 
   // Detail panel tab definitions

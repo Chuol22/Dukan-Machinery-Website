@@ -4,6 +4,7 @@
 import { createContext, useState, useCallback, ReactNode, useContext } from 'react'
 import { Message, ChatbotContextType } from '@/types/chatbot.types'
 import { getAIResponse } from '@/utils/chatbot-ai'
+import { normalizeMessagesForModel } from '@/utils/chat-message-validation'
 
 const ChatbotContext = createContext<ChatbotContextType | undefined>(undefined)
 
@@ -25,7 +26,11 @@ export function ChatProvider({ children }: { children: ReactNode }) {
       content,
       timestamp: new Date(),
     }
-    setMessages(prev => [...prev, userMessage])
+
+    setMessages(prev => {
+      const nextMessages = normalizeMessagesForModel([...prev, userMessage])
+      return nextMessages as Message[]
+    })
     setIsProcessing(true)
 
     // Rule-based AI response with brief delay for UX
@@ -37,7 +42,10 @@ export function ChatProvider({ children }: { children: ReactNode }) {
         content: response,
         timestamp: new Date(),
       }
-      setMessages(prev => [...prev, botMessage])
+      setMessages(prev => {
+        const nextMessages = normalizeMessagesForModel([...prev, botMessage])
+        return nextMessages as Message[]
+      })
       setIsProcessing(false)
     }, 500)
   }, [])

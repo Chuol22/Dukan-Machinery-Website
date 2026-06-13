@@ -1,4 +1,4 @@
-// Admin dashboard home — quick stats and shortcuts to key admin areas
+// import AnalyticsDashboard from './analytics/AnalyticsDashboard';
 import Link from 'next/link';
 import {
   ShoppingCart,
@@ -12,6 +12,8 @@ import {
   Plus,
 } from 'lucide-react';
 
+
+
 export default function AdminPage() {
   return (
     <div className="space-y-6">
@@ -23,7 +25,7 @@ export default function AdminPage() {
             uppercase tracking-tight">
               Dashboard
             </h2>
-            <p className="mt-1 text-green-100 dark:text-gray-300 text-sm md:text-base">
+            <p className="mt-1 text-gray-400 dark:text-gray-200 text-sm md:text-base">
               Review, accept, and manage all incoming order requests
             </p>
           </div>

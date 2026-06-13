@@ -17,15 +17,18 @@ import {
 
 type OrderNotification = {
   id: string;
-  type: 'new_order' | 'order_accepted' | 'order_rejected';
+  type:
+    | 'new_order'
+    | 'order_accepted'
+    | 'order_rejected'
+    | 'inventory_alert'
+    | string;
   title: string;
   message: string;
-  machineName: string;
-  customerName: string;
-  totalAmount: number | null;
   createdAt: string;
   read: boolean;
-  orderId?: string;
+  orderId?: string | null;
+  totalAmount?: number | null;
 };
 
 export default function NotificationsPage() {
@@ -40,18 +43,27 @@ export default function NotificationsPage() {
         const res = await fetch('/api/admin/notifications');
         if (res.ok) {
           const data = await res.json();
-          const notifs: OrderNotification[] = (data.notifications ?? []).map((notif: any) => ({
-            id: notif.id,
-            type: notif.type as OrderNotification['type'],
-            title: notif.title,
-            message: notif.message,
-            machineName: 'Machine', // Could be enhanced by fetching order details
-            customerName: 'Customer', // Could be enhanced by fetching order details
-            totalAmount: null,
-            createdAt: notif.created_at,
-            read: notif.read,
-            orderId: notif.order_id,
-          }));
+          type IncomingNotif = {
+            id?: string;
+            type?: unknown;
+            title?: unknown;
+            message?: unknown;
+            created_at?: unknown;
+            read?: unknown;
+            order_id?: unknown;
+            totalAmount?: unknown;
+          };
+
+          const notifs: OrderNotification[] = (data.notifications ?? []).map((notif: IncomingNotif) => ({
+            id: String(notif.id ?? ''),
+            type: String(notif.type ?? ''),
+            title: String(notif.title ?? ''),
+            message: String(notif.message ?? ''),
+            createdAt: String(notif.created_at ?? ''),
+            read: Boolean(notif.read),
+            orderId: notif.order_id == null ? null : String(notif.order_id),
+            totalAmount: typeof notif.totalAmount === 'number' ? notif.totalAmount : null,
+          })).filter((n: OrderNotification) => Boolean(n.id));
           setNotifications(notifs);
         }
       } catch (e) {
@@ -122,17 +134,23 @@ export default function NotificationsPage() {
     }
   };
 
+  const safeType = (t: string) => String(t ?? '').toLowerCase();
+
   const getIcon = (type: OrderNotification['type']) => {
-    if (type === 'new_order') return <ShoppingCart className="w-5 h-5 text-orange-500" />;
-    if (type === 'order_accepted') return <Check className="w-5 h-5 text-green-500" />;
-    if (type === 'order_rejected') return <X className="w-5 h-5 text-red-500" />;
+    const t = safeType(String(type));
+    if (t === 'new_order') return <ShoppingCart className="w-5 h-5 text-orange-500" />;
+    if (t === 'order_accepted') return <Check className="w-5 h-5 text-green-500" />;
+    if (t === 'order_rejected') return <X className="w-5 h-5 text-red-500" />;
+    if (t === 'inventory_alert') return <AlertTriangle className="w-5 h-5 text-amber-500" />;
     return <Bell className="w-5 h-5 text-blue-500" />;
   };
 
   const getBorderColor = (type: OrderNotification['type']) => {
-    if (type === 'new_order') return 'border-l-orange-500';
-    if (type === 'order_accepted') return 'border-l-green-500';
-    if (type === 'order_rejected') return 'border-l-red-500';
+    const t = safeType(type);
+    if (t === 'new_order') return 'border-l-orange-500';
+    if (t === 'order_accepted') return 'border-l-green-500';
+    if (t === 'order_rejected') return 'border-l-red-500';
+    if (t === 'inventory_alert') return 'border-l-amber-500';
     return 'border-l-blue-500';
   };
 
@@ -191,20 +209,26 @@ export default function NotificationsPage() {
         <StatCard
           icon={<ShoppingCart className="w-5 h-5 text-orange-500" />}
           label="New Orders"
-          value={notifications.filter(n => n.type === 'new_order').length}
+          value={notifications.filter(n => safeType(n.type) === 'new_order').length}
           bg="bg-orange-50 dark:bg-orange-950/20"
         />
         <StatCard
           icon={<Check className="w-5 h-5 text-green-500" />}
           label="Accepted"
-          value={notifications.filter(n => n.type === 'order_accepted').length}
+          value={notifications.filter(n => safeType(n.type) === 'order_accepted').length}
           bg="bg-green-50 dark:bg-green-950/20"
         />
         <StatCard
           icon={<X className="w-5 h-5 text-red-500" />}
           label="Rejected"
-          value={notifications.filter(n => n.type === 'order_rejected').length}
+          value={notifications.filter(n => safeType(n.type) === 'order_rejected').length}
           bg="bg-red-50 dark:bg-red-950/20"
+        />
+        <StatCard
+          icon={<AlertTriangle className="w-5 h-5 text-amber-500" />}
+          label="Inventory Alerts"
+          value={notifications.filter(n => safeType(n.type) === 'inventory_alert').length}
+          bg="bg-amber-50 dark:bg-amber-950/20"
         />
         <StatCard
           icon={<Bell className="w-5 h-5 text-blue-500" />}
@@ -269,7 +293,7 @@ export default function NotificationsPage() {
                           <Clock className="w-3 h-3" />
                           <span>{formatTime(notif.createdAt)}</span>
                         </span>
-                        {notif.totalAmount && (
+                        {typeof notif.totalAmount === 'number' && notif.totalAmount > 0 && (
                           <span className="font-semibold text-orange-500">
                             ETB {notif.totalAmount.toLocaleString()}
                           </span>

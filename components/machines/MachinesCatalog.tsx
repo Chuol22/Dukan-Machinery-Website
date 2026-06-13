@@ -8,7 +8,7 @@ import { ChevronRight, Play } from 'lucide-react';
 import CloudinaryImage from '@/components/CloudinaryImage';
 
 interface Machine {
-  id: number;
+  id: string | number;
   slug: string;
   name: string;
   image: string;
@@ -24,7 +24,7 @@ interface Machine {
 
 interface MachinesCatalogProps {
   machines: Machine[];
-  onViewDetails: (machineId: number) => void;
+  onViewDetails: (machineId: string | number) => void;
 }
 
 export default function MachinesCatalog({ machines, onViewDetails }: MachinesCatalogProps) {

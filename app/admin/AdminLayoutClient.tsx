@@ -15,6 +15,9 @@ import {
   Settings,
   Plus,
   ChevronRight,
+  Tag,
+  MessageSquare,
+  FileText,
   RefreshCw,
   Menu,
   X,
@@ -23,6 +26,8 @@ import {
   CheckCircle,
   TrendingDown,
 } from 'lucide-react';
+
+import NotificationBell from '@/components/admin/NotificationBell';
 
 type UserSession = {
   name: string;
@@ -128,21 +133,27 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
   }
 
   const navItems: NavItem[] = [
-    // Dashboard section
     { label: 'Dashboard', href: '/admin', icon: LayoutDashboard, section: 'dashboard' },
-    // Orders section
     { label: 'Orders', href: '/admin/orders', icon: ShoppingCart, badge: pendingCount > 0 ? pendingCount : undefined, section: 'orders' },
-    // Machines section
+    { label: 'Customers', href: '/admin/customers', icon: User, section: 'orders' },
+    { label: 'Inquiries', href: '/admin/inquiries', icon: MessageSquare, section: 'orders' },
+    { label: 'Quotations', href: '/admin/quotations', icon: FileText, section: 'orders' },
+    { label: 'Analytics', href: '/admin/analytics', icon: TrendingUp, section: 'dashboard' },
     { label: 'Manage Machines', href: '/admin/machines', icon: Package, section: 'machines' },
+    { label: 'Categories', href: '/admin/categories', icon: Tag, section: 'machines' },
     { label: 'Add Machine', href: '/admin/machines/new', icon: Plus, section: 'machines' },
-    // Notifications
     { label: 'Notifications', href: '/admin/notifications', icon: Bell, section: 'notifications' },
   ];
 
   const isActive = (href: string) => {
     if (href === '/admin') return pathname === '/admin' || pathname === '/admin/orders';
     if (href === '/admin/orders') return pathname === '/admin/orders';
+    if (href === '/admin/customers') return pathname.startsWith('/admin/customers');
+    if (href === '/admin/inquiries') return pathname.startsWith('/admin/inquiries');
+    if (href === '/admin/quotations') return pathname.startsWith('/admin/quotations');
+    if (href === '/admin/analytics') return pathname === '/admin/analytics';
     if (href === '/admin/machines') return pathname === '/admin/machines';
+    if (href === '/admin/categories') return pathname.startsWith('/admin/categories');
     if (href === '/admin/machines/new') return pathname === '/admin/machines/new';
     if (href === '/admin/notifications') return pathname === '/admin/notifications';
     return pathname === href;
@@ -154,10 +165,10 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
       <div className="md:hidden flex h-16 items-center justify-between px-4 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 sticky top-0 z-50 w-full shrink-0">
         <Link href="/admin" className="flex items-center space-x-2 shrink-0">
           <div className="flex flex-col leading-tight">
-            <span className="text-xl font-black tracking-tighter text-green-700 dark:text-gray-100 uppercase">
+            <span className="text-2xl font-black tracking-tighter text-green-700 dark:text-gray-100 uppercase">
               DUKAN ADMIN
             </span>
-            <span className="text-[7px] font-black text-orange-600 dark:text-orange-400 uppercase tracking-[0.25em]">
+            <span className="text-[5px] font-black text-orange-600 dark:text-orange-400 uppercase tracking-[0.25em]">
               Machinery
             </span>
           </div>
@@ -179,7 +190,7 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
       </div>
 
       {/* Sidebar */}
-      <aside className={`fixed inset-y-0 left-0 z-40 w-64 bg-gray-300 dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col justify-between transform transition-transform duration-300 ease-in-out md:translate-x-0 md:static md:h-screen shrink-0 ${
+      <aside className={`fixed inset-y-0 left-0 z-40 w-48 bg-gray-300 dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col justify-between transform transition-transform duration-300 ease-in-out md:translate-x-0 md:static md:h-screen shrink-0 ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
       }`}>
         <div className="flex flex-col flex-1 overflow-y-auto">
@@ -187,10 +198,10 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
           <div className="hidden md:flex h-16 items-center px-6 border-b border-gray-200 dark:border-gray-800">
             <Link href="/admin" className="flex items-center space-x-2 shrink-0">
               <div className="flex flex-col leading-tight">
-                <span className="text-base font-black tracking-tighter text-green-700 dark:text-gray-100 uppercase">
+                <span className="text-2xl font-black tracking-tighter text-green-700 dark:text-gray-100 uppercase">
                   DUKAN ADMIN
                 </span>
-                <span className="text-[7px] font-black text-orange-600 dark:text-orange-400 uppercase tracking-[0.25em]">
+                <span className="text-[5px] font-black text-orange-600 dark:text-orange-400 uppercase tracking-[0.25em]">
                   Machinery
                 </span>
               </div>
@@ -198,57 +209,33 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
           </div>
 
           <nav className="p-4 space-y-1 flex-1">
-            {/* Dashboard section */}
             <div className="text-[10px] font-black tracking-wider text-gray-400 dark:text-gray-500 uppercase px-3 mb-2 mt-2">
               Overview
             </div>
-            <NavLink
-              item={navItems[0]}
-              isActive={isActive(navItems[0].href)}
-              onClick={() => setSidebarOpen(false)}
-              badge={pendingCount > 0 ? pendingCount : undefined}
-              badgeLabel="pending"
-            />
+            <NavLink item={navItems[0]} isActive={isActive(navItems[0].href)} onClick={() => setSidebarOpen(false)} />
+            <NavLink item={navItems[4]} isActive={isActive(navItems[4].href)} onClick={() => setSidebarOpen(false)} />
 
-            {/* Orders section */}
-            <div className="text-[10px] font-black tracking-wider text-gray-400 dark:text-gray-500 uppercase px-3 mb-2 mt-4">
+            <div className="text-[10px] font-black tracking-wider text-gray-500 dark:text-gray-400 uppercase px-3 mb-2 mt-4">
               Sales &amp; Orders
             </div>
-            <NavLink
-              item={navItems[1]}
-              isActive={isActive(navItems[1].href)}
-              onClick={() => setSidebarOpen(false)}
-              badge={pendingCount > 0 ? pendingCount : undefined}
-              badgeLabel="pending"
-            />
+            <NavLink item={navItems[1]} isActive={isActive(navItems[1].href)} onClick={() => setSidebarOpen(false)} badge={pendingCount > 0 ? pendingCount : undefined} />
+            <NavLink item={navItems[2]} isActive={isActive(navItems[2].href)} onClick={() => setSidebarOpen(false)} />
+            <NavLink item={navItems[3]} isActive={isActive(navItems[3].href)} onClick={() => setSidebarOpen(false)} />
 
-            {/* Machines section */}
-            <div className="text-[10px] font-black tracking-wider text-gray-400 dark:text-gray-500 uppercase px-3 mb-2 mt-4">
+            <div className="text-[10px] font-black tracking-wider text-gray-500 dark:text-gray-400 uppercase px-3 mb-2 mt-4">
               Catalog &amp; Machines
             </div>
-            <NavLink
-              item={navItems[2]}
-              isActive={isActive(navItems[2].href)}
-              onClick={() => setSidebarOpen(false)}
-            />
-            <NavLink
-              item={navItems[3]}
-              isActive={isActive(navItems[3].href)}
-              onClick={() => setSidebarOpen(false)}
-            />
+            <NavLink item={navItems[5]} isActive={isActive(navItems[5].href)} onClick={() => setSidebarOpen(false)} />
+            <NavLink item={navItems[6]} isActive={isActive(navItems[6].href)} onClick={() => setSidebarOpen(false)} />
+            <NavLink item={navItems[7]} isActive={isActive(navItems[7].href)} onClick={() => setSidebarOpen(false)} />
 
-            {/* Notifications */}
-            <div className="text-[10px] font-black tracking-wider text-gray-400 dark:text-gray-500 uppercase px-3 mb-2 mt-4">
+            <div className="text-[10px] font-black tracking-wider text-gray-500 dark:text-gray-400 uppercase px-3 mb-2 mt-4">
               Alerts &amp; Activity
             </div>
-            <NavLink
-              item={navItems[4]}
-              isActive={isActive(navItems[4].href)}
-              onClick={() => setSidebarOpen(false)}
-            />
+            <NavLink item={navItems[8]} isActive={isActive(navItems[8].href)} onClick={() => setSidebarOpen(false)} />
 
             {/* Quick Links */}
-            <div className="text-[10px] font-black tracking-wider text-gray-400 dark:text-gray-500 uppercase px-3 mb-2 mt-4">
+            <div className="text-[10px] font-black tracking-wider text-gray-500 dark:text-gray-400 uppercase px-3 mb-2 mt-4">
               Quick Access
             </div>
             <Link
@@ -316,6 +303,12 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
               <h1 className="text-lg font-bold text-gray-800 dark:text-white">
                 {pathname === '/admin' || pathname === '/admin/orders'
                   ? 'Orders Dashboard'
+                  : pathname.startsWith('/admin/customers')
+                  ? 'Customers'
+                  : pathname.startsWith('/admin/inquiries')
+                  ? 'Inquiries'
+                  : pathname === '/admin/analytics'
+                  ? 'Analytics'
                   : pathname === '/admin/machines' || pathname === '/admin/machines/new'
                   ? 'Machine Management'
                   : pathname === '/admin/notifications'
@@ -330,18 +323,7 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
               )}
             </div>
             <div className="flex items-center space-x-4">
-              <Link
-                href="/admin/notifications"
-                className="relative p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                title="Notifications"
-              >
-                <Bell className="w-5 h-5" />
-                {pendingCount > 0 && (
-                  <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-orange-500 text-[9px] font-black text-white">
-                    {pendingCount > 9 ? '9+' : pendingCount}
-                  </span>
-                )}
-              </Link>
+              <NotificationBell />
               {user && (
                 <div className="flex items-center space-x-2">
                   <span className="text-xs text-gray-500 dark:text-gray-400 hidden lg:block">
