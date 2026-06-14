@@ -1,12 +1,12 @@
 // admin/orders/[id]/reject/route.ts — reject order, notify admin, email customer
-import { NextResponse } from 'next/server';
-import nodemailer from 'nodemailer';
-import { verifyAdminSession } from '@/lib/auth';
-import { prisma } from '@/lib/prisma';
+import { NextResponse } from "next/server";
+import nodemailer from "nodemailer";
+import { verifyAdminSession } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
 
 export async function POST(
   request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const { id } = await params;
@@ -14,7 +14,7 @@ export async function POST(
     // Verify admin is logged in
     const session = await verifyAdminSession();
     if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // First get the order using Prisma
@@ -39,40 +39,40 @@ export async function POST(
     });
 
     if (!order) {
-      return NextResponse.json({ message: 'Order not found' }, { status: 404 });
+      return NextResponse.json({ message: "Order not found" }, { status: 404 });
     }
 
     // Update order status using Prisma
     await prisma.order.update({
       where: { id },
       data: {
-        status: 'rejected',
+        status: "rejected",
         updated_at: new Date(),
-      }
+      },
     });
 
     // Mark any existing notifications for this order as read
     await prisma.notification.updateMany({
       where: {
         order_id: id,
-        type: 'new_order'
+        type: "new_order",
       },
       data: {
-        read: true
-      }
+        read: true,
+      },
     });
 
     // Send rejection email to customer if email exists
     const customerEmail = order.customer_email;
     const item = order.items[0];
-    const machineName = item ? item.product_name : 'Requested Machine';
+    const machineName = item ? item.product_name : "Requested Machine";
     const quantity = item ? item.quantity : 1;
     const totalPrice = order.total;
 
     if (customerEmail) {
       try {
         const transporter = nodemailer.createTransport({
-          service: 'gmail',
+          service: "gmail",
           auth: {
             user: process.env.EMAIL_USER,
             pass: process.env.EMAIL_PASS,
@@ -92,7 +92,7 @@ export async function POST(
                 <h1 style="margin: 0;">Order Update</h1>
               </div>
               <div style="padding: 30px;">
-                <h2>Dear ${order.customer_name || 'Customer'},</h2>
+                <h2>Dear ${order.customer_name || "Customer"},</h2>
                 <p>Regarding your order <strong>#${order.order_number}</strong>:</p>
                 <div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 15px; margin: 20px 0;">
                   <p style="margin: 0; color: #dc2626;"><strong>Status: Not Accepted at this time</strong></p>
@@ -118,13 +118,16 @@ export async function POST(
           html: rejectionHtml,
         });
       } catch (emailError) {
-        console.error('Failed to send rejection email:', emailError);
+        console.error("Failed to send rejection email:", emailError);
       }
     }
 
-    return NextResponse.json({ success: true, message: 'Order rejected' });
+    return NextResponse.json({ success: true, message: "Order rejected" });
   } catch (error) {
-    console.error('Reject order error:', error);
-    return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
+    console.error("Reject order error:", error);
+    return NextResponse.json(
+      { message: "Internal server error" },
+      { status: 500 },
+    );
   }
 }

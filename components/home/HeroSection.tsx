@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
 // Hero banner — video background, typing headline, and primary CTAs
-import React, { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
-import Link from 'next/link';
-import { Settings, ChevronRight } from 'lucide-react';
+import React, { useState, useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { Settings, ChevronRight } from "lucide-react";
 
 export default function HeroSection() {
   // Layout & media state
@@ -13,11 +13,16 @@ export default function HeroSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   // Typing animation state — cycles through headline suffixes
-  const [typedText, setTypedText] = useState('');
+  const [typedText, setTypedText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [loopIndex, setLoopIndex] = useState(0);
 
-  const words = ['for great Solutions', 'Equipment', 'of Modern Technology', 'for great Innovation'];
+  const words = [
+    "for great Solutions",
+    "Equipment",
+    "of Modern Technology",
+    "for great Innovation",
+  ];
   const typingSpeed = 200;
   const deletingSpeed = 50;
   const pauseTime = 2000;
@@ -30,7 +35,7 @@ export default function HeroSection() {
     if (isDeleting) {
       timer = setTimeout(() => {
         setTypedText((prev) => prev.slice(0, -1));
-        if (typedText === '') {
+        if (typedText === "") {
           setIsDeleting(false);
           setLoopIndex((prev) => prev + 1);
         }
@@ -50,34 +55,36 @@ export default function HeroSection() {
   // Offset content below fixed navbar (updates on resize)
   useEffect(() => {
     const updateHeaderHeight = () => {
-      const header = document.querySelector('header');
+      const header = document.querySelector("header");
       if (header) {
         setHeaderHeight(header.offsetHeight);
       }
     };
 
     updateHeaderHeight();
-    window.addEventListener('resize', updateHeaderHeight);
+    window.addEventListener("resize", updateHeaderHeight);
 
     const observer = new ResizeObserver(updateHeaderHeight);
-    const header = document.querySelector('header');
+    const header = document.querySelector("header");
     if (header) {
       observer.observe(header);
     }
 
     return () => {
-      window.removeEventListener('resize', updateHeaderHeight);
+      window.removeEventListener("resize", updateHeaderHeight);
       observer.disconnect();
     };
   }, []);
 
   // Autoplay background video once ready
   useEffect(() => {
-      if (videoRef.current) {
-        videoRef.current.addEventListener('canplay', () => setVideoLoaded(true));
-        videoRef.current.play().catch(e => console.log('Video autoplay failed:', e));
-      }
-    }, []);
+    if (videoRef.current) {
+      videoRef.current.addEventListener("canplay", () => setVideoLoaded(true));
+      videoRef.current
+        .play()
+        .catch((e) => console.log("Video autoplay failed:", e));
+    }
+  }, []);
 
   return (
     <div className="min-h-screen bg-green-800 dark:bg-gray-900 -mt-16 lg:-mt-20">
@@ -95,11 +102,14 @@ export default function HeroSection() {
             muted
             playsInline
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
-              videoLoaded ? 'opacity-100' : 'opacity-0'
+              videoLoaded ? "opacity-100" : "opacity-0"
             }`}
             poster="/images/hero/dkmlogo.png"
           >
-            <source src="/videos/machines/Chicken Feed Mill Machine.mp4" type="video/mp4" />
+            <source
+              src="/videos/machines/Chicken Feed Mill Machine.mp4"
+              type="video/mp4"
+            />
           </video>
 
           <div className="absolute inset-0 bg-black/60" />
@@ -112,14 +122,14 @@ export default function HeroSection() {
           className="relative"
           style={{
             paddingTop: `${headerHeight + 40}px`,
-            paddingBottom: '60px',
+            paddingBottom: "60px",
           }}
         >
           <div className="container-custom mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: 'easeOut' }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
               className="max-w-5xl mx-auto text-center"
             >
               {/* Main headline + animated "Machinery …" suffix */}
@@ -130,7 +140,6 @@ export default function HeroSection() {
                 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white dark:text-shadow-white mb-4 leading-tight"
               >
                 Industrial Machinery Solutions
-
                 <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-orange-500 dark:text-shadow-white xl:text-4xl font-black mt-4 h-16 sm:h-20 md:h-24 drop-shadow-md">
                   <span>Machinery {typedText}</span>
                   <span
@@ -151,7 +160,10 @@ export default function HeroSection() {
               >
                 <div className="bg-white/95 dark:bg-gray-800/95 rounded-xl shadow-lg p-4 sm:p-6 md:p-8 lg:p-10 border-b-4 border-orange-500 hover:shadow-xl transition-all duration-300">
                   <p className="text-gray-700 dark:text-gray-200 text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed">
-                    <span className="font-black text-gray-900 dark:text-white">Precision engineering</span> for agricultural and industrial applications.{' '}
+                    <span className="font-black text-gray-900 dark:text-white">
+                      Precision engineering
+                    </span>{" "}
+                    for agricultural and industrial applications.{" "}
                     <span className="inline-block mx-0.5 sm:mx-1 px-1.5 sm:px-2 py-0.5 bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400 font-bold rounded-md">
                       Built to Last
                     </span>

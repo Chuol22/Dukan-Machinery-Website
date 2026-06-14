@@ -1,29 +1,31 @@
-'use client';
+"use client";
 
-import { useEffect, useMemo, useState } from 'react';
-import { Search, RefreshCw } from 'lucide-react';
+import { useEffect, useMemo, useState } from "react";
+import { Search, RefreshCw } from "lucide-react";
 
 type Customer = {
   id: string;
   name: string;
-  company: string | null;
-  country: string | null;
+  companyName: string | null;
   phone: string | null;
   email: string;
-  total_orders: number;
-  last_order_date: string | null;
+  totalOrders: number;
+  lastOrderDate: string | null;
   status: string;
-  created_at: string;
+  createdAt: string;
 };
 
 export default function CustomersClient() {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [query, setQuery] = useState('');
-  const [sort, setSort] = useState<{ key: keyof Customer; dir: 'asc' | 'desc' }>({
-    key: 'created_at',
-    dir: 'desc',
+  const [query, setQuery] = useState("");
+  const [sort, setSort] = useState<{
+    key: keyof Customer;
+    dir: "asc" | "desc";
+  }>({
+    key: "createdAt",
+    dir: "desc",
   });
 
   useEffect(() => {
@@ -31,15 +33,17 @@ export default function CustomersClient() {
       try {
         setError(null);
         setLoading(true);
-        const res = await fetch('/api/admin/customers');
+        const res = await fetch("/api/admin/customers");
         if (!res.ok) {
           const body = await res.json().catch(() => null);
-          throw new Error(body?.error || `Failed to load customers (HTTP ${res.status})`);
+          throw new Error(
+            body?.error || `Failed to load customers (HTTP ${res.status})`,
+          );
         }
         const data = await res.json();
         setCustomers(Array.isArray(data.customers) ? data.customers : []);
       } catch (e) {
-        setError(e instanceof Error ? e.message : 'Failed to load customers');
+        setError(e instanceof Error ? e.message : "Failed to load customers");
       } finally {
         setLoading(false);
       }
@@ -51,24 +55,27 @@ export default function CustomersClient() {
     const q = query.trim().toLowerCase();
     const base = q
       ? customers.filter((c) => {
-          const hay = `${c.name} ${c.email} ${c.company ?? ''}`.toLowerCase();
+          const hay =
+            `${c.name} ${c.email} ${c.companyName ?? ""}`.toLowerCase();
           return hay.includes(q);
         })
       : customers;
 
-    const dirMul = sort.dir === 'asc' ? 1 : -1;
+    const dirMul = sort.dir === "asc" ? 1 : -1;
     const sorted = [...base].sort((a, b) => {
       const av = a[sort.key];
       const bv = b[sort.key];
       if (av === null || av === undefined) return 1;
       if (bv === null || bv === undefined) return -1;
       // dates are ISO strings
-      if (sort.key === 'created_at' || sort.key === 'last_order_date') {
+      if (sort.key === "createdAt" || sort.key === "lastOrderDate") {
         return (
-          new Date(String(av)).getTime() - new Date(String(bv)).getTime()
-        ) * dirMul;
+          (new Date(String(av)).getTime() - new Date(String(bv)).getTime()) *
+          dirMul
+        );
       }
-      if (typeof av === 'number' && typeof bv === 'number') return (av - bv) * dirMul;
+      if (typeof av === "number" && typeof bv === "number")
+        return (av - bv) * dirMul;
       return String(av).localeCompare(String(bv)) * dirMul;
     });
 
@@ -78,26 +85,30 @@ export default function CustomersClient() {
   const toggleSort = (key: keyof Customer) => {
     setSort((prev) => {
       if (prev.key === key) {
-        return { key, dir: prev.dir === 'asc' ? 'desc' : 'asc' };
+        return { key, dir: prev.dir === "asc" ? "desc" : "asc" };
       }
-      return { key, dir: 'asc' };
+      return { key, dir: "asc" };
     });
   };
 
   const statusBadge = (status: string) => {
     const s = status?.toLowerCase();
-    if (s === 'active') {
-      return 'bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-400 border border-green-200/50 dark:border-green-800/50';
+    if (s === "active") {
+      return "bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-400 border border-green-200/50 dark:border-green-800/50";
     }
-    return 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 border border-gray-200/50 dark:border-gray-700';
+    return "bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 border border-gray-200/50 dark:border-gray-700";
   };
 
   return (
     <div className="container mx-auto px-4 py-10 max-w-6xl">
       <div className="mb-8 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-black text-gray-900 dark:text-white">Customers</h1>
-          <p className="mt-2 text-gray-600 dark:text-gray-300">Manage and review customer order activity.</p>
+          <h1 className="text-3xl font-black text-gray-900 dark:text-white">
+            Customers
+          </h1>
+          <p className="mt-2 text-gray-600 dark:text-gray-300">
+            Manage and review customer order activity.
+          </p>
         </div>
         <div className="relative max-w-md w-full md:w-auto">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -121,24 +132,39 @@ export default function CustomersClient() {
           <table className="w-full text-left text-sm">
             <thead className="bg-gray-50/50 dark:bg-gray-900/50 border-b border-gray-200 dark:border-gray-800">
               <tr>
-                <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-xs text-gray-500 cursor-pointer" onClick={() => toggleSort('name')}>
+                <th
+                  className="py-3.5 px-4 font-bold uppercase tracking-wider text-xs text-gray-500 cursor-pointer"
+                  onClick={() => toggleSort("name")}
+                >
                   Name
                 </th>
-                <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-xs text-gray-500 cursor-pointer" onClick={() => toggleSort('company')}>
+                <th
+                  className="py-3.5 px-4 font-bold uppercase tracking-wider text-xs text-gray-500 cursor-pointer"
+                  onClick={() => toggleSort("companyName")}
+                >
                   Company
                 </th>
                 <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-xs text-gray-500">
-                  Country
+                  Phone
                 </th>
-                <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-xs text-gray-500">Phone</th>
-                <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-xs text-gray-500 cursor-pointer" onClick={() => toggleSort('email')}>
+                <th
+                  className="py-3.5 px-4 font-bold uppercase tracking-wider text-xs text-gray-500 cursor-pointer"
+                  onClick={() => toggleSort("email")}
+                >
                   Email
                 </th>
-                <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-xs text-gray-500">Total Orders</th>
-                <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-xs text-gray-500 cursor-pointer" onClick={() => toggleSort('last_order_date')}>
+                <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-xs text-gray-500">
+                  Total Orders
+                </th>
+                <th
+                  className="py-3.5 px-4 font-bold uppercase tracking-wider text-xs text-gray-500 cursor-pointer"
+                  onClick={() => toggleSort("lastOrderDate")}
+                >
                   Last Order Date
                 </th>
-                <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-xs text-gray-500">Status</th>
+                <th className="py-3.5 px-4 font-bold uppercase tracking-wider text-xs text-gray-500">
+                  Status
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
@@ -173,24 +199,43 @@ export default function CustomersClient() {
                 ))
               ) : filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={8} className="py-16 text-center text-gray-500 dark:text-gray-400">
+                  <td
+                    colSpan={7}
+                    className="py-16 text-center text-gray-500 dark:text-gray-400"
+                  >
                     No customers found.
                   </td>
                 </tr>
               ) : (
                 filtered.map((c) => (
-                  <tr key={c.id} className="hover:bg-gray-50/80 dark:hover:bg-gray-900/40 transition-colors">
-                    <td className="py-4 px-4 font-semibold text-gray-900 dark:text-white">{c.name}</td>
-                    <td className="py-4 px-4 text-gray-700 dark:text-gray-300">{c.company ?? '—'}</td>
-                    <td className="py-4 px-4 text-gray-700 dark:text-gray-300">{c.country ?? '—'}</td>
-                    <td className="py-4 px-4 text-gray-700 dark:text-gray-300">{c.phone ?? '—'}</td>
-                    <td className="py-4 px-4 text-gray-700 dark:text-gray-300">{c.email}</td>
-                    <td className="py-4 px-4 text-gray-700 dark:text-gray-300">{c.total_orders}</td>
+                  <tr
+                    key={c.id}
+                    className="hover:bg-gray-50/80 dark:hover:bg-gray-900/40 transition-colors"
+                  >
+                    <td className="py-4 px-4 font-semibold text-gray-900 dark:text-white">
+                      {c.name}
+                    </td>
                     <td className="py-4 px-4 text-gray-700 dark:text-gray-300">
-                      {c.last_order_date ? new Date(c.last_order_date).toLocaleDateString('en-US') : '—'}
+                      {c.companyName ?? "—"}
+                    </td>
+                    <td className="py-4 px-4 text-gray-700 dark:text-gray-300">
+                      {c.phone ?? "—"}
+                    </td>
+                    <td className="py-4 px-4 text-gray-700 dark:text-gray-300">
+                      {c.email}
+                    </td>
+                    <td className="py-4 px-4 text-gray-700 dark:text-gray-300">
+                      {c.totalOrders}
+                    </td>
+                    <td className="py-4 px-4 text-gray-700 dark:text-gray-300">
+                      {c.lastOrderDate
+                        ? new Date(c.lastOrderDate).toLocaleDateString("en-US")
+                        : "—"}
                     </td>
                     <td className="py-4 px-4">
-                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${statusBadge(c.status)}`}>
+                      <span
+                        className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${statusBadge(c.status)}`}
+                      >
                         {c.status}
                       </span>
                     </td>
@@ -204,4 +249,3 @@ export default function CustomersClient() {
     </div>
   );
 }
-

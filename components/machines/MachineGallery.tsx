@@ -1,16 +1,19 @@
-'use client';
+"use client";
 
 // MachineGallery — main image viewer with thumbnails and lightbox
-import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, X } from 'lucide-react';
-import OptimizedImage from '@/components/shared/OptimizedImage';
+import React, { useState } from "react";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import OptimizedImage from "@/components/shared/OptimizedImage";
 
 interface MachineGalleryProps {
   images: string[];
   productName: string;
 }
 
-export default function MachineGallery({ images, productName }: MachineGalleryProps) {
+export default function MachineGallery({
+  images,
+  productName,
+}: MachineGalleryProps) {
   // Current slide and full-screen lightbox state
   const [selectedImage, setSelectedImage] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,16 +24,16 @@ export default function MachineGallery({ images, productName }: MachineGalleryPr
     <>
       <div className="space-y-4">
         {/* Main Image */}
-        <div 
+        <div
           className="relative h-80 md:h-96 bg-gray-100 dark:bg-gray-700 rounded-2xl overflow-hidden cursor-pointer group"
           onClick={() => setIsModalOpen(true)}
         >
-          {images[selectedImage].endsWith('.mp4') ? (
-            <video 
-              src={images[selectedImage]} 
-              autoPlay 
-              muted 
-              loop 
+          {images[selectedImage].endsWith(".mp4") ? (
+            <video
+              src={images[selectedImage]}
+              autoPlay
+              muted
+              loop
               playsInline
               className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-105"
             />
@@ -39,11 +42,13 @@ export default function MachineGallery({ images, productName }: MachineGalleryPr
               src={images[selectedImage]}
               alt={productName}
               className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-105"
-              style={{ objectFit: 'contain' }}
+              style={{ objectFit: "contain" }}
             />
           )}
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
-            <span className="bg-white/90 text-gray-800 px-4 py-2 rounded-full text-sm font-black">Click to enlarge</span>
+            <span className="bg-white/90 text-gray-800 px-4 py-2 rounded-full text-sm font-black">
+              Click to enlarge
+            </span>
           </div>
         </div>
 
@@ -55,27 +60,27 @@ export default function MachineGallery({ images, productName }: MachineGalleryPr
                 key={index}
                 onClick={() => setSelectedImage(index)}
                 className={`w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 border-2 transition-all duration-300 ${
-                  selectedImage === index 
-                    ? 'border-orange-500 ring-2 ring-orange-500/50' 
-                    : 'border-transparent hover:border-orange-500/50'
+                  selectedImage === index
+                    ? "border-orange-500 ring-2 ring-orange-500/50"
+                    : "border-transparent hover:border-orange-500/50"
                 }`}
               >
-                {image.endsWith('.mp4') ? (
-                <video 
-                  src={image} 
-                  muted 
-                  loop 
-                  playsInline
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <OptimizedImage
-                  src={image}
-                  alt={`${productName} ${index + 1}`}
-                  className="w-full h-full object-cover"
-                  style={{ objectFit: 'cover' }}
-                />
-              )}
+                {image.endsWith(".mp4") ? (
+                  <video
+                    src={image}
+                    muted
+                    loop
+                    playsInline
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <OptimizedImage
+                    src={image}
+                    alt={`${productName} ${index + 1}`}
+                    className="w-full h-full object-cover"
+                    style={{ objectFit: "cover" }}
+                  />
+                )}
               </button>
             ))}
           </div>
@@ -84,7 +89,10 @@ export default function MachineGallery({ images, productName }: MachineGalleryPr
 
       {/* Lightbox Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center" onClick={() => setIsModalOpen(false)}>
+        <div
+          className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center"
+          onClick={() => setIsModalOpen(false)}
+        >
           <button
             type="button"
             aria-label="Close image preview"
@@ -94,26 +102,28 @@ export default function MachineGallery({ images, productName }: MachineGalleryPr
           >
             <X size={32} />
           </button>
-          
+
           <button
             type="button"
             aria-label="Previous image"
             title="Previous image"
             onClick={(e) => {
               e.stopPropagation();
-              setSelectedImage((prev) => (prev > 0 ? prev - 1 : images.length - 1));
+              setSelectedImage((prev) =>
+                prev > 0 ? prev - 1 : images.length - 1,
+              );
             }}
             className="absolute left-4 text-white hover:text-orange-500 transition"
           >
             <ChevronLeft size={40} />
           </button>
 
-          {images[selectedImage].endsWith('.mp4') ? (
-            <video 
-              src={images[selectedImage]} 
-              autoPlay 
-              muted 
-              loop 
+          {images[selectedImage].endsWith(".mp4") ? (
+            <video
+              src={images[selectedImage]}
+              autoPlay
+              muted
+              loop
               playsInline
               className="max-w-[90vw] max-h-[90vh] object-contain"
               onClick={(e) => e.stopPropagation()}
@@ -123,7 +133,7 @@ export default function MachineGallery({ images, productName }: MachineGalleryPr
               src={images[selectedImage]}
               alt={productName}
               className="max-w-[90vw] max-h-[90vh] object-contain"
-              style={{ objectFit: 'contain' }}
+              style={{ objectFit: "contain" }}
             />
           )}
 
@@ -133,7 +143,9 @@ export default function MachineGallery({ images, productName }: MachineGalleryPr
             title="Next image"
             onClick={(e) => {
               e.stopPropagation();
-              setSelectedImage((prev) => (prev < images.length - 1 ? prev + 1 : 0));
+              setSelectedImage((prev) =>
+                prev < images.length - 1 ? prev + 1 : 0,
+              );
             }}
             className="absolute right-4 text-white hover:text-orange-500 transition"
           >

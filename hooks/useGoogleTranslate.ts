@@ -1,7 +1,7 @@
 // useGoogleTranslate.ts — sync UI with Google Translate widget
-'use client';
+"use client";
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from "react";
 
 export type Language = {
   code: string;
@@ -12,16 +12,46 @@ export type Language = {
 
 // Supported site languages
 const LANGUAGES: Language[] = [
-  { code: 'en', name: 'English', nativeName: 'English', flag: 'https://flagcdn.com/w40/gb.png' },
-  { code: 'am', name: 'Amharic', nativeName: 'አማርኛ', flag: 'https://flagcdn.com/w40/et.png' },
-  { code: 'om', name: 'Oromo', nativeName: 'Afaan Oromoo', flag: 'https://flagcdn.com/w40/et.png' },
-  { code: 'ti', name: 'Tigrinya', nativeName: 'ትግርኛ', flag: 'https://flagcdn.com/w40/er.png' },
-  { code: 'so', name: 'Somali', nativeName: 'Soomaali', flag: 'https://flagcdn.com/w40/so.png' },
-  { code: 'fr', name: 'French', nativeName: 'Français', flag: 'https://flagcdn.com/w40/fr.png' },
+  {
+    code: "en",
+    name: "English",
+    nativeName: "English",
+    flag: "https://flagcdn.com/w40/gb.png",
+  },
+  {
+    code: "am",
+    name: "Amharic",
+    nativeName: "አማርኛ",
+    flag: "https://flagcdn.com/w40/et.png",
+  },
+  {
+    code: "om",
+    name: "Oromo",
+    nativeName: "Afaan Oromoo",
+    flag: "https://flagcdn.com/w40/et.png",
+  },
+  {
+    code: "ti",
+    name: "Tigrinya",
+    nativeName: "ትግርኛ",
+    flag: "https://flagcdn.com/w40/er.png",
+  },
+  {
+    code: "so",
+    name: "Somali",
+    nativeName: "Soomaali",
+    flag: "https://flagcdn.com/w40/so.png",
+  },
+  {
+    code: "fr",
+    name: "French",
+    nativeName: "Français",
+    flag: "https://flagcdn.com/w40/fr.png",
+  },
 ];
 
 function getGoogleTranslateSelect(): HTMLSelectElement | null {
-  return document.querySelector('.goog-te-combo') as HTMLSelectElement | null;
+  return document.querySelector(".goog-te-combo") as HTMLSelectElement | null;
 }
 
 export function useGoogleTranslate() {
@@ -32,11 +62,11 @@ export function useGoogleTranslate() {
     const select = getGoogleTranslateSelect();
     if (select) {
       select.value = lang.code;
-      select.dispatchEvent(new Event('change'));
+      select.dispatchEvent(new Event("change"));
     }
     setCurrentLang(lang);
     document.documentElement.lang = lang.code;
-    document.documentElement.dir = lang.code === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.dir = lang.code === "ar" ? "rtl" : "ltr";
   }, []);
 
   // Poll widget when user changes language outside our UI

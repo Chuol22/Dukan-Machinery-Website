@@ -1,25 +1,25 @@
-'use client';
+"use client";
 
 // Machine detail page — gallery, specs tabs, and related machines
-import React, { useState, use } from 'react';
-import { notFound, useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, ChevronRight } from 'lucide-react';
-import MachineGallery from '@/components/machines/MachineGallery';
-import MachineSpecsTable from '@/components/machines/MachineSpecsTable';
-import ProcessDiagram from '@/components/machines/ProcessDiagram';
-import RelatedMachines from '@/components/machines/RelatedMachines';
-import { getMachineBySlug, getAllMachineSlugs } from '@/data/machinesData';
+import React, { useState, use } from "react";
+import { notFound, useRouter } from "next/navigation";
+import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowLeft, ChevronRight } from "lucide-react";
+import MachineGallery from "@/components/machines/MachineGallery";
+import MachineSpecsTable from "@/components/machines/MachineSpecsTable";
+import ProcessDiagram from "@/components/machines/ProcessDiagram";
+import RelatedMachines from "@/components/machines/RelatedMachines";
+import { getMachineBySlug, getAllMachineSlugs } from "@/data/machinesData";
 
 // Tab components
 const TabButton = ({ active, onClick, children, icon }: any) => (
   <button
     onClick={onClick}
     className={`flex items-center gap-1.5 pb-3 px-2 font-black text-xs sm:text-sm uppercase tracking-wider transition border-b-2 ${
-      active 
-        ? 'border-orange-500 text-orange-500' 
-        : 'border-transparent text-neutral-500 hover:text-green-700 dark:hover:text-white'
+      active
+        ? "border-orange-500 text-orange-500"
+        : "border-transparent text-neutral-500 hover:text-green-700 dark:hover:text-white"
     }`}
   >
     <span className="text-sm">{icon}</span>
@@ -27,11 +27,15 @@ const TabButton = ({ active, onClick, children, icon }: any) => (
   </button>
 );
 
-export default function MachineDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+export default function MachineDetailPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   const router = useRouter();
   const { slug } = use(params);
   const machine = getMachineBySlug(slug);
-  const [activeTab, setActiveTab] = useState('specifications'); // specs | process | features
+  const [activeTab, setActiveTab] = useState("specifications"); // specs | process | features
 
   if (!machine) {
     notFound();
@@ -39,11 +43,31 @@ export default function MachineDetailPage({ params }: { params: Promise<{ slug: 
 
   // Tab labels for specs, process flow, and features
   const tabs = [
-    { id: 'specifications', label: 'Specifications', icon: <span className="text-sm">📊</span> },
-    { id: 'process', label: 'Process Diagram', icon: <span className="text-sm">⚙️</span> },
-    { id: 'features', label: 'Features', icon: <span className="text-sm">⭐</span> },
-    { id: 'maintenance', label: 'Maintenance', icon: <span className="text-sm">🔧</span> },
-    { id: 'warranty', label: 'Warranty', icon: <span className="text-sm">🛡️</span> },
+    {
+      id: "specifications",
+      label: "Specifications",
+      icon: <span className="text-sm">📊</span>,
+    },
+    {
+      id: "process",
+      label: "Process Diagram",
+      icon: <span className="text-sm">⚙️</span>,
+    },
+    {
+      id: "features",
+      label: "Features",
+      icon: <span className="text-sm">⭐</span>,
+    },
+    {
+      id: "maintenance",
+      label: "Maintenance",
+      icon: <span className="text-sm">🔧</span>,
+    },
+    {
+      id: "warranty",
+      label: "Warranty",
+      icon: <span className="text-sm">🛡️</span>,
+    },
   ];
 
   return (
@@ -65,7 +89,11 @@ export default function MachineDetailPage({ params }: { params: Promise<{ slug: 
           <div className="flex flex-col sm:flex-row items-center gap-6">
             <div className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-2xl bg-white p-3 shadow-2xl transform hover:scale-105 transition-all duration-500 hover:rotate-2">
               <div className="w-full h-full rounded-xl overflow-hidden">
-                <img src={machine.image} alt={machine.name} className="w-full h-full object-contain" />
+                <img
+                  src={machine.image}
+                  alt={machine.name}
+                  className="w-full h-full object-contain"
+                />
               </div>
             </div>
             <div className="flex-1 text-center sm:text-left">
@@ -73,7 +101,9 @@ export default function MachineDetailPage({ params }: { params: Promise<{ slug: 
                 {machine.name}
               </h1>
               <div className="inline-block bg-orange-500 px-4 py-2 rounded-full">
-                <p className="text-sm font-black text-white">{machine.type} Equipment</p>
+                <p className="text-sm font-black text-white">
+                  {machine.type} Equipment
+                </p>
               </div>
             </div>
           </div>
@@ -101,7 +131,7 @@ export default function MachineDetailPage({ params }: { params: Promise<{ slug: 
       {/* Tab Content */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <AnimatePresence mode="wait">
-          {activeTab === 'specifications' && (
+          {activeTab === "specifications" && (
             <motion.div
               key="specs"
               initial={{ opacity: 0, y: 20 }}
@@ -112,7 +142,7 @@ export default function MachineDetailPage({ params }: { params: Promise<{ slug: 
             </motion.div>
           )}
 
-          {activeTab === 'process' && (
+          {activeTab === "process" && (
             <motion.div
               key="process"
               initial={{ opacity: 0, y: 20 }}
@@ -123,7 +153,7 @@ export default function MachineDetailPage({ params }: { params: Promise<{ slug: 
             </motion.div>
           )}
 
-          {activeTab === 'features' && (
+          {activeTab === "features" && (
             <motion.div
               key="features"
               initial={{ opacity: 0, y: 20 }}
@@ -137,19 +167,31 @@ export default function MachineDetailPage({ params }: { params: Promise<{ slug: 
                   Key Features
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {(machine.features || [
-                    'Heavy-duty construction',
-                    'Energy efficient motor',
-                    'Easy maintenance',
-                    'Safety guards included',
-                    'CE Certified',
-                    '24/7 technical support'
-                  ]).map((feature: string, index: number) => (
+                  {(
+                    machine.features || [
+                      "Heavy-duty construction",
+                      "Energy efficient motor",
+                      "Easy maintenance",
+                      "Safety guards included",
+                      "CE Certified",
+                      "24/7 technical support",
+                    ]
+                  ).map((feature: string, index: number) => (
                     <div key={index} className="flex items-center gap-2 p-2">
-                      <svg className="w-5 h-5 text-orange-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      <svg
+                        className="w-5 h-5 text-orange-500 flex-shrink-0"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clipRule="evenodd"
+                        />
                       </svg>
-                      <span className="text-sm text-neutral-600 dark:text-neutral-300">{feature}</span>
+                      <span className="text-sm text-neutral-600 dark:text-neutral-300">
+                        {feature}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -161,13 +203,18 @@ export default function MachineDetailPage({ params }: { params: Promise<{ slug: 
                   Applications
                 </h3>
                 <div className="flex flex-wrap gap-2">
-                  {(machine.applications || [
-                    'Agricultural processing',
-                    'Commercial production',
-                    'Industrial manufacturing',
-                    'Small to medium enterprises'
-                  ]).map((app: string, index: number) => (
-                    <span key={index} className="bg-orange-500/10 text-orange-600 dark:text-orange-400 text-xs font-black px-3 py-1 rounded-full">
+                  {(
+                    machine.applications || [
+                      "Agricultural processing",
+                      "Commercial production",
+                      "Industrial manufacturing",
+                      "Small to medium enterprises",
+                    ]
+                  ).map((app: string, index: number) => (
+                    <span
+                      key={index}
+                      className="bg-orange-500/10 text-orange-600 dark:text-orange-400 text-xs font-black px-3 py-1 rounded-full"
+                    >
                       {app}
                     </span>
                   ))}
@@ -176,7 +223,7 @@ export default function MachineDetailPage({ params }: { params: Promise<{ slug: 
             </motion.div>
           )}
 
-          {activeTab === 'maintenance' && (
+          {activeTab === "maintenance" && (
             <motion.div
               key="maintenance"
               initial={{ opacity: 0, y: 20 }}
@@ -190,7 +237,9 @@ export default function MachineDetailPage({ params }: { params: Promise<{ slug: 
               </h3>
               <div className="space-y-4">
                 <div className="p-4 bg-white dark:bg-neutral-800 rounded-lg">
-                  <h4 className="font-black text-green-700 dark:text-white mb-2">Daily Checks</h4>
+                  <h4 className="font-black text-green-700 dark:text-white mb-2">
+                    Daily Checks
+                  </h4>
                   <ul className="list-disc list-inside space-y-1 text-sm text-neutral-600 dark:text-neutral-300">
                     <li>Check oil levels and lubricate moving parts</li>
                     <li>Inspect belts and chains for tension and wear</li>
@@ -199,7 +248,9 @@ export default function MachineDetailPage({ params }: { params: Promise<{ slug: 
                   </ul>
                 </div>
                 <div className="p-4 bg-white dark:bg-neutral-800 rounded-lg">
-                  <h4 className="font-black text-green-700 dark:text-white mb-2">Weekly Maintenance</h4>
+                  <h4 className="font-black text-green-700 dark:text-white mb-2">
+                    Weekly Maintenance
+                  </h4>
                   <ul className="list-disc list-inside space-y-1 text-sm text-neutral-600 dark:text-neutral-300">
                     <li>Inspect all bolts and tighten if necessary</li>
                     <li>Check electrical connections</li>
@@ -208,7 +259,9 @@ export default function MachineDetailPage({ params }: { params: Promise<{ slug: 
                   </ul>
                 </div>
                 <div className="p-4 bg-white dark:bg-neutral-800 rounded-lg">
-                  <h4 className="font-black text-green-700 dark:text-white mb-2">Monthly Service</h4>
+                  <h4 className="font-black text-green-700 dark:text-white mb-2">
+                    Monthly Service
+                  </h4>
                   <ul className="list-disc list-inside space-y-1 text-sm text-neutral-600 dark:text-neutral-300">
                     <li>Complete machine inspection by technician</li>
                     <li>Replace worn parts</li>
@@ -220,7 +273,7 @@ export default function MachineDetailPage({ params }: { params: Promise<{ slug: 
             </motion.div>
           )}
 
-          {activeTab === 'warranty' && (
+          {activeTab === "warranty" && (
             <motion.div
               key="warranty"
               initial={{ opacity: 0, y: 20 }}
@@ -239,7 +292,8 @@ export default function MachineDetailPage({ params }: { params: Promise<{ slug: 
                     Standard Warranty
                   </h4>
                   <p className="text-sm text-neutral-600 dark:text-neutral-300">
-                    {machine.warranty || '18 months'} comprehensive warranty covering manufacturing defects and material quality.
+                    {machine.warranty || "18 months"} comprehensive warranty
+                    covering manufacturing defects and material quality.
                   </p>
                 </div>
                 <div className="p-4 bg-white dark:bg-neutral-800 rounded-lg">
@@ -248,7 +302,8 @@ export default function MachineDetailPage({ params }: { params: Promise<{ slug: 
                     Technical Support
                   </h4>
                   <p className="text-sm text-neutral-600 dark:text-neutral-300">
-                    24/7 phone and email support. On-site service available within 48 hours.
+                    24/7 phone and email support. On-site service available
+                    within 48 hours.
                   </p>
                 </div>
                 <div className="p-4 bg-white dark:bg-neutral-800 rounded-lg">
@@ -257,7 +312,8 @@ export default function MachineDetailPage({ params }: { params: Promise<{ slug: 
                     Spare Parts
                   </h4>
                   <p className="text-sm text-neutral-600 dark:text-neutral-300">
-                    Genuine spare parts available with express shipping worldwide.
+                    Genuine spare parts available with express shipping
+                    worldwide.
                   </p>
                 </div>
                 <div className="p-4 bg-white dark:bg-neutral-800 rounded-lg">
@@ -266,7 +322,8 @@ export default function MachineDetailPage({ params }: { params: Promise<{ slug: 
                     Lifetime Support
                   </h4>
                   <p className="text-sm text-neutral-600 dark:text-neutral-300">
-                    Free technical consultation and training for the lifetime of the machine.
+                    Free technical consultation and training for the lifetime of
+                    the machine.
                   </p>
                 </div>
               </div>
@@ -280,14 +337,21 @@ export default function MachineDetailPage({ params }: { params: Promise<{ slug: 
         <div className="bg-neutral-100 dark:bg-neutral-700 rounded-2xl p-6 sm:p-8">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 max-w-3xl mx-auto">
             <div className="text-center sm:text-left">
-              <h3 className="text-lg sm:text-xl font-black text-green-700 dark:text-white">Ready to get started?</h3>
-              <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300">Order or request a custom configuration</p>
+              <h3 className="text-lg sm:text-xl font-black text-green-700 dark:text-white">
+                Ready to get started?
+              </h3>
+              <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300">
+                Order or request a custom configuration
+              </p>
             </div>
             <div className="flex gap-3">
               <Link href={`/order?machine=${machine.id}`}>
                 <button className="bg-orange-500 text-white font-black px-5 py-2.5 rounded-full text-xs uppercase tracking-widest hover:bg-orange-600 transition-all duration-300 hover:scale-105 hover:shadow-xl flex items-center gap-2">
                   Order Now
-                  <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                  <ChevronRight
+                    size={16}
+                    className="group-hover:translate-x-1 transition-transform"
+                  />
                 </button>
               </Link>
               <Link href="/contact">
@@ -301,7 +365,10 @@ export default function MachineDetailPage({ params }: { params: Promise<{ slug: 
       </section>
 
       {/* Related Machines */}
-      <RelatedMachines currentMachineId={machine.id} category={machine.category} />
+      <RelatedMachines
+        currentMachineId={machine.id}
+        category={machine.category}
+      />
     </div>
   );
 }

@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
 // Smart image — CldImage for Cloudinary URLs, plain img as fallback
-import { CldImage } from 'next-cloudinary';
-import { useState } from 'react';
-import { ImageIcon } from 'lucide-react';
+import { CldImage } from "next-cloudinary";
+import { useState } from "react";
+import { ImageIcon } from "lucide-react";
 
 interface CloudinaryImageProps {
   src: string;
@@ -22,9 +22,9 @@ export default function CloudinaryImage({
   alt,
   width = 800,
   height = 600,
-  className = '',
+  className = "",
   priority = false,
-  sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw',
+  sizes = "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw",
   fill = false,
   style,
 }: CloudinaryImageProps) {
@@ -32,7 +32,8 @@ export default function CloudinaryImage({
   const [isLoading, setIsLoading] = useState(true);
 
   // Check if the image is already a Cloudinary URL
-  const isCloudinaryUrl = src.includes('res.cloudinary.com') || src.includes('cloudinary://');
+  const isCloudinaryUrl =
+    src.includes("res.cloudinary.com") || src.includes("cloudinary://");
 
   // If it's not a Cloudinary URL, use regular img tag
   if (!isCloudinaryUrl) {
@@ -44,7 +45,7 @@ export default function CloudinaryImage({
         height={fill ? undefined : height}
         className={className}
         style={style}
-        loading={priority ? 'eager' : 'lazy'}
+        loading={priority ? "eager" : "lazy"}
         onError={() => setImageError(true)}
         onLoad={() => setIsLoading(false)}
       />
@@ -53,22 +54,24 @@ export default function CloudinaryImage({
 
   // Extract public ID from Cloudinary URL
   const getPublicId = (url: string): string => {
-    if (url.includes('cloudinary://')) {
+    if (url.includes("cloudinary://")) {
       // Handle cloudinary:// format
-      const parts = url.split('cloudinary://')[1];
-      const pathParts = parts.split('/');
-      return pathParts.slice(1).join('/');
+      const parts = url.split("cloudinary://")[1];
+      const pathParts = parts.split("/");
+      return pathParts.slice(1).join("/");
     }
-    
+
     // Handle https://res.cloudinary.com format
-    const urlParts = url.split('/');
-    const uploadIndex = urlParts.indexOf('upload');
+    const urlParts = url.split("/");
+    const uploadIndex = urlParts.indexOf("upload");
     if (uploadIndex !== -1) {
-      const publicId = urlParts.slice(uploadIndex + 1).join('/');
+      const publicId = urlParts.slice(uploadIndex + 1).join("/");
       // Remove transformation parameters
-      return publicId.split('/')[0] === 'v' ? publicId.split('/').slice(2).join('/') : publicId;
+      return publicId.split("/")[0] === "v"
+        ? publicId.split("/").slice(2).join("/")
+        : publicId;
     }
-    
+
     return url;
   };
 
@@ -98,8 +101,8 @@ export default function CloudinaryImage({
         fill={fill}
         sizes={sizes}
         priority={priority}
-        loading={priority ? 'eager' : 'lazy'}
-        className={`transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
+        loading={priority ? "eager" : "lazy"}
+        className={`transition-opacity duration-300 ${isLoading ? "opacity-0" : "opacity-100"}`}
         onLoad={() => setIsLoading(false)}
         onError={() => setImageError(true)}
         deliveryType="upload"

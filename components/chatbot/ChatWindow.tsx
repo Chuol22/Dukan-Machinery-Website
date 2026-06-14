@@ -1,8 +1,8 @@
-'use client'
+"use client";
 
 // ChatWindow — chat panel with messages, quick actions, and input
-import { useState, useRef, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   X,
   Minimize2,
@@ -10,58 +10,57 @@ import {
   Bot,
   Sparkles,
   MessageCircle,
-  Zap
-} from 'lucide-react'
+  Zap,
+} from "lucide-react";
 
-import ChatMessage from './ChatMessage'
-import QuickActions from './QuickActions'
-import { useChatbot } from '@/contexts/ChatbotContext'
+import ChatMessage from "./ChatMessage";
+import QuickActions from "./QuickActions";
+import { useChatbot } from "@/contexts/ChatbotContext";
 
 interface ChatWindowProps {
-  onClose: () => void
-  onMinimize: () => void
+  onClose: () => void;
+  onMinimize: () => void;
 }
 
 export default function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
-  const [inputValue, setInputValue] = useState('')
-  const messagesRef = useRef<HTMLDivElement>(null)
+  const [inputValue, setInputValue] = useState("");
+  const messagesRef = useRef<HTMLDivElement>(null);
 
-  const { messages, sendMessage, clearMessages, isProcessing } = useChatbot()
+  const { messages, sendMessage, clearMessages, isProcessing } = useChatbot();
 
   // Auto-scroll to latest message
   useEffect(() => {
     if (messagesRef.current) {
       messagesRef.current.scrollTo({
         top: messagesRef.current.scrollHeight,
-        behavior: 'smooth'
-      })
+        behavior: "smooth",
+      });
     }
-  }, [messages, isProcessing])
+  }, [messages, isProcessing]);
 
   const handleSendMessage = async () => {
-    if (!inputValue.trim() || isProcessing) return
-    await sendMessage(inputValue.trim())
-    setInputValue('')
-  }
+    if (!inputValue.trim() || isProcessing) return;
+    await sendMessage(inputValue.trim());
+    setInputValue("");
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      e.preventDefault()
-      handleSendMessage()
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleSendMessage();
     }
-  }
+  };
 
   const handleQuickAction = async (action: string) => {
-    await sendMessage(action)
-  }
+    await sendMessage(action);
+  };
 
   const handleNewChat = () => {
-    clearMessages()
-  }
+    clearMessages();
+  };
 
   return (
     <div className="flex flex-col h-full bg-white dark:bg-gray-900">
-
       {/* Header */}
       <div className="flex-shrink-0 bg-gradient-to-r from-orange-600 via-orange-500 to-orange-600 px-4 py-3 rounded-t-2xl shadow-md">
         <div className="flex items-center justify-between">
@@ -70,7 +69,9 @@ export default function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
               <Bot className="w-4 h-4 text-white" />
             </div>
             <div>
-              <h3 className="text-white font-bold text-sm">Dukan AI Assistant</h3>
+              <h3 className="text-white font-bold text-sm">
+                Dukan AI Assistant
+              </h3>
               <div className="flex items-center gap-1">
                 <span className="w-1 h-1 bg-green-400 rounded-full animate-pulse" />
                 <p className="text-white/80 text-xs">Online</p>
@@ -79,8 +80,8 @@ export default function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
           </div>
 
           <div className="flex gap-1">
-            <button 
-              onClick={onClose} 
+            <button
+              onClick={onClose}
               className="p-2 hover:bg-white/15 rounded-lg transition-colors"
               title="Close"
             >
@@ -92,13 +93,11 @@ export default function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
 
       {/* Messages area */}
       <div className="flex-1 flex flex-col overflow-hidden bg-gray-50/50 dark:bg-gray-950/20 backdrop-blur-[2px]">
-
         <div
           ref={messagesRef}
           className="flex-1 overflow-y-auto px-4 py-4 space-y-4 scrollbar-thin scrollbar-thumb-neutral-200 dark:scrollbar-thumb-neutral-800"
         >
           <AnimatePresence initial={false}>
-
             {messages.map((msg, i) => (
               <ChatMessage key={msg.id || i} message={msg} />
             ))}
@@ -121,7 +120,6 @@ export default function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
                 </div>
               </motion.div>
             )}
-
           </AnimatePresence>
         </div>
 
@@ -131,7 +129,6 @@ export default function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
             <QuickActions onActionClick={handleQuickAction} />
           </div>
         )}
-
       </div>
 
       {/* Message input */}
@@ -155,7 +152,6 @@ export default function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
           </button>
         </div>
       </div>
-
     </div>
-  )
+  );
 }

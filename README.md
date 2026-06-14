@@ -4,14 +4,14 @@ Next.js application for machinery sales, customer orders, and admin operations.
 
 ## Tech stack
 
-| Layer | Technology |
-|-------|------------|
-| Framework | Next.js 16.2.2, React 19, TypeScript |
-| Styling | Tailwind CSS 4 (`app/globals.css`) |
-| Database | PostgreSQL (Neon) + Prisma 5 |
-| Images | Cloudinary (admin uploads) |
-| Email | Nodemailer (Gmail SMTP) |
-| Auth | Cookie-based admin sessions (`lib/auth.ts`) |
+| Layer     | Technology                                  |
+| --------- | ------------------------------------------- |
+| Framework | Next.js 16.2.2, React 19, TypeScript        |
+| Styling   | Tailwind CSS 4 (`app/globals.css`)          |
+| Database  | PostgreSQL (Neon) + Prisma 5                |
+| Images    | Cloudinary (admin uploads)                  |
+| Email     | Nodemailer (Gmail SMTP)                     |
+| Auth      | Cookie-based admin sessions (`lib/auth.ts`) |
 
 ## Features
 
@@ -67,30 +67,31 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Admin access
 
-| Route | Purpose |
-|-------|---------|
-| `/admin` | Dashboard |
-| `/admin/orders` | Review and manage orders |
-| `/admin/machines` | Machine inventory |
-| `/admin/notifications` | Order alerts |
+| Route                  | Purpose                  |
+| ---------------------- | ------------------------ |
+| `/admin`               | Dashboard                |
+| `/admin/orders`        | Review and manage orders |
+| `/admin/machines`      | Machine inventory        |
+| `/admin/notifications` | Order alerts             |
 
 Default credentials (change in production via `.env`):
+
 - Admin: `admin` / value of `ADMIN_PASSWORD`
 - Officer: `officer` / value of `OFFICER_PASSWORD`
 
 ## API routes
 
-| Endpoint | Method | Auth | Purpose |
-|----------|--------|------|---------|
-| `/api/send-order` | POST | Public | Submit customer order |
-| `/api/machines` | GET | Public | List machines |
-| `/api/machines` | POST | Admin | Create machine |
-| `/api/machines/[id]` | PUT/DELETE | Admin | Update/delete machine |
-| `/api/admin/orders` | GET | Admin | List orders |
-| `/api/admin/orders/[id]/accept` | POST | Admin | Accept order |
-| `/api/admin/orders/[id]/reject` | POST | Admin | Reject order |
-| `/api/admin/notifications` | GET/PUT | Admin | Notifications |
-| `/api/upload` | POST | Admin | Upload image to Cloudinary |
+| Endpoint                        | Method     | Auth   | Purpose                    |
+| ------------------------------- | ---------- | ------ | -------------------------- |
+| `/api/send-order`               | POST       | Public | Submit customer order      |
+| `/api/machines`                 | GET        | Public | List machines              |
+| `/api/machines`                 | POST       | Admin  | Create machine             |
+| `/api/machines/[id]`            | PUT/DELETE | Admin  | Update/delete machine      |
+| `/api/admin/orders`             | GET        | Admin  | List orders                |
+| `/api/admin/orders/[id]/accept` | POST       | Admin  | Accept order               |
+| `/api/admin/orders/[id]/reject` | POST       | Admin  | Reject order               |
+| `/api/admin/notifications`      | GET/PUT    | Admin  | Notifications              |
+| `/api/upload`                   | POST       | Admin  | Upload image to Cloudinary |
 
 ## Architecture notes
 
@@ -128,8 +129,8 @@ npm run lint     # ESLint
 
 ## Documentation
 
-| Document | Purpose |
-|----------|---------|
+| Document                                                   | Purpose                               |
+| ---------------------------------------------------------- | ------------------------------------- |
 | [../PRODUCT_DOCUMENTATION.md](../PRODUCT_DOCUMENTATION.md) | **Complete product handover for CTO** |
-| [SETUP.md](./SETUP.md) | Local developer setup |
-| [DEPLOYMENT.md](./DEPLOYMENT.md) | Production deployment |
+| [SETUP.md](./SETUP.md)                                     | Local developer setup                 |
+| [DEPLOYMENT.md](./DEPLOYMENT.md)                           | Production deployment                 |

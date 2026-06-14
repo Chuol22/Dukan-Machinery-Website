@@ -1,6 +1,5 @@
-import InquiriesClient from './InquiriesClient';
+import InquiriesClient from "./InquiriesClient";
 
 export default function InquiriesPage() {
   return <InquiriesClient />;
 }
-

@@ -1,8 +1,8 @@
-'use client'
+"use client";
 
 // StandardOrderForm — four-step wizard for catalog machine orders
-import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Package,
   MapPin,
@@ -15,48 +15,48 @@ import {
   CreditCard,
   FileText,
   Send,
-} from 'lucide-react'
-import Image from 'next/image'
-import { machinesData } from '../../data/machinesData'
+} from "lucide-react";
+import Image from "next/image";
+import { machinesData } from "../../data/machinesData";
 
 interface StandardOrderFormProps {
-  onSubmit?: (data: StandardOrderData) => void
-  preselectedMachineId?: string
+  onSubmit?: (data: StandardOrderData) => void;
+  preselectedMachineId?: string;
 }
 
 export interface StandardOrderData {
-  machineId: string
-  machineName?: string
-  unitPrice?: number
-  totalPrice?: number
-  quantity: number
+  machineId: string;
+  machineName?: string;
+  unitPrice?: number;
+  totalPrice?: number;
+  quantity: number;
   customerInfo: {
-    fullName: string
-    companyName: string
-    email: string
-    phone: string
-    address: string
-    city: string
-  }
+    fullName: string;
+    companyName: string;
+    email: string;
+    phone: string;
+    address: string;
+    city: string;
+  };
   deliveryInfo: {
-    preferredDate: string
-    deliveryAddress: string
-    specialInstructions: string
-  }
-  paymentMethod: 'bank_transfer' | 'letter_of_credit' | 'credit_card'
-  termsAccepted: boolean
+    preferredDate: string;
+    deliveryAddress: string;
+    specialInstructions: string;
+  };
+  paymentMethod: "bank_transfer" | "letter_of_credit" | "credit_card";
+  termsAccepted: boolean;
 }
 
 // Machine thumbnail with fallback placeholder on load error
 function SafeMachineImage({ src, alt }: { src?: string; alt: string }) {
-  const [imgError, setImgError] = useState(false)
+  const [imgError, setImgError] = useState(false);
 
   if (!src || imgError) {
     return (
       <div className="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
         <Package className="w-8 h-8 text-gray-400" />
       </div>
-    )
+    );
   }
 
   return (
@@ -68,221 +68,243 @@ function SafeMachineImage({ src, alt }: { src?: string; alt: string }) {
       sizes="96px"
       onError={() => setImgError(true)}
     />
-  )
+  );
 }
 
-export default function StandardOrderForm({ onSubmit, preselectedMachineId }: StandardOrderFormProps) {
+export default function StandardOrderForm({
+  onSubmit,
+  preselectedMachineId,
+}: StandardOrderFormProps) {
   // Wizard step and form state
-  const [currentStep, setCurrentStep] = useState(1)
+  const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<StandardOrderData>({
-    machineId: preselectedMachineId || '',
+    machineId: preselectedMachineId || "",
     quantity: 1,
     customerInfo: {
-      fullName: '',
-      companyName: '',
-      email: '',
-      phone: '',
-      address: '',
-      city: '',
+      fullName: "",
+      companyName: "",
+      email: "",
+      phone: "",
+      address: "",
+      city: "",
     },
     deliveryInfo: {
-      preferredDate: '',
-      deliveryAddress: '',
-      specialInstructions: '',
+      preferredDate: "",
+      deliveryAddress: "",
+      specialInstructions: "",
     },
-    paymentMethod: 'bank_transfer',
+    paymentMethod: "bank_transfer",
     termsAccepted: false,
-  })
-  const [errors, setErrors] = useState<Record<string, string>>({})
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitError, setSubmitError] = useState<string | null>(null)
+  });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   // Selected machine from catalog
-  const selectedMachine = machinesData.find(m => m.id === Number(formData.machineId))
+  const selectedMachine = machinesData.find(
+    (m) => m.id === Number(formData.machineId),
+  );
 
   // Parse price string (ranges or single value) to number
   const priceToNumber = (price: unknown): number => {
-    if (typeof price === 'number') return price
-    if (!price) return 0
-    const str = String(price)
+    if (typeof price === "number") return price;
+    if (!price) return 0;
+    const str = String(price);
 
-    const rangeMatch = str.match(/([0-9][0-9,\.]*)\s*-\s*([0-9][0-9,\.]*)/)
+    const rangeMatch = str.match(/([0-9][0-9,\.]*)\s*-\s*([0-9][0-9,\.]*)/);
     if (rangeMatch) {
-      const a = Number(rangeMatch[1].replace(/,/g, ''))
-      const b = Number(rangeMatch[2].replace(/,/g, ''))
-      if (!Number.isNaN(a) && !Number.isNaN(b)) return (a + b) / 2
+      const a = Number(rangeMatch[1].replace(/,/g, ""));
+      const b = Number(rangeMatch[2].replace(/,/g, ""));
+      if (!Number.isNaN(a) && !Number.isNaN(b)) return (a + b) / 2;
     }
 
-    const numMatch = str.match(/([0-9][0-9,\.]*)/)
-    if (!numMatch) return 0
-    return Number(numMatch[1].replace(/,/g, ''))
-  }
+    const numMatch = str.match(/([0-9][0-9,\.]*)/);
+    if (!numMatch) return 0;
+    return Number(numMatch[1].replace(/,/g, ""));
+  };
 
-  const unitPriceNumber = priceToNumber(selectedMachine?.price)
-  const totalPrice = unitPriceNumber * formData.quantity
+  const unitPriceNumber = priceToNumber(selectedMachine?.price);
+  const totalPrice = unitPriceNumber * formData.quantity;
 
   // Prefer gallery image, fall back to main product image
-  const getMachineImageSrc = (machine: typeof selectedMachine): string | undefined => {
-    if (!machine) return undefined
-    return machine.gallery?.[0] || machine.image || undefined
-  }
+  const getMachineImageSrc = (
+    machine: typeof selectedMachine,
+  ): string | undefined => {
+    if (!machine) return undefined;
+    return machine.gallery?.[0] || machine.image || undefined;
+  };
 
   // Per-step field validation
   const validateStep = (step: number): boolean => {
-    const newErrors: Record<string, string> = {}
+    const newErrors: Record<string, string> = {};
 
     if (step === 1) {
-      if (!formData.machineId) newErrors.machineId = 'Please select a machine'
-      if (formData.quantity < 1) newErrors.quantity = 'Quantity must be at least 1'
-      if (formData.quantity > 100) newErrors.quantity = 'Quantity cannot exceed 100'
+      if (!formData.machineId) newErrors.machineId = "Please select a machine";
+      if (formData.quantity < 1)
+        newErrors.quantity = "Quantity must be at least 1";
+      if (formData.quantity > 100)
+        newErrors.quantity = "Quantity cannot exceed 100";
     }
 
     if (step === 2) {
-      if (!formData.customerInfo.fullName) newErrors.fullName = 'Full name is required'
-      if (!formData.customerInfo.companyName) newErrors.companyName = 'Company name is required'
-      if (!formData.customerInfo.email) newErrors.email = 'Email is required'
-      if (!/\S+@\S+\.\S+/.test(formData.customerInfo.email)) newErrors.email = 'Please enter a valid email'
-      if (!formData.customerInfo.phone) newErrors.phone = 'Phone number is required'
-      if (!formData.customerInfo.address) newErrors.address = 'Address is required'
-      if (!formData.customerInfo.city) newErrors.city = 'City is required'
+      if (!formData.customerInfo.fullName)
+        newErrors.fullName = "Full name is required";
+      if (!formData.customerInfo.companyName)
+        newErrors.companyName = "Company name is required";
+      if (!formData.customerInfo.email) newErrors.email = "Email is required";
+      if (!/\S+@\S+\.\S+/.test(formData.customerInfo.email))
+        newErrors.email = "Please enter a valid email";
+      if (!formData.customerInfo.phone)
+        newErrors.phone = "Phone number is required";
+      if (!formData.customerInfo.address)
+        newErrors.address = "Address is required";
+      if (!formData.customerInfo.city) newErrors.city = "City is required";
     }
 
     if (step === 3) {
-      if (!formData.deliveryInfo.preferredDate) newErrors.preferredDate = 'Preferred delivery date is required'
-      if (!formData.deliveryInfo.deliveryAddress) newErrors.deliveryAddress = 'Delivery address is required'
+      if (!formData.deliveryInfo.preferredDate)
+        newErrors.preferredDate = "Preferred delivery date is required";
+      if (!formData.deliveryInfo.deliveryAddress)
+        newErrors.deliveryAddress = "Delivery address is required";
     }
 
     if (step === 4) {
-      if (!formData.termsAccepted) newErrors.termsAccepted = 'You must accept the terms and conditions'
+      if (!formData.termsAccepted)
+        newErrors.termsAccepted = "You must accept the terms and conditions";
     }
 
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleNext = () => {
     if (validateStep(currentStep)) {
-      setCurrentStep(prev => Math.min(prev + 1, 4))
-      window.scrollTo({ top: 0, behavior: 'smooth' })
+      setCurrentStep((prev) => Math.min(prev + 1, 4));
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
-  }
+  };
 
   const handleBack = () => {
-    setCurrentStep(prev => Math.max(prev - 1, 1))
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
+    setCurrentStep((prev) => Math.max(prev - 1, 1));
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   // POST order to API, then notify parent on success
   const handleSubmit = async () => {
-    if (!validateStep(4)) return
+    if (!validateStep(4)) return;
 
-    setSubmitError(null)
-    setIsSubmitting(true)
+    setSubmitError(null);
+    setIsSubmitting(true);
 
-    const orderId = `DUK-${preselectedMachineId || formData.machineId || '0'}-${formData.quantity}`
+    const orderId = `DUK-${preselectedMachineId || formData.machineId || "0"}-${formData.quantity}`;
 
     const submissionData: StandardOrderData & {
-      machineName?: string
-      unitPrice: number
-      totalPrice: number
-      orderId: string
-      status: string
+      machineName?: string;
+      unitPrice: number;
+      totalPrice: number;
+      orderId: string;
+      status: string;
     } = {
       ...formData,
       machineName: selectedMachine?.name,
       unitPrice: unitPriceNumber,
       totalPrice: totalPrice,
       orderId,
-      status: 'pending',
-    }
+      status: "pending",
+    };
 
     try {
-      const res = await fetch('/api/send-order', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/send-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(submissionData),
-      })
+      });
 
       if (!res.ok) {
-        const body = await res.json().catch(() => null)
-        throw new Error(body?.message ?? `Failed to submit order (HTTP ${res.status})`)
+        const body = await res.json().catch(() => null);
+        throw new Error(
+          body?.message ?? `Failed to submit order (HTTP ${res.status})`,
+        );
       }
 
-      setIsSubmitting(false)
+      setIsSubmitting(false);
       // Only tell the parent. Parent's showSummary state controls what renders next.
-      onSubmit?.(submissionData)
+      onSubmit?.(submissionData);
     } catch (e) {
-      console.error('Order submission failed:', e)
-      const message = e instanceof Error ? e.message : 'An error occurred while submitting your order. Please try again.'
-      setSubmitError(message)
-      setIsSubmitting(false)
+      console.error("Order submission failed:", e);
+      const message =
+        e instanceof Error
+          ? e.message
+          : "An error occurred while submitting your order. Please try again.";
+      setSubmitError(message);
+      setIsSubmitting(false);
     }
-  }
+  };
 
   const updateFormData = (field: string, value: unknown) => {
-    setFormData(prev => ({ ...prev, [field]: value }))
+    setFormData((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) {
-      setErrors(prev => {
-        const newErrors = { ...prev }
-        delete newErrors[field]
-        return newErrors
-      })
+      setErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors[field];
+        return newErrors;
+      });
     }
-  }
+  };
 
   const updateCustomerInfo = (field: string, value: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      customerInfo: { ...prev.customerInfo, [field]: value }
-    }))
+      customerInfo: { ...prev.customerInfo, [field]: value },
+    }));
     if (errors[field]) {
-      setErrors(prev => {
-        const newErrors = { ...prev }
-        delete newErrors[field]
-        return newErrors
-      })
+      setErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors[field];
+        return newErrors;
+      });
     }
-  }
+  };
 
   const updateDeliveryInfo = (field: string, value: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      deliveryInfo: { ...prev.deliveryInfo, [field]: value }
-    }))
+      deliveryInfo: { ...prev.deliveryInfo, [field]: value },
+    }));
     if (errors[field]) {
-      setErrors(prev => {
-        const newErrors = { ...prev }
-        delete newErrors[field]
-        return newErrors
-      })
+      setErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors[field];
+        return newErrors;
+      });
     }
-  }
+  };
 
   const handleReset = () => {
-    setIsSubmitting(false)
-    setSubmitError(null)
-    setErrors({})
-    setCurrentStep(1)
+    setIsSubmitting(false);
+    setSubmitError(null);
+    setErrors({});
+    setCurrentStep(1);
     setFormData({
-      machineId: preselectedMachineId || '',
+      machineId: preselectedMachineId || "",
       quantity: 1,
       customerInfo: {
-        fullName: '',
-        companyName: '',
-        email: '',
-        phone: '',
-        address: '',
-        city: '',
+        fullName: "",
+        companyName: "",
+        email: "",
+        phone: "",
+        address: "",
+        city: "",
       },
       deliveryInfo: {
-        preferredDate: '',
-        deliveryAddress: '',
-        specialInstructions: '',
+        preferredDate: "",
+        deliveryAddress: "",
+        specialInstructions: "",
       },
-      paymentMethod: 'bank_transfer',
+      paymentMethod: "bank_transfer",
       termsAccepted: false,
-    })
-  }
+    });
+  };
 
   return (
     <div className="bg-gray-50 dark:bg-gray-900 rounded-2xl p-8 shadow-xl">
@@ -297,7 +319,9 @@ export default function StandardOrderForm({ onSubmit, preselectedMachineId }: St
           <span className="text-lg leading-none">⚠️</span>
           <div>
             <p className="font-bold mb-0.5">Order submission failed</p>
-            <p className="font-normal text-red-600 dark:text-red-400">{submitError}</p>
+            <p className="font-normal text-red-600 dark:text-red-400">
+              {submitError}
+            </p>
           </div>
         </div>
       )}
@@ -306,16 +330,20 @@ export default function StandardOrderForm({ onSubmit, preselectedMachineId }: St
       <div className="flex justify-between mb-8">
         {[1, 2, 3, 4].map((step) => (
           <div key={step} className="flex-1 text-center">
-            <div className={`w-8 h-8 mx-auto rounded-full flex items-center justify-center ${
-              currentStep >= step ? 'bg-orange-500 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-500'
-            }`}>
+            <div
+              className={`w-8 h-8 mx-auto rounded-full flex items-center justify-center ${
+                currentStep >= step
+                  ? "bg-orange-500 text-white"
+                  : "bg-gray-200 dark:bg-gray-700 text-gray-500"
+              }`}
+            >
               {step}
             </div>
             <p className="text-xs mt-1 text-gray-600 dark:text-gray-400">
-              {step === 1 && 'Product'}
-              {step === 2 && 'Customer'}
-              {step === 3 && 'Delivery'}
-              {step === 4 && 'Payment'}
+              {step === 1 && "Product"}
+              {step === 2 && "Customer"}
+              {step === 3 && "Delivery"}
+              {step === 4 && "Payment"}
             </p>
           </div>
         ))}
@@ -342,7 +370,7 @@ export default function StandardOrderForm({ onSubmit, preselectedMachineId }: St
                 </label>
                 <select
                   value={formData.machineId}
-                  onChange={(e) => updateFormData('machineId', e.target.value)}
+                  onChange={(e) => updateFormData("machineId", e.target.value)}
                   className="w-full px-4 py-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                 >
                   <option value="">Choose a machine...</option>
@@ -353,7 +381,9 @@ export default function StandardOrderForm({ onSubmit, preselectedMachineId }: St
                   ))}
                 </select>
                 {errors.machineId && (
-                  <p className="mt-1 text-sm text-red-500">{errors.machineId}</p>
+                  <p className="mt-1 text-sm text-red-500">
+                    {errors.machineId}
+                  </p>
                 )}
               </div>
 
@@ -380,7 +410,10 @@ export default function StandardOrderForm({ onSubmit, preselectedMachineId }: St
                     </div>
                     <div className="text-right">
                       <p className="text-lg font-bold text-orange-500">
-                        ETB {unitPriceNumber ? unitPriceNumber.toLocaleString() : 'Call for price'}
+                        ETB{" "}
+                        {unitPriceNumber
+                          ? unitPriceNumber.toLocaleString()
+                          : "Call for price"}
                       </p>
                     </div>
                   </div>
@@ -394,7 +427,12 @@ export default function StandardOrderForm({ onSubmit, preselectedMachineId }: St
                 <div className="flex items-center gap-3">
                   <button
                     type="button"
-                    onClick={() => updateFormData('quantity', Math.max(1, formData.quantity - 1))}
+                    onClick={() =>
+                      updateFormData(
+                        "quantity",
+                        Math.max(1, formData.quantity - 1),
+                      )
+                    }
                     className="w-10 h-10 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-orange-500 transition-colors"
                   >
                     -
@@ -402,14 +440,21 @@ export default function StandardOrderForm({ onSubmit, preselectedMachineId }: St
                   <input
                     type="number"
                     value={formData.quantity}
-                    onChange={(e) => updateFormData('quantity', parseInt(e.target.value) || 1)}
+                    onChange={(e) =>
+                      updateFormData("quantity", parseInt(e.target.value) || 1)
+                    }
                     className="w-24 text-center px-4 py-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                     min="1"
                     max="100"
                   />
                   <button
                     type="button"
-                    onClick={() => updateFormData('quantity', Math.min(100, formData.quantity + 1))}
+                    onClick={() =>
+                      updateFormData(
+                        "quantity",
+                        Math.min(100, formData.quantity + 1),
+                      )
+                    }
                     className="w-10 h-10 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-orange-500 transition-colors"
                   >
                     +
@@ -428,7 +473,12 @@ export default function StandardOrderForm({ onSubmit, preselectedMachineId }: St
                   <div className="space-y-1 text-sm">
                     <div className="flex justify-between">
                       <span>Unit Price:</span>
-                      <span>ETB {unitPriceNumber ? unitPriceNumber.toLocaleString() : 'Price on request'}</span>
+                      <span>
+                        ETB{" "}
+                        {unitPriceNumber
+                          ? unitPriceNumber.toLocaleString()
+                          : "Price on request"}
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span>Quantity:</span>
@@ -467,12 +517,18 @@ export default function StandardOrderForm({ onSubmit, preselectedMachineId }: St
                     <input
                       type="text"
                       value={formData.customerInfo.fullName}
-                      onChange={(e) => updateCustomerInfo('fullName', e.target.value)}
+                      onChange={(e) =>
+                        updateCustomerInfo("fullName", e.target.value)
+                      }
                       className="w-full pl-10 pr-4 py-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                       placeholder="Your name"
                     />
                   </div>
-                  {errors.fullName && <p className="mt-1 text-sm text-red-500">{errors.fullName}</p>}
+                  {errors.fullName && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {errors.fullName}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -484,12 +540,18 @@ export default function StandardOrderForm({ onSubmit, preselectedMachineId }: St
                     <input
                       type="text"
                       value={formData.customerInfo.companyName}
-                      onChange={(e) => updateCustomerInfo('companyName', e.target.value)}
+                      onChange={(e) =>
+                        updateCustomerInfo("companyName", e.target.value)
+                      }
                       className="w-full pl-10 pr-4 py-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                       placeholder="Company Name"
                     />
                   </div>
-                  {errors.companyName && <p className="mt-1 text-sm text-red-500">{errors.companyName}</p>}
+                  {errors.companyName && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {errors.companyName}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -501,12 +563,16 @@ export default function StandardOrderForm({ onSubmit, preselectedMachineId }: St
                     <input
                       type="email"
                       value={formData.customerInfo.email}
-                      onChange={(e) => updateCustomerInfo('email', e.target.value)}
+                      onChange={(e) =>
+                        updateCustomerInfo("email", e.target.value)
+                      }
                       className="w-full pl-10 pr-4 py-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                       placeholder="your@example.com"
                     />
                   </div>
-                  {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email}</p>}
+                  {errors.email && (
+                    <p className="mt-1 text-sm text-red-500">{errors.email}</p>
+                  )}
                 </div>
 
                 <div>
@@ -518,12 +584,16 @@ export default function StandardOrderForm({ onSubmit, preselectedMachineId }: St
                     <input
                       type="tel"
                       value={formData.customerInfo.phone}
-                      onChange={(e) => updateCustomerInfo('phone', e.target.value)}
+                      onChange={(e) =>
+                        updateCustomerInfo("phone", e.target.value)
+                      }
                       className="w-full pl-10 pr-4 py-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                       placeholder="+251 9XX XXX XXX"
                     />
                   </div>
-                  {errors.phone && <p className="mt-1 text-sm text-red-500">{errors.phone}</p>}
+                  {errors.phone && (
+                    <p className="mt-1 text-sm text-red-500">{errors.phone}</p>
+                  )}
                 </div>
 
                 <div className="md:col-span-2">
@@ -534,13 +604,19 @@ export default function StandardOrderForm({ onSubmit, preselectedMachineId }: St
                     <MapPin className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
                     <textarea
                       value={formData.customerInfo.address}
-                      onChange={(e) => updateCustomerInfo('address', e.target.value)}
+                      onChange={(e) =>
+                        updateCustomerInfo("address", e.target.value)
+                      }
                       rows={2}
                       className="w-full pl-10 pr-4 py-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                       placeholder="Street address"
                     />
                   </div>
-                  {errors.address && <p className="mt-1 text-sm text-red-500">{errors.address}</p>}
+                  {errors.address && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {errors.address}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -550,11 +626,13 @@ export default function StandardOrderForm({ onSubmit, preselectedMachineId }: St
                   <input
                     type="text"
                     value={formData.customerInfo.city}
-                    onChange={(e) => updateCustomerInfo('city', e.target.value)}
+                    onChange={(e) => updateCustomerInfo("city", e.target.value)}
                     className="w-full px-4 py-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                     placeholder="City"
                   />
-                  {errors.city && <p className="mt-1 text-sm text-red-500">{errors.city}</p>}
+                  {errors.city && (
+                    <p className="mt-1 text-sm text-red-500">{errors.city}</p>
+                  )}
                 </div>
               </div>
             </motion.div>
@@ -583,12 +661,18 @@ export default function StandardOrderForm({ onSubmit, preselectedMachineId }: St
                     <input
                       type="date"
                       value={formData.deliveryInfo.preferredDate}
-                      onChange={(e) => updateDeliveryInfo('preferredDate', e.target.value)}
-                      min={new Date().toISOString().split('T')[0]}
+                      onChange={(e) =>
+                        updateDeliveryInfo("preferredDate", e.target.value)
+                      }
+                      min={new Date().toISOString().split("T")[0]}
                       className="w-full pl-10 pr-4 py-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                     />
                   </div>
-                  {errors.preferredDate && <p className="mt-1 text-sm text-red-500">{errors.preferredDate}</p>}
+                  {errors.preferredDate && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {errors.preferredDate}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -599,13 +683,19 @@ export default function StandardOrderForm({ onSubmit, preselectedMachineId }: St
                     <Truck className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
                     <textarea
                       value={formData.deliveryInfo.deliveryAddress}
-                      onChange={(e) => updateDeliveryInfo('deliveryAddress', e.target.value)}
+                      onChange={(e) =>
+                        updateDeliveryInfo("deliveryAddress", e.target.value)
+                      }
                       rows={3}
                       className="w-full pl-10 pr-4 py-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                       placeholder="Full delivery address including building name, street, city"
                     />
                   </div>
-                  {errors.deliveryAddress && <p className="mt-1 text-sm text-red-500">{errors.deliveryAddress}</p>}
+                  {errors.deliveryAddress && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {errors.deliveryAddress}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -614,7 +704,9 @@ export default function StandardOrderForm({ onSubmit, preselectedMachineId }: St
                   </label>
                   <textarea
                     value={formData.deliveryInfo.specialInstructions}
-                    onChange={(e) => updateDeliveryInfo('specialInstructions', e.target.value)}
+                    onChange={(e) =>
+                      updateDeliveryInfo("specialInstructions", e.target.value)
+                    }
                     rows={2}
                     className="w-full px-4 py-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                     placeholder="Any special delivery requirements or notes"
@@ -644,44 +736,56 @@ export default function StandardOrderForm({ onSubmit, preselectedMachineId }: St
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                   <button
                     type="button"
-                    onClick={() => updateFormData('paymentMethod', 'bank_transfer')}
+                    onClick={() =>
+                      updateFormData("paymentMethod", "bank_transfer")
+                    }
                     className={`p-3 border-2 rounded-lg text-left transition-all ${
-                      formData.paymentMethod === 'bank_transfer'
-                        ? 'border-orange-500 bg-orange-50 dark:bg-orange-900/20'
-                        : 'border-gray-200 dark:border-gray-700 hover:border-orange-500/50'
+                      formData.paymentMethod === "bank_transfer"
+                        ? "border-orange-500 bg-orange-50 dark:bg-orange-900/20"
+                        : "border-gray-200 dark:border-gray-700 hover:border-orange-500/50"
                     }`}
                   >
                     <CreditCard className="w-5 h-5 text-orange-500 mb-2" />
                     <p className="font-medium text-sm">Bank Transfer</p>
-                    <p className="text-xs text-gray-500 mt-1">Direct bank wire transfer</p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      Direct bank wire transfer
+                    </p>
                   </button>
 
                   <button
                     type="button"
-                    onClick={() => updateFormData('paymentMethod', 'letter_of_credit')}
+                    onClick={() =>
+                      updateFormData("paymentMethod", "letter_of_credit")
+                    }
                     className={`p-3 border-2 rounded-lg text-left transition-all ${
-                      formData.paymentMethod === 'letter_of_credit'
-                        ? 'border-orange-500 bg-orange-50 dark:bg-orange-900/20'
-                        : 'border-gray-200 dark:border-gray-700 hover:border-orange-500/50'
+                      formData.paymentMethod === "letter_of_credit"
+                        ? "border-orange-500 bg-orange-50 dark:bg-orange-900/20"
+                        : "border-gray-200 dark:border-gray-700 hover:border-orange-500/50"
                     }`}
                   >
                     <FileText className="w-5 h-5 text-orange-500 mb-2" />
                     <p className="font-medium text-sm">Letter of Credit</p>
-                    <p className="text-xs text-gray-500 mt-1">For international orders</p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      For international orders
+                    </p>
                   </button>
 
                   <button
                     type="button"
-                    onClick={() => updateFormData('paymentMethod', 'credit_card')}
+                    onClick={() =>
+                      updateFormData("paymentMethod", "credit_card")
+                    }
                     className={`p-3 border-2 rounded-lg text-left transition-all ${
-                      formData.paymentMethod === 'credit_card'
-                        ? 'border-orange-500 bg-orange-50 dark:bg-orange-900/20'
-                        : 'border-gray-200 dark:border-gray-700 hover:border-orange-500/50'
+                      formData.paymentMethod === "credit_card"
+                        ? "border-orange-500 bg-orange-50 dark:bg-orange-900/20"
+                        : "border-gray-200 dark:border-gray-700 hover:border-orange-500/50"
                     }`}
                   >
                     <CreditCard className="w-5 h-5 text-orange-500 mb-2" />
                     <p className="font-medium text-sm">Credit Card</p>
-                    <p className="text-xs text-gray-500 mt-1">Visa, Mastercard, Amex</p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      Visa, Mastercard, Amex
+                    </p>
                   </button>
                 </div>
               </div>
@@ -692,16 +796,29 @@ export default function StandardOrderForm({ onSubmit, preselectedMachineId }: St
                 </h4>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-400">Machine:</span>
-                    <span className="font-medium">{selectedMachine?.name || 'Not selected'}</span>
+                    <span className="text-gray-600 dark:text-gray-400">
+                      Machine:
+                    </span>
+                    <span className="font-medium">
+                      {selectedMachine?.name || "Not selected"}
+                    </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-400">Quantity:</span>
+                    <span className="text-gray-600 dark:text-gray-400">
+                      Quantity:
+                    </span>
                     <span>{formData.quantity}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-400">Unit Price:</span>
-                    <span>ETB {unitPriceNumber ? unitPriceNumber.toLocaleString() : 'Price on request'}</span>
+                    <span className="text-gray-600 dark:text-gray-400">
+                      Unit Price:
+                    </span>
+                    <span>
+                      ETB{" "}
+                      {unitPriceNumber
+                        ? unitPriceNumber.toLocaleString()
+                        : "Price on request"}
+                    </span>
                   </div>
                   <div className="flex justify-between pt-2 border-t border-gray-200 dark:border-gray-700">
                     <span className="font-bold">Total:</span>
@@ -717,14 +834,19 @@ export default function StandardOrderForm({ onSubmit, preselectedMachineId }: St
                   type="checkbox"
                   id="terms"
                   checked={formData.termsAccepted}
-                  onChange={(e) => updateFormData('termsAccepted', e.target.checked)}
+                  onChange={(e) =>
+                    updateFormData("termsAccepted", e.target.checked)
+                  }
                   className="mt-1 w-4 h-4 text-orange-500 rounded focus:ring-orange-500"
                 />
-                <label htmlFor="terms" className="text-sm text-gray-600 dark:text-gray-400">
-                  I agree to the{' '}
+                <label
+                  htmlFor="terms"
+                  className="text-sm text-gray-600 dark:text-gray-400"
+                >
+                  I agree to the{" "}
                   <a href="/terms" className="text-orange-500 hover:underline">
                     Terms and Conditions
-                  </a>{' '}
+                  </a>{" "}
                   and confirm that all information provided is accurate.
                 </label>
               </div>
@@ -740,7 +862,7 @@ export default function StandardOrderForm({ onSubmit, preselectedMachineId }: St
           <button
             onClick={handleBack}
             className={`px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ${
-              currentStep === 1 ? 'invisible' : ''
+              currentStep === 1 ? "invisible" : ""
             }`}
           >
             Back
@@ -775,5 +897,5 @@ export default function StandardOrderForm({ onSubmit, preselectedMachineId }: St
         </div>
       </div>
     </div>
-  )
+  );
 }

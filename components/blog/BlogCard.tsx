@@ -1,75 +1,84 @@
-'use client'
+"use client";
 
 // BlogCard — article preview card with featured and grid layouts
-import { motion } from 'framer-motion'
-import Image from 'next/image'
-import Link from 'next/link'
-import { Calendar, Clock, Eye, Heart, Bookmark, ArrowRight, Star, User } from 'lucide-react'
-import { useState } from 'react'
+import { motion } from "framer-motion";
+import Image from "next/image";
+import Link from "next/link";
+import {
+  Calendar,
+  Clock,
+  Eye,
+  Heart,
+  Bookmark,
+  ArrowRight,
+  Star,
+  User,
+} from "lucide-react";
+import { useState } from "react";
 
 interface BlogCardProps {
   post: {
-    id: string
-    slug: string
-    title: string
-    excerpt: string
-    content: string
-    featuredImage: string
+    id: string;
+    slug: string;
+    title: string;
+    excerpt: string;
+    content: string;
+    featuredImage: string;
     author: {
-      name: string
-      avatar: string
-      bio: string
-    }
-    category: string
-    tags: string[]
-    readTime: number
-    publishedAt: string
-    views: number
-    likes: number
-    featured?: boolean
-  }
-  featured?: boolean
+      name: string;
+      avatar: string;
+      bio: string;
+    };
+    category: string;
+    tags: string[];
+    readTime: number;
+    publishedAt: string;
+    views: number;
+    likes: number;
+    featured?: boolean;
+  };
+  featured?: boolean;
 }
 
 export default function BlogCard({ post, featured = false }: BlogCardProps) {
   // Like and bookmark interaction state
-  const [isLiked, setIsLiked] = useState(false)
-  const [isBookmarked, setIsBookmarked] = useState(false)
-  const [likesCount, setLikesCount] = useState(post?.likes || 0)
+  const [isLiked, setIsLiked] = useState(false);
+  const [isBookmarked, setIsBookmarked] = useState(false);
+  const [likesCount, setLikesCount] = useState(post?.likes || 0);
 
   const handleLike = (e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setIsLiked(!isLiked)
-    setLikesCount(prev => isLiked ? prev - 1 : prev + 1)
-  }
+    e.preventDefault();
+    e.stopPropagation();
+    setIsLiked(!isLiked);
+    setLikesCount((prev) => (isLiked ? prev - 1 : prev + 1));
+  };
 
   const handleBookmark = (e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setIsBookmarked(!isBookmarked)
-  }
+    e.preventDefault();
+    e.stopPropagation();
+    setIsBookmarked(!isBookmarked);
+  };
 
   // Relative date label (Today, Yesterday, etc.)
   const formatDate = (dateString: string) => {
-    if (!dateString) return 'Recent'
-    const date = new Date(dateString)
-    const now = new Date()
-    const diffTime = Math.abs(now.getTime() - date.getTime())
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-    
-    if (diffDays === 0) return 'Today'
-    if (diffDays === 1) return 'Yesterday'
-    if (diffDays < 7) return `${diffDays} days ago`
-    if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`
-    if (diffDays < 365) return `${Math.floor(diffDays / 30)} months ago`
-    return `${Math.floor(diffDays / 365)} years ago`
-  }
+    if (!dateString) return "Recent";
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - date.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays === 0) return "Today";
+    if (diffDays === 1) return "Yesterday";
+    if (diffDays < 7) return `${diffDays} days ago`;
+    if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
+    if (diffDays < 365) return `${Math.floor(diffDays / 30)} months ago`;
+    return `${Math.floor(diffDays / 365)} years ago`;
+  };
 
   // Safe access to author data with fallbacks
-  const authorName = post?.author?.name || 'Dukan Machinery'
-  const authorAvatar = post?.author?.avatar || ''
-  const authorInitial = authorName.charAt(0).toUpperCase()
+  const authorName = post?.author?.name || "Dukan Machinery";
+  const authorAvatar = post?.author?.avatar || "";
+  const authorInitial = authorName.charAt(0).toUpperCase();
 
   // Large horizontal layout for featured posts
   if (featured) {
@@ -87,20 +96,22 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
             {post?.featuredImage ? (
               <Image
                 src={post.featuredImage}
-                alt={post.title || 'Blog post'}
+                alt={post.title || "Blog post"}
                 fill
                 className="object-cover group-hover:scale-110 transition-transform duration-700"
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
             ) : (
               <div className="w-full h-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center">
-                <span className="text-white text-lg font-black">Dukan Machinery</span>
+                <span className="text-white text-lg font-black">
+                  Dukan Machinery
+                </span>
               </div>
             )}
             {/* Category Badge */}
             <div className="absolute top-4 left-4 z-20">
               <span className="px-3 py-1 bg-orange-500 text-white text-sm font-semiblack rounded-full shadow-lg">
-                {post?.category || 'Insights'}
+                {post?.category || "Insights"}
               </span>
             </div>
             {/* Featured Badge */}
@@ -134,15 +145,16 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
               </div>
 
               {/* Title */}
-              <Link href={`/insights/${post?.slug || '#'}`}>
+              <Link href={`/insights/${post?.slug || "#"}`}>
                 <h3 className="text-xl md:text-2xl font-black text-gray-900 dark:text-white mb-3 hover:text-orange-500 transition-colors duration-300 line-clamp-2">
-                  {post?.title || 'Untitled Post'}
+                  {post?.title || "Untitled Post"}
                 </h3>
               </Link>
 
               {/* Excerpt */}
               <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3 leading-relaxed">
-                {post?.excerpt || 'Read more about agricultural machinery and feed processing insights.'}
+                {post?.excerpt ||
+                  "Read more about agricultural machinery and feed processing insights."}
               </p>
 
               {/* Tags */}
@@ -163,7 +175,10 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
             {/* Footer */}
             <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
               {/* Author */}
-              <Link href={`/insights/author/${encodeURIComponent(authorName)}`} className="flex items-center gap-3 group">
+              <Link
+                href={`/insights/author/${encodeURIComponent(authorName)}`}
+                className="flex items-center gap-3 group"
+              >
                 <div className="relative w-10 h-10 rounded-full overflow-hidden bg-gradient-to-br from-orange-500 to-orange-600">
                   {authorAvatar ? (
                     <Image
@@ -182,7 +197,9 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
                   <p className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-orange-500 transition-colors">
                     {authorName}
                   </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">Author</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    Author
+                  </p>
                 </div>
               </Link>
 
@@ -193,7 +210,9 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
                   className="flex items-center gap-1 text-gray-500 hover:text-red-500 transition-colors"
                   aria-label="Like"
                 >
-                  <Heart className={`w-5 h-5 ${isLiked ? 'fill-red-500 text-red-500' : ''}`} />
+                  <Heart
+                    className={`w-5 h-5 ${isLiked ? "fill-red-500 text-red-500" : ""}`}
+                  />
                   <span className="text-sm">{likesCount}</span>
                 </button>
                 <button
@@ -201,9 +220,11 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
                   className="text-gray-500 hover:text-orange-500 transition-colors"
                   aria-label="Bookmark"
                 >
-                  <Bookmark className={`w-5 h-5 ${isBookmarked ? 'fill-orange-500 text-orange-500' : ''}`} />
+                  <Bookmark
+                    className={`w-5 h-5 ${isBookmarked ? "fill-orange-500 text-orange-500" : ""}`}
+                  />
                 </button>
-                <Link href={`/insights/${post?.slug || '#'}`}>
+                <Link href={`/insights/${post?.slug || "#"}`}>
                   <button className="flex items-center gap-2 text-orange-500 font-semiblack group-hover:gap-3 transition-all">
                     Read More
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -214,7 +235,7 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
           </div>
         </div>
       </motion.article>
-    )
+    );
   }
 
   // Standard vertical card for grid listings
@@ -232,21 +253,23 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
         {post?.featuredImage ? (
           <Image
             src={post.featuredImage}
-            alt={post.title || 'Blog post'}
+            alt={post.title || "Blog post"}
             fill
             className="object-cover group-hover:scale-110 transition-transform duration-500"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center">
-            <span className="text-white text-sm font-black">Dukan Machinery</span>
+            <span className="text-white text-sm font-black">
+              Dukan Machinery
+            </span>
           </div>
         )}
-        
+
         {/* Category Badge */}
         <div className="absolute top-3 left-3 z-20">
           <span className="px-2 py-1 bg-orange-500 text-white text-xs font-semiblack rounded-lg shadow-lg">
-            {post?.category || 'Insights'}
+            {post?.category || "Insights"}
           </span>
         </div>
 
@@ -280,15 +303,16 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
         </div>
 
         {/* Title */}
-        <Link href={`/insights/${post?.slug || '#'}`}>
+        <Link href={`/insights/${post?.slug || "#"}`}>
           <h3 className="text-lg font-black text-gray-900 dark:text-white mb-2 hover:text-orange-500 transition-colors duration-300 line-clamp-2">
-            {post?.title || 'Untitled Post'}
+            {post?.title || "Untitled Post"}
           </h3>
         </Link>
 
         {/* Excerpt */}
         <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
-          {post?.excerpt || 'Read more about agricultural machinery and feed processing insights.'}
+          {post?.excerpt ||
+            "Read more about agricultural machinery and feed processing insights."}
         </p>
 
         {/* Tags */}
@@ -303,7 +327,9 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
               </span>
             ))}
             {post.tags.length > 2 && (
-              <span className="text-xs text-gray-400">+{post.tags.length - 2}</span>
+              <span className="text-xs text-gray-400">
+                +{post.tags.length - 2}
+              </span>
             )}
           </div>
         )}
@@ -338,10 +364,12 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
               className="flex items-center gap-1 text-gray-400 hover:text-red-500 transition-colors"
               aria-label="Like"
             >
-              <Heart className={`w-4 h-4 ${isLiked ? 'fill-red-500 text-red-500' : ''}`} />
+              <Heart
+                className={`w-4 h-4 ${isLiked ? "fill-red-500 text-red-500" : ""}`}
+              />
               <span className="text-xs">{likesCount}</span>
             </button>
-            <Link href={`/insights/${post?.slug || '#'}`}>
+            <Link href={`/insights/${post?.slug || "#"}`}>
               <button className="text-orange-500 hover:gap-2 transition-all text-sm font-medium flex items-center gap-1">
                 Read
                 <ArrowRight className="w-3 h-3" />
@@ -351,5 +379,5 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
         </div>
       </div>
     </motion.article>
-  )
+  );
 }

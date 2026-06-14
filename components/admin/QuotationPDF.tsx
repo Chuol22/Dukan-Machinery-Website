@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from 'react';
+import React from "react";
 import {
   Document,
   Page,
@@ -7,7 +7,7 @@ import {
   View,
   StyleSheet,
   Image,
-} from '@react-pdf/renderer';
+} from "@react-pdf/renderer";
 
 export type QuotationPDFData = {
   quotationNumber: string;
@@ -30,13 +30,13 @@ const styles = StyleSheet.create({
   page: {
     padding: 28,
     fontSize: 10,
-    fontFamily: 'Helvetica',
+    fontFamily: "Helvetica",
     lineHeight: 1.4,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     marginBottom: 18,
   },
   logoWrap: {
@@ -46,11 +46,11 @@ const styles = StyleSheet.create({
   logo: {
     width: 80,
     height: 40,
-    objectFit: 'contain',
+    objectFit: "contain",
   },
   companyBlock: {
     flexGrow: 1,
-    alignItems: 'flex-end',
+    alignItems: "flex-end",
   },
   companyName: {
     fontSize: 16,
@@ -67,20 +67,20 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: 700,
     marginBottom: 6,
-    color: '#f97316',
+    color: "#f97316",
   },
   row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   box: {
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: "#e5e7eb",
     borderRadius: 6,
     padding: 10,
   },
   grid2: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 10,
   },
   grid2Col: {
@@ -89,49 +89,49 @@ const styles = StyleSheet.create({
   table: {
     marginTop: 6,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: "#e5e7eb",
     borderRadius: 6,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   th: {
-    backgroundColor: '#f9fafb',
-    flexDirection: 'row',
+    backgroundColor: "#f9fafb",
+    flexDirection: "row",
     paddingVertical: 6,
     paddingHorizontal: 8,
     fontWeight: 700,
     borderBottomWidth: 1,
-    borderBottomColor: '#e5e7eb',
+    borderBottomColor: "#e5e7eb",
   },
   tr: {
-    flexDirection: 'row',
+    flexDirection: "row",
     paddingVertical: 6,
     paddingHorizontal: 8,
     borderBottomWidth: 1,
-    borderBottomColor: '#f3f4f6',
+    borderBottomColor: "#f3f4f6",
   },
   tdLeft: {
     flex: 1,
   },
   tdRight: {
     width: 90,
-    textAlign: 'right',
+    textAlign: "right",
   },
   notes: {
     marginTop: 6,
     padding: 10,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: "#e5e7eb",
     borderRadius: 6,
   },
   signatureRow: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginTop: 12,
     gap: 10,
   },
   sigBox: {
     flex: 1,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: "#e5e7eb",
     borderRadius: 6,
     padding: 10,
     minHeight: 80,
@@ -140,19 +140,23 @@ const styles = StyleSheet.create({
     width: 90,
     height: 90,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: "#e5e7eb",
     borderRadius: 9999,
-    alignSelf: 'flex-end',
-    justifyContent: 'center',
-    alignItems: 'center',
-    color: '#6b7280',
+    alignSelf: "flex-end",
+    justifyContent: "center",
+    alignItems: "center",
+    color: "#6b7280",
   },
 });
 
 const fmtDate = (iso: string) => {
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return iso;
-  return d.toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: '2-digit' });
+  return d.toLocaleDateString("en-GB", {
+    year: "numeric",
+    month: "short",
+    day: "2-digit",
+  });
 };
 
 const fmtCost = (n: number) => {
@@ -163,7 +167,11 @@ const fmtCost = (n: number) => {
   }
 };
 
-export default function QuotationDocument({ data }: { data: QuotationPDFData }) {
+export default function QuotationDocument({
+  data,
+}: {
+  data: QuotationPDFData;
+}) {
   const {
     quotationNumber,
     issueDate,
@@ -192,18 +200,26 @@ export default function QuotationDocument({ data }: { data: QuotationPDFData }) 
           <View style={styles.companyBlock}>
             <Text style={styles.companyName}>Dukan Machinery</Text>
             <Text style={styles.companyMeta}>Agri-Industrial Solutions</Text>
-            <Text style={styles.companyMeta}>Contact: geletupro@gmail.com | +251 912 713 823</Text>
+            <Text style={styles.companyMeta}>
+              Contact: geletupro@gmail.com | +251 912 713 823
+            </Text>
           </View>
         </View>
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Quotation</Text>
           <View style={styles.row}>
-            <Text>Quotation No: <Text>{quotationNumber}</Text></Text>
-            <Text>Issue Date: <Text>{fmtDate(issueDate)}</Text></Text>
+            <Text>
+              Quotation No: <Text>{quotationNumber}</Text>
+            </Text>
+            <Text>
+              Issue Date: <Text>{fmtDate(issueDate)}</Text>
+            </Text>
           </View>
           <View style={styles.row}>
-            <Text>Valid Until: <Text>{fmtDate(validUntil)}</Text></Text>
+            <Text>
+              Valid Until: <Text>{fmtDate(validUntil)}</Text>
+            </Text>
           </View>
         </View>
 
@@ -248,7 +264,9 @@ export default function QuotationDocument({ data }: { data: QuotationPDFData }) 
             </View>
             <View style={styles.tr}>
               <Text style={[styles.tdLeft, { fontWeight: 700 }]}>Total</Text>
-              <Text style={[styles.tdRight, { fontWeight: 700 }]}>{fmtCost(totalCost)}</Text>
+              <Text style={[styles.tdRight, { fontWeight: 700 }]}>
+                {fmtCost(totalCost)}
+              </Text>
             </View>
           </View>
         </View>
@@ -256,14 +274,19 @@ export default function QuotationDocument({ data }: { data: QuotationPDFData }) 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Terms & Conditions</Text>
           <View style={styles.notes}>
-            <Text>{terms ? terms : 'Terms will be provided upon request.'}</Text>
+            <Text>
+              {terms ? terms : "Terms will be provided upon request."}
+            </Text>
           </View>
         </View>
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Warranty</Text>
           <View style={styles.notes}>
-            <Text>Standard warranty information will be applied according to machine model.</Text>
+            <Text>
+              Standard warranty information will be applied according to machine
+              model.
+            </Text>
           </View>
         </View>
 
@@ -283,7 +306,9 @@ export default function QuotationDocument({ data }: { data: QuotationPDFData }) 
         </View>
 
         <View style={styles.section}>
-          <Text style={{ marginTop: 14, textAlign: 'center', color: '#6b7280' }}>
+          <Text
+            style={{ marginTop: 14, textAlign: "center", color: "#6b7280" }}
+          >
             Thank you for your business.
           </Text>
         </View>
@@ -291,4 +316,3 @@ export default function QuotationDocument({ data }: { data: QuotationPDFData }) 
     </Document>
   );
 }
-

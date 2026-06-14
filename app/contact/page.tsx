@@ -10,7 +10,10 @@ export default function ContactPage() {
   // Toggle individual FAQ item open/closed
   const toggleFaq = (category: string | number, index: number) => {
     const key = `${category}-${index}`;
-    setOpenFaqs((prev: Record<string, boolean>) => ({ ...prev, [key]: !prev[key] }));
+    setOpenFaqs((prev: Record<string, boolean>) => ({
+      ...prev,
+      [key]: !prev[key],
+    }));
   };
 
   // FAQ content grouped by topic
@@ -19,38 +22,74 @@ export default function ContactPage() {
       title: "General Questions",
       icon: "❓",
       questions: [
-        { q: "What types of machines do you manufacture?", a: "We manufacture a wide range of agricultural machinery including feed processing machines, grinding mills, mixers, pellet machines, and complete feed production lines for various farm sizes and requirements." },
-        { q: "What capacity do I need for my farm?", a: "Capacity depends on your farm size and production needs. We offer machines from 500kg to 10,000kg per hour. Contact our sales team for a personalized recommendation based on your specific requirements." },
-        { q: "Do you offer machines for different types of feed?", a: "Yes, we manufacture machines for poultry feed, cattle feed, fish feed, livestock feed, and specialized animal nutrition products. Each machine can be customized for your specific feed type." }
-      ]
+        {
+          q: "What types of machines do you manufacture?",
+          a: "We manufacture a wide range of agricultural machinery including feed processing machines, grinding mills, mixers, pellet machines, and complete feed production lines for various farm sizes and requirements.",
+        },
+        {
+          q: "What capacity do I need for my farm?",
+          a: "Capacity depends on your farm size and production needs. We offer machines from 500kg to 10,000kg per hour. Contact our sales team for a personalized recommendation based on your specific requirements.",
+        },
+        {
+          q: "Do you offer machines for different types of feed?",
+          a: "Yes, we manufacture machines for poultry feed, cattle feed, fish feed, livestock feed, and specialized animal nutrition products. Each machine can be customized for your specific feed type.",
+        },
+      ],
     },
     {
       title: "Orders & Customization",
       icon: "📦",
       questions: [
-        { q: "Can I customize machines to my specific requirements?", a: "Absolutely! We offer full customization options including capacity adjustments, material specifications, motor types, and additional features to match your exact production needs." },
-        { q: "How do I place an order?", a: "You can place an order by contacting our sales team via phone, email, WhatsApp, or by visiting our showroom. We'll guide you through the selection, quotation, and ordering process." },
-        { q: "What is your typical production lead time?", a: "Standard machines are typically ready in 15-30 days. Custom orders may take 30-45 days depending on complexity. We'll provide exact timelines during the ordering process." }
-      ]
+        {
+          q: "Can I customize machines to my specific requirements?",
+          a: "Absolutely! We offer full customization options including capacity adjustments, material specifications, motor types, and additional features to match your exact production needs.",
+        },
+        {
+          q: "How do I place an order?",
+          a: "You can place an order by contacting our sales team via phone, email, WhatsApp, or by visiting our showroom. We'll guide you through the selection, quotation, and ordering process.",
+        },
+        {
+          q: "What is your typical production lead time?",
+          a: "Standard machines are typically ready in 15-30 days. Custom orders may take 30-45 days depending on complexity. We'll provide exact timelines during the ordering process.",
+        },
+      ],
     },
     {
       title: "Installation & Support",
       icon: "🔧",
       questions: [
-        { q: "Do you install machines on site?", a: "Yes, we provide professional on-site installation services across Ethiopia. Our technical team will ensure proper setup, calibration, and test running of your machine." },
-        { q: "Do you provide training for machine operation?", a: "Yes, comprehensive training is included with every machine purchase. We train your operators on proper usage, maintenance, safety procedures, and troubleshooting." },
-        { q: "What happens if my machine breaks down?", a: "We offer 24/7 technical support. Our service team can guide you through troubleshooting remotely or dispatch a technician to your location for major repairs." }
-      ]
+        {
+          q: "Do you install machines on site?",
+          a: "Yes, we provide professional on-site installation services across Ethiopia. Our technical team will ensure proper setup, calibration, and test running of your machine.",
+        },
+        {
+          q: "Do you provide training for machine operation?",
+          a: "Yes, comprehensive training is included with every machine purchase. We train your operators on proper usage, maintenance, safety procedures, and troubleshooting.",
+        },
+        {
+          q: "What happens if my machine breaks down?",
+          a: "We offer 24/7 technical support. Our service team can guide you through troubleshooting remotely or dispatch a technician to your location for major repairs.",
+        },
+      ],
     },
     {
       title: "Warranty & Maintenance",
       icon: "🛡️",
       questions: [
-        { q: "What are your warranty details?", a: "All machines come with a 12-month warranty covering manufacturing defects and premature component failure. Extended warranty options are available for purchase." },
-        { q: "What maintenance is required?", a: "Regular maintenance includes daily cleaning, weekly lubrication, monthly belt tension checks, and quarterly professional inspection. We provide detailed maintenance manuals." },
-        { q: "Do you sell spare parts?", a: "Yes, we maintain a comprehensive inventory of genuine spare parts for all our machines. Parts can be ordered online, by phone, or at our physical location." }
-      ]
-    }
+        {
+          q: "What are your warranty details?",
+          a: "All machines come with a 12-month warranty covering manufacturing defects and premature component failure. Extended warranty options are available for purchase.",
+        },
+        {
+          q: "What maintenance is required?",
+          a: "Regular maintenance includes daily cleaning, weekly lubrication, monthly belt tension checks, and quarterly professional inspection. We provide detailed maintenance manuals.",
+        },
+        {
+          q: "Do you sell spare parts?",
+          a: "Yes, we maintain a comprehensive inventory of genuine spare parts for all our machines. Parts can be ordered online, by phone, or at our physical location.",
+        },
+      ],
+    },
   ];
 
   return (
@@ -64,10 +103,17 @@ export default function ContactPage() {
           <div className="grid md:grid-cols-2 gap-12 mb-12">
             {/* Contact Form Section */}
             <div className="bg-gray-50 dark:bg-gray-800 rounded-lg shadow-lg p-8">
-              <h2 className="text-2xl font-black mb-6 text-secondary-dark">Send Us Message</h2>
+              <h2 className="text-2xl font-black mb-6 text-secondary-dark">
+                Send Us Message
+              </h2>
               <form className="space-y-6">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-black mb-2">Full Name</label>
+                  <label
+                    htmlFor="name"
+                    className="block text-sm font-black mb-2"
+                  >
+                    Full Name
+                  </label>
                   <input
                     type="text"
                     id="name"
@@ -78,7 +124,12 @@ export default function ContactPage() {
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium mb-2">Email Address</label>
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium mb-2"
+                  >
+                    Email Address
+                  </label>
                   <input
                     type="email"
                     id="email"
@@ -89,7 +140,12 @@ export default function ContactPage() {
                 </div>
 
                 <div>
-                  <label htmlFor="phone" className="block text-sm font-medium mb-2">Phone Number</label>
+                  <label
+                    htmlFor="phone"
+                    className="block text-sm font-medium mb-2"
+                  >
+                    Phone Number
+                  </label>
                   <input
                     type="tel"
                     id="phone"
@@ -100,7 +156,12 @@ export default function ContactPage() {
                 </div>
 
                 <div>
-                  <label htmlFor="subject" className="block text-sm font-medium mb-2">Subject</label>
+                  <label
+                    htmlFor="subject"
+                    className="block text-sm font-medium mb-2"
+                  >
+                    Subject
+                  </label>
                   <select
                     id="subject"
                     name="subject"
@@ -116,7 +177,12 @@ export default function ContactPage() {
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium mb-2">Message</label>
+                  <label
+                    htmlFor="message"
+                    className="block text-sm font-medium mb-2"
+                  >
+                    Message
+                  </label>
                   <textarea
                     id="message"
                     name="message"
@@ -138,7 +204,9 @@ export default function ContactPage() {
             {/* Contact Information Section */}
             <div className="space-y-8">
               <div className="bg-green-50 dark:bg-gray-800 rounded-lg shadow-lg p-8">
-                <h2 className="text-2xl font-black mb-6 text-secondary-dark dark:text-white">Contact Information</h2>
+                <h2 className="text-2xl font-black mb-6 text-secondary-dark dark:text-white">
+                  Contact Information
+                </h2>
 
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div className="flex items-start space-x-4">
@@ -148,8 +216,10 @@ export default function ContactPage() {
                     <div>
                       <h3 className="font-semibold mb-1">Address</h3>
                       <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                        SELAM BUILDING<br />
-                        Kality<br />
+                        SELAM BUILDING
+                        <br />
+                        Kality
+                        <br />
                         Addis Ababa, Ethiopia
                       </p>
                     </div>
@@ -233,7 +303,9 @@ export default function ContactPage() {
 
               {/* Google Map */}
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
-                <h2 className="text-2xl font-black mb-6 text-secondary-dark dark:text-white">Google Map</h2>
+                <h2 className="text-2xl font-black mb-6 text-secondary-dark dark:text-white">
+                  Google Map
+                </h2>
                 <div className="rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
                   <iframe
                     title="Dukan Machinery location"
@@ -247,37 +319,58 @@ export default function ContactPage() {
 
               {/* Business Hours */}
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
-                <h2 className="text-2xl font-black mb-6 text-orange-600">Business Hours</h2>
+                <h2 className="text-2xl font-black mb-6 text-orange-600">
+                  Business Hours
+                </h2>
                 <div className="space-y-2">
                   <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-300">Monday - Friday</span>
-                    <span className="font-semibold dark:text-white">8:30 AM - 6:00 PM</span>
+                    <span className="text-gray-600 dark:text-gray-300">
+                      Monday - Friday
+                    </span>
+                    <span className="font-semibold dark:text-white">
+                      8:30 AM - 6:00 PM
+                    </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-300">Saturday</span>
-                    <span className="font-semibold dark:text-white">9:00 AM - 12:00 PM</span>
+                    <span className="text-gray-600 dark:text-gray-300">
+                      Saturday
+                    </span>
+                    <span className="font-semibold dark:text-white">
+                      9:00 AM - 12:00 PM
+                    </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-300">Sunday</span>
-                    <span className="font-semibold dark:text-white">Closed</span>
+                    <span className="text-gray-600 dark:text-gray-300">
+                      Sunday
+                    </span>
+                    <span className="font-semibold dark:text-white">
+                      Closed
+                    </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-300">Emergency Support</span>
-                    <span className="font-semibold text-primary">24/7 Available</span>
+                    <span className="text-gray-600 dark:text-gray-300">
+                      Emergency Support
+                    </span>
+                    <span className="font-semibold text-primary">
+                      24/7 Available
+                    </span>
                   </div>
                 </div>
               </div>
 
               {/* Emergency Support */}
               <div className="bg-gray-50 dark:bg-gray-800 rounded-lg shadow-lg p-8">
-                <h3 className="text-xl font-black mb-3 text-secondary-dark dark:text-white">Need Immediate Assistance?</h3>
+                <h3 className="text-xl font-black mb-3 text-secondary-dark dark:text-white">
+                  Need Immediate Assistance?
+                </h3>
                 <p className="mb-4 text-gray-600 dark:text-gray-300">
-                  Our technical support team is available 24/7 for emergency service requests.
+                  Our technical support team is available 24/7 for emergency
+                  service requests.
                 </p>
                 <button
                   className="bg-orange-500 text-white font-black py-2 px-6 rounded-lg hover:bg-orange-600 transition-colors"
                   onClick={() => {
-                    window.location.href = 'tel:+251912713823';
+                    window.location.href = "tel:+251912713823";
                   }}
                 >
                   Call Emergency Support
@@ -290,20 +383,27 @@ export default function ContactPage() {
           <section className="py-12">
             <div className="text-center mb-12">
               <div className="flex items-center justify-center gap-3 mb-4">
-                <span className="text-7xl text-secondary animate-bounce">❓</span>
+                <span className="text-7xl text-secondary animate-bounce">
+                  ❓
+                </span>
               </div>
               <h2 className="text-4xl font-black text-primary dark:text-white uppercase tracking-tight">
-                Frequently Asked <span className="text-secondary">Questions</span>
+                Frequently Asked{" "}
+                <span className="text-secondary">Questions</span>
               </h2>
               <div className="w-20 h-1.5 bg-secondary mx-auto mt-4 rounded-full"></div>
               <p className="mt-6 text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
-                Find answers to common questions about our machines, orders, installation, and support.
+                Find answers to common questions about our machines, orders,
+                installation, and support.
               </p>
             </div>
 
             <div className="space-y-8">
               {faqCategories.map((category, catIndex) => (
-                <div key={catIndex} className="bg-neutral-50 dark:bg-neutral-900 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300">
+                <div
+                  key={catIndex}
+                  className="bg-neutral-50 dark:bg-neutral-900 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300"
+                >
                   <div className="bg-primary text-white px-8 py-4 flex items-center gap-3">
                     <span className="text-2xl">{category.icon}</span>
                     <h3 className="text-xl font-black">{category.title}</h3>
@@ -321,7 +421,9 @@ export default function ContactPage() {
                             <h4 className="font-black text-primary dark:text-white text-lg pr-8 group-hover:text-secondary transition-colors">
                               {faq.q}
                             </h4>
-                            <span className={`text-secondary text-xl shrink-0 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''} group-hover:scale-110`}>
+                            <span
+                              className={`text-secondary text-xl shrink-0 transition-transform duration-300 ${isOpen ? "rotate-180" : ""} group-hover:scale-110`}
+                            >
                               ▼
                             </span>
                           </button>
@@ -345,7 +447,8 @@ export default function ContactPage() {
                   Still Have Questions?
                 </h3>
                 <p className="text-neutral-600 dark:text-neutral-400 mb-6">
-                  Can&apos;t find the answer you&apos;re looking for? Please reach out to our team.
+                  Can&apos;t find the answer you&apos;re looking for? Please
+                  reach out to our team.
                 </p>
                 <div className="flex flex-wrap gap-4 justify-center">
                   <a

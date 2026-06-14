@@ -1,17 +1,19 @@
-'use client';
+"use client";
 
 // ChatbotWidget — floating chat panel with open/minimize state
-import { useState, useEffect, useCallback, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import ChatbotButton from './ChatbotButton';
-import ChatWindow from './ChatWindow';
-import { ChatProvider } from '@/contexts/ChatbotContext';
+import { useState, useEffect, useCallback, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import ChatbotButton from "./ChatbotButton";
+import ChatWindow from "./ChatWindow";
+import { ChatProvider } from "@/contexts/ChatbotContext";
 
 interface ChatbotWidgetProps {
-  position?: 'bottom-right' | 'bottom-left';
+  position?: "bottom-right" | "bottom-left";
 }
 
-export default function ChatbotWidget({ position = 'bottom-right' }: ChatbotWidgetProps) {
+export default function ChatbotWidget({
+  position = "bottom-right",
+}: ChatbotWidgetProps) {
   // Panel visibility and unread indicator state
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
@@ -37,7 +39,7 @@ export default function ChatbotWidget({ position = 'bottom-right' }: ChatbotWidg
 
   // Toggle open/closed and clear unread
   const handleToggle = useCallback(() => {
-    setIsOpen(prev => !prev);
+    setIsOpen((prev) => !prev);
     setIsMinimized(false);
     setHasUnread(false);
   }, []);
@@ -60,11 +62,13 @@ export default function ChatbotWidget({ position = 'bottom-right' }: ChatbotWidg
     setHasUnread(false);
   };
 
-  const isRight = position === 'bottom-right';
+  const isRight = position === "bottom-right";
 
   return (
     <ChatProvider>
-      <div className={`fixed z-[9999] bottom-6 ${isRight ? 'right-6' : 'left-6'}`}>
+      <div
+        className={`fixed z-[9999] bottom-6 ${isRight ? "right-6" : "left-6"}`}
+      >
         {/* Chat window */}
         <AnimatePresence>
           {isOpen && !isMinimized && (
@@ -75,7 +79,7 @@ export default function ChatbotWidget({ position = 'bottom-right' }: ChatbotWidg
               transition={{ duration: 0.25 }}
               className={`
                 absolute bottom-16
-                ${isRight ? 'right-0' : 'left-0'}
+                ${isRight ? "right-0" : "left-0"}
                 w-[90vw] sm:w-95 md:w-100
                 h-125 max-h-[70vh]
                 bg-white dark:bg-gray-900

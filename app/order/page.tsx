@@ -1,13 +1,14 @@
 // Order page — SEO metadata and Suspense wrapper for order form
-import { Suspense } from 'react';
-import { Metadata } from 'next';
-import OrderContent from './OrderContent';
+import { Suspense } from "react";
+import { Metadata } from "next";
+import OrderContent from "./OrderContent";
 
 // Add metadata for better SEO
 export const metadata: Metadata = {
-  title: 'Order Equipment | Dukan Machinery',
-  description: 'Order agricultural machinery and equipment from Dukan Machinery. Standard orders and custom requests available.',
-  robots: 'index, follow',
+  title: "Order Equipment | Dukan Machinery",
+  description:
+    "Order agricultural machinery and equipment from Dukan Machinery. Standard orders and custom requests available.",
+  robots: "index, follow",
 };
 
 // Loading component for better reusability
@@ -21,7 +22,7 @@ function OrderPageLoading() {
           <div className="absolute inset-0 rounded-full border-4 border-t-orange-500 border-r-transparent border-b-transparent border-l-transparent animate-spin"></div>
           <div className="absolute inset-2 rounded-full border-4 border-t-green-500 border-r-transparent border-b-transparent border-l-transparent animate-spin animation-delay-150"></div>
         </div>
-        
+
         {/* Loading text with fade animation */}
         <div className="mt-6 space-y-2 animate-pulse">
           <p className="text-lg font-medium text-gray-700 dark:text-gray-300">
@@ -31,12 +32,21 @@ function OrderPageLoading() {
             Please wait while we prepare your ordering experience
           </p>
         </div>
-        
+
         {/* Subtle loading indicators */}
         <div className="mt-8 flex justify-center gap-2">
-          <div className="w-2 h-2 bg-orange-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-          <div className="w-2 h-2 bg-orange-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-          <div className="w-2 h-2 bg-orange-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+          <div
+            className="w-2 h-2 bg-orange-500 rounded-full animate-bounce"
+            style={{ animationDelay: "0ms" }}
+          ></div>
+          <div
+            className="w-2 h-2 bg-orange-500 rounded-full animate-bounce"
+            style={{ animationDelay: "150ms" }}
+          ></div>
+          <div
+            className="w-2 h-2 bg-orange-500 rounded-full animate-bounce"
+            style={{ animationDelay: "300ms" }}
+          ></div>
         </div>
       </div>
     </div>

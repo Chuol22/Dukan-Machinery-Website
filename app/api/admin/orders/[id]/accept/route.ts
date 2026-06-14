@@ -1,12 +1,15 @@
-// admin/orders/[id]/accept/route.ts — confirm order, notify admin, email customer
-import { NextResponse } from 'next/server';
-import nodemailer from 'nodemailer';
-import { verifyAdminSession } from '@/lib/auth';
-import { prisma } from '@/lib/prisma';
+/**
+ * POST /api/admin/orders/[id]/accept
+ * Confirms a pending order, notifies the system, and emails the customer.
+ */
+import { NextResponse } from "next/server";
+import nodemailer from "nodemailer";
+import { verifyAdminSession } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
 
 export async function POST(
   request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const { id } = await params;
@@ -14,7 +17,7 @@ export async function POST(
     // Verify admin is logged in
     const session = await verifyAdminSession();
     if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // First get the order using Prisma
@@ -39,16 +42,16 @@ export async function POST(
     });
 
     if (!order) {
-      return NextResponse.json({ message: 'Order not found' }, { status: 404 });
+      return NextResponse.json({ message: "Order not found" }, { status: 404 });
     }
 
     // Update order status using Prisma
     await prisma.order.update({
       where: { id },
       data: {
-        status: 'confirmed',
+        status: "confirmed",
         updated_at: new Date(),
-      }
+      },
     });
 
     // Create notification using Prisma
@@ -56,35 +59,35 @@ export async function POST(
       data: {
         order_id: id,
         profile_id: order.profile_id,
-        type: 'order_accepted',
-        title: 'Order Accepted',
-        message: `Order #${order.order_number} has been accepted by ${session.name || 'Admin'}`,
-        read: false
-      }
+        type: "order_accepted",
+        title: "Order Accepted",
+        message: `Order #${order.order_number} has been accepted by ${session.name || "Admin"}`,
+        read: false,
+      },
     });
 
     // Mark any existing notifications for this order as read
     await prisma.notification.updateMany({
       where: {
         order_id: id,
-        type: 'new_order'
+        type: "new_order",
       },
       data: {
-        read: true
-      }
+        read: true,
+      },
     });
 
     // Send acceptance email to customer if email exists
     const customerEmail = order.customer_email;
     const item = order.items[0];
-    const machineName = item ? item.product_name : 'Requested Machine';
+    const machineName = item ? item.product_name : "Requested Machine";
     const quantity = item ? item.quantity : 1;
     const totalPrice = order.total;
 
     if (customerEmail) {
       try {
         const transporter = nodemailer.createTransport({
-          service: 'gmail',
+          service: "gmail",
           auth: {
             user: process.env.EMAIL_USER,
             pass: process.env.EMAIL_PASS,
@@ -104,13 +107,13 @@ export async function POST(
                 <h1 style="margin: 0;">✓ Order Accepted!</h1>
               </div>
               <div style="padding: 30px;">
-                <h2>Dear ${order.customer_name || 'Customer'},</h2>
+                <h2>Dear ${order.customer_name || "Customer"},</h2>
                 <p>Great news! Your order <strong>#${order.order_number}</strong> has been <strong style="color: #22c55e;">ACCEPTED</strong>.</p>
                 <div style="background: #f0fdf4; border-left: 4px solid #22c55e; padding: 15px; margin: 20px 0;">
                   <h3 style="margin-top: 0;">Order Summary:</h3>
                   <p><strong>Product:</strong> ${machineName}</p>
                   <p><strong>Quantity:</strong> ${quantity}</p>
-                  <p><strong>Total Amount:</strong> ETB ${totalPrice?.toLocaleString() || 'Price on request'}</p>
+                  <p><strong>Total Amount:</strong> ETB ${totalPrice?.toLocaleString() || "Price on request"}</p>
                 </div>
                 <p><strong>Next Steps:</strong></p>
                 <ol>
@@ -133,13 +136,19 @@ export async function POST(
           html: acceptanceHtml,
         });
       } catch (emailError) {
-        console.error('Failed to send acceptance email:', emailError);
+        console.error("Failed to send acceptance email:", emailError);
       }
     }
 
-    return NextResponse.json({ success: true, message: 'Order accepted successfully' });
+    return NextResponse.json({
+      success: true,
+      message: "Order accepted successfully",
+    });
   } catch (error) {
-    console.error('Accept order error:', error);
-    return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
+    console.error("Accept order error:", error);
+    return NextResponse.json(
+      { message: "Internal server error" },
+      { status: 500 },
+    );
   }
 }

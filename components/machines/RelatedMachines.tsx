@@ -1,18 +1,21 @@
-'use client';
+"use client";
 
 // RelatedMachines — same-category machine suggestions grid
-import React from 'react';
-import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { ChevronRight } from 'lucide-react';
-import { getRelatedMachines } from '@/data/machinesData';
+import React from "react";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { ChevronRight } from "lucide-react";
+import { getRelatedMachines } from "@/data/machinesData";
 
 interface RelatedMachinesProps {
   currentMachineId: number;
   category: string;
 }
 
-export default function RelatedMachines({ currentMachineId, category }: RelatedMachinesProps) {
+export default function RelatedMachines({
+  currentMachineId,
+  category,
+}: RelatedMachinesProps) {
   // Fetch related machines excluding current
   const relatedMachines = getRelatedMachines(currentMachineId, category);
 
@@ -37,8 +40,8 @@ export default function RelatedMachines({ currentMachineId, category }: RelatedM
             >
               <Link href={`/machines/${machine.slug}`}>
                 <div className="relative h-48 overflow-hidden">
-                  <img 
-                    src={machine.image} 
+                  <img
+                    src={machine.image}
                     alt={machine.name}
                     className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-500"
                   />
@@ -56,8 +59,13 @@ export default function RelatedMachines({ currentMachineId, category }: RelatedM
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-xs text-gray-500 dark:text-gray-400">Click to view</span>
-                    <ChevronRight size={16} className="text-orange-500 group-hover:translate-x-1 transition-transform" />
+                    <span className="text-xs text-gray-500 dark:text-gray-400">
+                      Click to view
+                    </span>
+                    <ChevronRight
+                      size={16}
+                      className="text-orange-500 group-hover:translate-x-1 transition-transform"
+                    />
                   </div>
                 </div>
               </Link>

@@ -36,9 +36,9 @@ npm run dev
 
 ## Default admin credentials (development)
 
-| Role | Email | Password env var |
-|------|-------|------------------|
-| Super Admin | `admin@dukanmachinery.com` | `ADMIN_PASSWORD` (default: `admin`) |
+| Role          | Email                        | Password env var                        |
+| ------------- | ---------------------------- | --------------------------------------- |
+| Super Admin   | `admin@dukanmachinery.com`   | `ADMIN_PASSWORD` (default: `admin`)     |
 | Sales Officer | `officer@dukanmachinery.com` | `OFFICER_PASSWORD` (default: `officer`) |
 
 ## Verify the order flow

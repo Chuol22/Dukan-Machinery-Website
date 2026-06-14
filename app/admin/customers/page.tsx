@@ -1,7 +1,5 @@
-import CustomersClient from './CustomersClient';
+import CustomersClient from "./CustomersClient";
 
 export default function CustomersPage() {
   return <CustomersClient />;
 }
-
-

@@ -1,29 +1,32 @@
-'use client'
+"use client";
 
 // ChatbotButton — floating toggle with pulse and unread badge
-import { motion, AnimatePresence } from 'framer-motion'
-import { MessageCircle, X, Minimize2, ChevronUp } from 'lucide-react'
+import { motion, AnimatePresence } from "framer-motion";
+import { MessageCircle, X, Minimize2, ChevronUp } from "lucide-react";
 
 interface ChatbotButtonProps {
-  onClick: () => void
-  isOpen: boolean
-  hasUnread?: boolean
-  onMinimizedRestore?: () => void
+  onClick: () => void;
+  isOpen: boolean;
+  hasUnread?: boolean;
+  onMinimizedRestore?: () => void;
 }
 
-export default function ChatbotButton({ 
-  onClick, 
-  isOpen, 
-  hasUnread, 
-  onMinimizedRestore 
+export default function ChatbotButton({
+  onClick,
+  isOpen,
+  hasUnread,
+  onMinimizedRestore,
 }: ChatbotButtonProps) {
   // Button scale and spring animation
   const buttonVariants = {
     initial: { scale: 0 },
-    animate: { scale: 1, transition: { type: 'spring' as const, stiffness: 260, damping: 20 } },
+    animate: {
+      scale: 1,
+      transition: { type: "spring" as const, stiffness: 260, damping: 20 },
+    },
     hover: { scale: 1.05, transition: { duration: 0.2 } },
     tap: { scale: 0.95 },
-  }
+  };
 
   // Attention-grabbing pulse ring when closed
   const pulseVariants = {
@@ -37,13 +40,13 @@ export default function ChatbotButton({
         ease: "easeInOut" as const,
       },
     },
-  }
+  };
 
   const unreadVariants = {
     initial: { scale: 0 },
     animate: { scale: 1 },
     exit: { scale: 0 },
-  }
+  };
 
   return (
     <div className="relative">
@@ -54,7 +57,7 @@ export default function ChatbotButton({
           initial="initial"
           animate="animate"
           className="absolute inset-0 rounded-full bg-green-500"
-          style={{ width: '100%', height: '100%' }}
+          style={{ width: "100%", height: "100%" }}
         />
       )}
 
@@ -83,8 +86,8 @@ export default function ChatbotButton({
         onClick={onClick}
         className={`relative w-12 h-12 rounded-full shadow-md flex items-center justify-center transition-all duration-300 ${
           isOpen
-            ? 'bg-gray-600 dark:bg-gray-400 hover:bg-gray-600 dark:hover:bg-gray-400'
-            : 'bg-linear-to-br from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700'
+            ? "bg-gray-600 dark:bg-gray-400 hover:bg-gray-600 dark:hover:bg-gray-400"
+            : "bg-linear-to-br from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700"
         }`}
         aria-label="Chat with AI assistant"
       >
@@ -132,5 +135,5 @@ export default function ChatbotButton({
         </motion.div>
       )}
     </div>
-  )
+  );
 }

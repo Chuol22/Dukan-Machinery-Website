@@ -12,7 +12,10 @@ export const LanguageSelector: React.FC = () => {
   const { currentLang, changeLanguage, languages } = useGoogleTranslate();
 
   const handleClickOutside = (e: MouseEvent) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(e.target as Node)
+    ) {
       setIsOpen(false);
     }
   };
@@ -33,7 +36,11 @@ export const LanguageSelector: React.FC = () => {
           aria-hidden="true"
           className="w-6 h-6 flex items-center justify-center rounded-full bg-white/5 overflow-hidden"
         >
-          <img src={currentLang.flag} alt="" className="w-full h-full object-contain" />
+          <img
+            src={currentLang.flag}
+            alt=""
+            className="w-full h-full object-contain"
+          />
         </span>
         <span className="text-sm font-medium hidden sm:inline text-gray-700 dark:text-gray-200">
           {currentLang.nativeName}
@@ -41,7 +48,7 @@ export const LanguageSelector: React.FC = () => {
         <ChevronDown
           className={`w-4 h-4 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
         />
-      </button> 
+      </button>
 
       <AnimatePresence>
         {isOpen && (
@@ -70,7 +77,11 @@ export const LanguageSelector: React.FC = () => {
                     aria-hidden="true"
                     className="w-6 h-6 flex items-center justify-center rounded-full bg-white/5 overflow-hidden"
                   >
-                    <img src={lang.flag} alt="" className="w-full h-full object-contain" />
+                    <img
+                      src={lang.flag}
+                      alt=""
+                      className="w-full h-full object-contain"
+                    />
                   </span>
                   <div className="flex-1">
                     <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
@@ -92,4 +103,3 @@ export const LanguageSelector: React.FC = () => {
     </div>
   );
 };
-

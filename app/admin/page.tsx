@@ -1,5 +1,5 @@
 // import AnalyticsDashboard from './analytics/AnalyticsDashboard';
-import Link from 'next/link';
+import Link from "next/link";
 import {
   ShoppingCart,
   Package,
@@ -10,9 +10,7 @@ import {
   XCircle,
   ArrowRight,
   Plus,
-} from 'lucide-react';
-
-
+} from "lucide-react";
 
 export default function AdminPage() {
   return (
@@ -21,8 +19,10 @@ export default function AdminPage() {
       <div className="bg-green-300  rounded-2xl p-6 md:p-8 text-white shadow-lg">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h2 className="text-2xl text-organe-500 md:text-3xl font-black 
-            uppercase tracking-tight">
+            <h2
+              className="text-2xl text-organe-500 md:text-3xl font-black 
+            uppercase tracking-tight"
+            >
               Dashboard
             </h2>
             <p className="mt-1 text-gray-400 dark:text-gray-200 text-sm md:text-base">
@@ -131,11 +131,15 @@ export default function AdminPage() {
             <TrendingUp className="w-5 h-5 text-green-600 dark:text-green-400" />
           </div>
           <div>
-            <h4 className="font-bold text-gray-900 dark:text-white">How Orders Work</h4>
+            <h4 className="font-bold text-gray-900 dark:text-white">
+              How Orders Work
+            </h4>
             <p className="mt-1 text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-              When a customer places an order, it appears as <strong>Pending</strong>. Review the order details,
-              then click <strong>Accept</strong> to confirm or <strong>Reject</strong> to decline.
-              All notifications appear in the Notifications section and are also sent via email.
+              When a customer places an order, it appears as{" "}
+              <strong>Pending</strong>. Review the order details, then click{" "}
+              <strong>Accept</strong> to confirm or <strong>Reject</strong> to
+              decline. All notifications appear in the Notifications section and
+              are also sent via email.
             </p>
           </div>
         </div>
@@ -167,9 +171,15 @@ function QuickStatCard({
       <div className="flex items-center space-x-3">
         <div className="shrink-0">{icon}</div>
         <div>
-          <p className="text-2xl font-black text-gray-900 dark:text-white">{value}</p>
-          <p className="text-xs font-semibold text-gray-500 dark:text-gray-400">{label}</p>
-          <p className="text-[10px] text-gray-400 dark:text-gray-500 mt-0.5">{sublabel}</p>
+          <p className="text-2xl font-black text-gray-900 dark:text-white">
+            {value}
+          </p>
+          <p className="text-xs font-semibold text-gray-500 dark:text-gray-400">
+            {label}
+          </p>
+          <p className="text-[10px] text-gray-400 dark:text-gray-500 mt-0.5">
+            {sublabel}
+          </p>
         </div>
       </div>
     </Link>
@@ -187,13 +197,16 @@ function QuickActionCard({
   icon: React.ReactNode;
   label: string;
   desc: string;
-  color: 'orange' | 'blue' | 'green' | 'purple';
+  color: "orange" | "blue" | "green" | "purple";
 }) {
   const colorMap = {
-    orange: 'bg-orange-50 dark:bg-orange-950/20 text-orange-600 dark:text-orange-400 border-orange-200 dark:border-orange-900/30 hover:bg-orange-100 dark:hover:bg-orange-950/40',
-    blue: 'bg-blue-50 dark:bg-blue-950/20 text-blue-600 dark:text-blue-400 border-blue-200 dark:border-blue-900/30 hover:bg-blue-100 dark:hover:bg-blue-950/40',
-    green: 'bg-green-50 dark:bg-green-950/20 text-green-600 dark:text-green-400 border-green-200 dark:border-green-900/30 hover:bg-green-100 dark:hover:bg-green-950/40',
-    purple: 'bg-purple-50 dark:bg-purple-950/20 text-purple-600 dark:text-purple-400 border-purple-200 dark:border-purple-900/30 hover:bg-purple-100 dark:hover:bg-purple-950/40',
+    orange:
+      "bg-orange-50 dark:bg-orange-950/20 text-orange-600 dark:text-orange-400 border-orange-200 dark:border-orange-900/30 hover:bg-orange-100 dark:hover:bg-orange-950/40",
+    blue: "bg-blue-50 dark:bg-blue-950/20 text-blue-600 dark:text-blue-400 border-blue-200 dark:border-blue-900/30 hover:bg-blue-100 dark:hover:bg-blue-950/40",
+    green:
+      "bg-green-50 dark:bg-green-950/20 text-green-600 dark:text-green-400 border-green-200 dark:border-green-900/30 hover:bg-green-100 dark:hover:bg-green-950/40",
+    purple:
+      "bg-purple-50 dark:bg-purple-950/20 text-purple-600 dark:text-purple-400 border-purple-200 dark:border-purple-900/30 hover:bg-purple-100 dark:hover:bg-purple-950/40",
   };
 
   return (
@@ -203,8 +216,12 @@ function QuickActionCard({
     >
       <div className="shrink-0">{icon}</div>
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-bold text-gray-900 dark:text-white">{label}</p>
-        <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 truncate">{desc}</p>
+        <p className="text-sm font-bold text-gray-900 dark:text-white">
+          {label}
+        </p>
+        <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 truncate">
+          {desc}
+        </p>
       </div>
       <ArrowRight className="w-4 h-4 text-gray-400 shrink-0" />
     </Link>

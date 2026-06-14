@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
 // Image wrapper — Next.js Image with fill/fallback and video detection
-import React from 'react';
-import NextImage from 'next/image';
+import React from "react";
+import NextImage from "next/image";
 
 export type OptimizedImageProps = {
   src: string;
@@ -19,15 +19,16 @@ export type OptimizedImageProps = {
   /** Quality for Next Image optimization. */
   quality?: number;
   /** Next Image loading behavior. */
-  loading?: 'lazy' | 'eager';
+  loading?: "lazy" | "eager";
   /** Object fit shortcut. Defaults to contain. */
-  objectFit?: React.CSSProperties['objectFit'];
+  objectFit?: React.CSSProperties["objectFit"];
   /** If you already have a blurDataURL or placeholder needs. */
-  placeholder?: 'empty' | 'blur';
+  placeholder?: "empty" | "blur";
   blurDataURL?: string;
 };
 
-const isLikelyVideo = (src: string) => src.toLowerCase().endsWith('.mp4') || src.toLowerCase().endsWith('.webm');
+const isLikelyVideo = (src: string) =>
+  src.toLowerCase().endsWith(".mp4") || src.toLowerCase().endsWith(".webm");
 
 export default function OptimizedImage({
   src,
@@ -39,8 +40,8 @@ export default function OptimizedImage({
   height,
   sizes,
   quality = 80,
-  loading = 'lazy',
-  objectFit = 'contain',
+  loading = "lazy",
+  objectFit = "contain",
   placeholder,
   blurDataURL,
 }: OptimizedImageProps) {
@@ -72,7 +73,7 @@ export default function OptimizedImage({
   }
 
   // If width/height not provided, fall back to layout='intrinsic' behavior by requiring them.
-  if (typeof width !== 'number' || typeof height !== 'number') {
+  if (typeof width !== "number" || typeof height !== "number") {
     // Best-effort fallback to avoid runtime crashes.
     return <img src={src} alt={alt} className={className} style={style} />;
   }
@@ -96,4 +97,3 @@ export default function OptimizedImage({
     />
   );
 }
-

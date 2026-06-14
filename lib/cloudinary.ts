@@ -1,5 +1,5 @@
 // cloudinary.ts — image upload config and helpers
-import { v2 as cloudinary } from 'cloudinary';
+import { v2 as cloudinary } from "cloudinary";
 
 cloudinary.config({
   cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
@@ -16,10 +16,10 @@ export async function uploadImageToCloudinary(
   options?: {
     folder?: string;
     transformation?: string;
-    resource_type?: 'image' | 'video' | 'auto';
+    resource_type?: "image" | "video" | "auto";
     public_id?: string;
     overwrite?: boolean;
-  }
+  },
 ) {
   try {
     let uploadData: string;
@@ -27,19 +27,17 @@ export async function uploadImageToCloudinary(
     if (file instanceof File) {
       const bytes = await file.arrayBuffer();
       const buffer = Buffer.from(bytes);
-      uploadData = `data:${file.type};base64,${buffer.toString('base64')}`;
-    }
-    else if (Buffer.isBuffer(file)) {
-      uploadData = `data:image/jpeg;base64,${file.toString('base64')}`;
-    }
-    else {
+      uploadData = `data:${file.type};base64,${buffer.toString("base64")}`;
+    } else if (Buffer.isBuffer(file)) {
+      uploadData = `data:image/jpeg;base64,${file.toString("base64")}`;
+    } else {
       uploadData = file;
     }
 
     const result = await cloudinary.uploader.upload(uploadData, {
-      folder: options?.folder || 'dkm-machinery',
+      folder: options?.folder || "dkm-machinery",
       transformation: options?.transformation,
-      resource_type: options?.resource_type || 'image',
+      resource_type: options?.resource_type || "image",
       public_id: options?.public_id,
       overwrite: options?.overwrite || false,
     });
@@ -52,8 +50,7 @@ export async function uploadImageToCloudinary(
       format: result.format,
     };
   } catch (error) {
-    console.error('Cloudinary upload error:', error);
-    throw new Error('Failed to upload image to Cloudinary');
+    console.error("Cloudinary upload error:", error);
+    throw new Error("Failed to upload image to Cloudinary");
   }
 }
-

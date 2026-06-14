@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
 // MachineSpecsTable — gradient highlight cards and grouped spec rows
-import React from 'react';
+import React from "react";
 
 interface Machine {
   name: string;
@@ -29,8 +29,20 @@ interface MachineSpecsTableProps {
 }
 
 // Gradient card for a single key spec (capacity, power, etc.)
-const SpecCard = ({ icon, label, value, color }: { icon: React.ReactNode; label: string; value: string; color: string }) => (
-  <div className={`bg-gradient-to-br ${color} p-3 rounded-lg text-white shadow-lg hover:scale-105 transition-transform duration-300`}>
+const SpecCard = ({
+  icon,
+  label,
+  value,
+  color,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+  color: string;
+}) => (
+  <div
+    className={`bg-gradient-to-br ${color} p-3 rounded-lg text-white shadow-lg hover:scale-105 transition-transform duration-300`}
+  >
     <div className="text-lg sm:text-xl mb-1">{icon}</div>
     <p className="text-[10px] sm:text-xs opacity-90">{label}</p>
     <p className="font-black text-xs sm:text-sm">{value}</p>
@@ -50,33 +62,33 @@ export default function MachineSpecsTable({ machine }: MachineSpecsTableProps) {
     <div className="space-y-6">
       <h3 className="text-lg sm:text-xl font-black text-green-700 dark:text-white mb-4 flex items-center gap-2">
         <span className="text-xl">📊</span>
-        {'detailPage.techSpecs'}
+        {"detailPage.techSpecs"}
       </h3>
-      
+
       {/* Key spec highlight cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 mb-6">
-        <SpecCard 
+        <SpecCard
           icon="⚙️"
-          label={'detailPage.specifications.capacity'}
+          label={"detailPage.specifications.capacity"}
           value={machine.capacity}
           color="from-blue-500 to-blue-600"
         />
-        <SpecCard 
+        <SpecCard
           icon="⚡"
-          label={'detailPage.specifications.power'}
+          label={"detailPage.specifications.power"}
           value={machine.power}
           color="from-yellow-500 to-yellow-600"
         />
-        <SpecCard 
+        <SpecCard
           icon="🏋️"
-          label={'detailPage.specifications.weight'}
-          value={machine.weight || 'N/A'}
+          label={"detailPage.specifications.weight"}
+          value={machine.weight || "N/A"}
           color="from-purple-500 to-purple-600"
         />
-        <SpecCard 
+        <SpecCard
           icon="📏"
-          label={'detailPage.specifications.dimensions'}
-          value={machine.dimensions || 'N/A'}
+          label={"detailPage.specifications.dimensions"}
+          value={machine.dimensions || "N/A"}
           color="from-indigo-500 to-indigo-600"
         />
       </div>
@@ -87,13 +99,25 @@ export default function MachineSpecsTable({ machine }: MachineSpecsTableProps) {
         <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4">
           <h4 className="font-black text-green-700 dark:text-white text-sm sm:text-base mb-3 flex items-center gap-2">
             <span className="text-lg">📦</span>
-            {'detailPage.specifications.general'}
+            {"detailPage.specifications.general"}
           </h4>
-            <div className="space-y-2">
-            <InfoRow label={'detailPage.specifications.model'} value={machine.name} />
-            <InfoRow label={'detailPage.specifications.machineType'} value={machine.type || 'Industrial'} />
-            <InfoRow label={'detailPage.specifications.material'} value={machine.material || 'Industrial Grade'} />
-            <InfoRow label={'detailPage.specifications.warranty'} value={machine.warranty || '18 months'} />
+          <div className="space-y-2">
+            <InfoRow
+              label={"detailPage.specifications.model"}
+              value={machine.name}
+            />
+            <InfoRow
+              label={"detailPage.specifications.machineType"}
+              value={machine.type || "Industrial"}
+            />
+            <InfoRow
+              label={"detailPage.specifications.material"}
+              value={machine.material || "Industrial Grade"}
+            />
+            <InfoRow
+              label={"detailPage.specifications.warranty"}
+              value={machine.warranty || "18 months"}
+            />
           </div>
         </div>
 
@@ -101,13 +125,25 @@ export default function MachineSpecsTable({ machine }: MachineSpecsTableProps) {
         <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4">
           <h4 className="font-black text-green-700 dark:text-white text-sm sm:text-base mb-3 flex items-center gap-2">
             <span className="text-lg">🎯</span>
-            {'detailPage.specifications.performance'}
+            {"detailPage.specifications.performance"}
           </h4>
           <div className="space-y-2">
-            <InfoRow label={'detailPage.specifications.extractionRate'} value={machine.extractionRate || 'N/A'} />
-            <InfoRow label={'detailPage.specifications.waterConsumption'} value={machine.waterConsumption || 'N/A'} />
-            <InfoRow label={'detailPage.specifications.outputSize'} value={machine.fiberThickness || 'Varies'} />
-            <InfoRow label={'detailPage.specifications.operation'} value={machine.operation || 'Continuous'} />
+            <InfoRow
+              label={"detailPage.specifications.extractionRate"}
+              value={machine.extractionRate || "N/A"}
+            />
+            <InfoRow
+              label={"detailPage.specifications.waterConsumption"}
+              value={machine.waterConsumption || "N/A"}
+            />
+            <InfoRow
+              label={"detailPage.specifications.outputSize"}
+              value={machine.fiberThickness || "Varies"}
+            />
+            <InfoRow
+              label={"detailPage.specifications.operation"}
+              value={machine.operation || "Continuous"}
+            />
           </div>
         </div>
 
@@ -115,13 +151,25 @@ export default function MachineSpecsTable({ machine }: MachineSpecsTableProps) {
         <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4">
           <h4 className="font-black text-green-700 dark:text-white text-sm sm:text-base mb-3 flex items-center gap-2">
             <span className="text-lg">🔧</span>
-            {'detailPage.specifications.operational'}
+            {"detailPage.specifications.operational"}
           </h4>
           <div className="space-y-2">
-            <InfoRow label={'detailPage.specifications.rpm'} value={machine.rpm || '1440 RPM'} />
-            <InfoRow label={'detailPage.specifications.voltage'} value={machine.voltage || '380V, 3 Phase'} />
-            <InfoRow label={'detailPage.specifications.operators'} value={machine.operators || '1-2 persons'} />
-            <InfoRow label={'detailPage.specifications.noiseLevel'} value={machine.noiseLevel || '< 85 dB'} />
+            <InfoRow
+              label={"detailPage.specifications.rpm"}
+              value={machine.rpm || "1440 RPM"}
+            />
+            <InfoRow
+              label={"detailPage.specifications.voltage"}
+              value={machine.voltage || "380V, 3 Phase"}
+            />
+            <InfoRow
+              label={"detailPage.specifications.operators"}
+              value={machine.operators || "1-2 persons"}
+            />
+            <InfoRow
+              label={"detailPage.specifications.noiseLevel"}
+              value={machine.noiseLevel || "< 85 dB"}
+            />
           </div>
         </div>
 
@@ -129,11 +177,17 @@ export default function MachineSpecsTable({ machine }: MachineSpecsTableProps) {
         <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4">
           <h4 className="font-black text-green-700 dark:text-white text-sm sm:text-base mb-3 flex items-center gap-2">
             <span className="text-lg">💧</span>
-            {'detailPage.specifications.materialProcessing'}
+            {"detailPage.specifications.materialProcessing"}
           </h4>
           <div className="space-y-2">
-            <InfoRow label={'detailPage.specifications.inputMaterial'} value={machine.input} />
-            <InfoRow label={'detailPage.specifications.outputProduct'} value={machine.output} />
+            <InfoRow
+              label={"detailPage.specifications.inputMaterial"}
+              value={machine.input}
+            />
+            <InfoRow
+              label={"detailPage.specifications.outputProduct"}
+              value={machine.output}
+            />
           </div>
         </div>
       </div>

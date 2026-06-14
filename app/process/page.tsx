@@ -1,15 +1,15 @@
-'use client'
+"use client";
 
 // Process page — standalone 4-step ordering workflow with hover details
-import { motion, useInView } from 'framer-motion'
-import { useRef, useState } from 'react'
-import { 
-  PenTool, 
-  Settings, 
-  Truck, 
+import { motion, useInView } from "framer-motion";
+import { useRef, useState } from "react";
+import {
+  PenTool,
+  Settings,
+  Truck,
   Headphones,
-  CheckCircle
-} from 'lucide-react'
+  CheckCircle,
+} from "lucide-react";
 
 // Four ordering steps — each expands on hover
 const processSteps = [
@@ -17,60 +17,64 @@ const processSteps = [
     step: "01",
     title: "Consultation & Design",
     icon: PenTool,
-    description: "We analyze your specific requirements to create a custom blueprint tailored to your facility.",
+    description:
+      "We analyze your specific requirements to create a custom blueprint tailored to your facility.",
     details: [
       "Site assessment & requirements analysis",
-      "Custom CAD design & 3D modeling", 
+      "Custom CAD design & 3D modeling",
       "Blueprint approval & sign-off",
-      "Material selection & sourcing"
-    ]
+      "Material selection & sourcing",
+    ],
   },
   {
     step: "02",
     title: "Precision Manufacturing",
     icon: Settings,
-    description: "Using high-grade industrial materials and precision engineering to build your machinery.",
+    description:
+      "Using high-grade industrial materials and precision engineering to build your machinery.",
     details: [
       "CNC precision machining",
       "Robotic welding assembly",
       "Multi-stage quality control",
-      "Surface treatment & finishing"
-    ]
+      "Surface treatment & finishing",
+    ],
   },
   {
     step: "03",
     title: "Delivery & Setup",
     icon: Truck,
-    description: "Safe transport followed by professional on-site installation and calibration.",
+    description:
+      "Safe transport followed by professional on-site installation and calibration.",
     details: [
       "Secure export-grade packaging",
       "Door-to-door global shipping",
       "Professional on-site installation",
-      "Performance calibration & testing"
-    ]
+      "Performance calibration & testing",
+    ],
   },
   {
     step: "04",
     title: "Training & Support",
     icon: Headphones,
-    description: "Comprehensive staff training and 24/7 technical support to ensure maximum uptime.",
+    description:
+      "Comprehensive staff training and 24/7 technical support to ensure maximum uptime.",
     details: [
       "Comprehensive operator training",
       "24/7 remote technical support",
       "Spare parts availability",
-      "Preventive maintenance programs"
-    ]
-  }
-]
+      "Preventive maintenance programs",
+    ],
+  },
+];
 
 export default function ProcessSteps() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, amount: 0.2 })
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.2 });
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
-    <section 
-      ref={ref} 
+    <section
+      ref={ref}
       id="process"
       className="py-24 bg-gray-50 dark:bg-gray-900/50 overflow-hidden"
     >
@@ -87,8 +91,9 @@ export default function ProcessSteps() {
           </h2>
           <div className="w-20 h-2 bg-primary mx-auto mt-4 rounded-full"></div>
           <p className="mt-6 text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            From initial concept to final operation, we follow a rigorous workflow to ensure 
-            the highest quality standards for your industrial needs.
+            From initial concept to final operation, we follow a rigorous
+            workflow to ensure the highest quality standards for your industrial
+            needs.
           </p>
         </motion.div>
 
@@ -96,7 +101,7 @@ export default function ProcessSteps() {
         <div className="relative">
           {/* Connecting Line (Desktop) */}
           <div className="hidden lg:block absolute top-1/2 left-0 w-full h-0.5 bg-gray-200 dark:bg-gray-700 -translate-y-1/2 z-0"></div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative z-10">
             {processSteps.map((step, index) => (
               <motion.div
@@ -118,9 +123,9 @@ export default function ProcessSteps() {
                       transition={{ duration: 0.3 }}
                       className="w-24 h-24 rounded-2xl bg-white dark:bg-gray-800 shadow-xl flex items-center justify-center border-b-4 border-primary group-hover:bg-green-800 transition-all duration-300 animate-float"
                     >
-                      <step.icon className="w-10 h-10 text-green-800 group-hover:text-white transition-colors duration-300"/>
+                      <step.icon className="w-10 h-10 text-green-800 group-hover:text-white transition-colors duration-300" />
                     </motion.div>
-                    
+
                     {/* Step Number Badge */}
                     <div className="absolute -top-4 -right-4 w-10 h-10 rounded-full bg-green-900 text-white flex items-center justify-center font-black text-sm border-4 border-gray-100 dark:border-gray-900 shadow-lg animate-pulse-slow">
                       {step.step}
@@ -142,7 +147,7 @@ export default function ProcessSteps() {
                     initial={{ opacity: 0, height: 0 }}
                     animate={{
                       opacity: hoveredIndex === index ? 1 : 0,
-                      height: hoveredIndex === index ? 'auto' : 0,
+                      height: hoveredIndex === index ? "auto" : 0,
                     }}
                     transition={{ duration: 0.3 }}
                     className="overflow-hidden mt-4"
@@ -150,7 +155,10 @@ export default function ProcessSteps() {
                     <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
                       <div className="space-y-2">
                         {step.details.map((detail, idx) => (
-                          <div key={idx} className="flex items-start gap-2 text-left">
+                          <div
+                            key={idx}
+                            className="flex items-start gap-2 text-left"
+                          >
                             <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
                             <span className="text-xs text-gray-600 dark:text-gray-400">
                               {detail}
@@ -164,8 +172,18 @@ export default function ProcessSteps() {
                   {/* Mobile Connector */}
                   {index < processSteps.length - 1 && (
                     <div className="lg:hidden mt-6 text-gray-300 dark:text-gray-700">
-                      <svg className="w-5 h-5 mx-auto rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      <svg
+                        className="w-5 h-5 mx-auto rotate-90"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 9l-7 7-7-7"
+                        />
                       </svg>
                     </div>
                   )}
@@ -176,5 +194,5 @@ export default function ProcessSteps() {
         </div>
       </div>
     </section>
-  )
+  );
 }

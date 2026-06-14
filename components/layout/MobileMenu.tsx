@@ -1,29 +1,32 @@
-'use client'
+"use client";
 
 // Slide-out mobile navigation panel with theme and language controls
-import { useEffect } from 'react'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { motion, AnimatePresence } from 'framer-motion'
-import ModeToggle from './ModeToggle'
-import { LanguageSelector } from '@/components/LanguageSelector'
-
+import { useEffect } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
+import ModeToggle from "./ModeToggle";
+import { LanguageSelector } from "@/components/LanguageSelector";
 
 interface MobileMenuProps {
-  isOpen: boolean
-  onClose: () => void
-  navItems: Array<{ name: string; href: string }>
+  isOpen: boolean;
+  onClose: () => void;
+  navItems: Array<{ name: string; href: string }>;
 }
 
-export default function MobileMenu({ isOpen, onClose, navItems }: MobileMenuProps) {
-  const pathname = usePathname()
+export default function MobileMenu({
+  isOpen,
+  onClose,
+  navItems,
+}: MobileMenuProps) {
+  const pathname = usePathname();
 
   // Auto-close menu when route changes
   useEffect(() => {
     if (isOpen) {
-      onClose()
+      onClose();
     }
-  }, [pathname])
+  }, [pathname]);
 
   return (
     <AnimatePresence>
@@ -37,13 +40,13 @@ export default function MobileMenu({ isOpen, onClose, navItems }: MobileMenuProp
             onClick={onClose}
             className="fixed inset-0 bg-black/50 z-40 lg:hidden"
           />
-          
+
           {/* Menu Panel */}
           <motion.div
-            initial={{ x: '100%' }}
+            initial={{ x: "100%" }}
             animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ type: 'spring', damping: 20 }}
+            exit={{ x: "100%" }}
+            transition={{ type: "spring", damping: 20 }}
             className="fixed right-0 top-0 bottom-0 w-80 bg-white dark:bg-gray-900 shadow-2xl z-50 lg:hidden"
           >
             <div className="flex flex-col h-full">
@@ -59,9 +62,10 @@ export default function MobileMenu({ isOpen, onClose, navItems }: MobileMenuProp
               {/* Navigation Links */}
               <nav className="flex-1 overflow-y-auto py-6">
                 {navItems.map((item) => {
-                  const isActive = pathname === item.href || 
-                    (item.href !== '/' && pathname?.startsWith(item.href))
-                  
+                  const isActive =
+                    pathname === item.href ||
+                    (item.href !== "/" && pathname?.startsWith(item.href));
+
                   return (
                     <Link
                       key={item.name}
@@ -69,13 +73,13 @@ export default function MobileMenu({ isOpen, onClose, navItems }: MobileMenuProp
                       onClick={onClose}
                       className={`block px-6 py-3 text-base font-medium transition-colors min-h-[44px] flex items-center ${
                         isActive
-                          ? 'bg-primary/10 text-primary border-r-4 border-primary'
-                          : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                          ? "bg-primary/10 text-primary border-r-4 border-primary"
+                          : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                       }`}
                     >
                       {item.name}
                     </Link>
-                  )
+                  );
                 })}
               </nav>
 
@@ -90,5 +94,5 @@ export default function MobileMenu({ isOpen, onClose, navItems }: MobileMenuProp
         </>
       )}
     </AnimatePresence>
-  )
+  );
 }

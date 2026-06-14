@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { verifyAdminSession } from '@/lib/auth';
-import { prisma } from '@/lib/prisma';
-import nodemailer from 'nodemailer';
-import { renderToBuffer } from '@react-pdf/renderer';
-import QuotationDocument from '@/components/admin/QuotationPDF';
-import { uploadImageToCloudinary } from '@/lib/cloudinary';
+import { NextRequest, NextResponse } from "next/server";
+import { verifyAdminSession } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
+import nodemailer from "nodemailer";
+import { renderToBuffer } from "@react-pdf/renderer";
+import QuotationDocument from "@/components/admin/QuotationPDF";
+import { uploadImageToCloudinary } from "@/lib/cloudinary";
 
 const EMAIL_USER = process.env.EMAIL_USER;
 const EMAIL_PASS = process.env.EMAIL_PASS;
@@ -21,7 +21,7 @@ type QuotationCreateBody = {
 };
 
 const parsePositiveNumber = (v: unknown, field: string): number => {
-  const n = typeof v === 'string' ? Number(v) : (v as number);
+  const n = typeof v === "string" ? Number(v) : (v as number);
   const num = Number(n);
   if (!Number.isFinite(num) || num < 0) {
     throw new Error(`${field} must be a non-negative number`);
@@ -30,7 +30,7 @@ const parsePositiveNumber = (v: unknown, field: string): number => {
 };
 
 function generateQuotationNumber(year: number, sequential: number) {
-  const seq = String(sequential).padStart(4, '0');
+  const seq = String(sequential).padStart(4, "0");
   return `QT-${year}-${seq}`;
 }
 
@@ -39,48 +39,59 @@ async function getEmailTransporter() {
     return null;
   }
   return nodemailer.createTransport({
-    service: 'gmail',
+    service: "gmail",
     auth: { user: EMAIL_USER, pass: EMAIL_PASS },
   });
 }
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const { id: orderId } = await params;
 
     const session = await verifyAdminSession();
     if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const body = (await request.json()) as Partial<QuotationCreateBody>;
 
-    const machineCost = parsePositiveNumber(body.machineCost, 'machineCost');
-    const shippingCost = parsePositiveNumber(body.shippingCost ?? 0, 'shippingCost');
-    const installationCost = parsePositiveNumber(body.installationCost ?? 0, 'installationCost');
-    const additionalCharges = parsePositiveNumber(body.additionalCharges ?? 0, 'additionalCharges');
+    const machineCost = parsePositiveNumber(body.machineCost, "machineCost");
+    const shippingCost = parsePositiveNumber(
+      body.shippingCost ?? 0,
+      "shippingCost",
+    );
+    const installationCost = parsePositiveNumber(
+      body.installationCost ?? 0,
+      "installationCost",
+    );
+    const additionalCharges = parsePositiveNumber(
+      body.additionalCharges ?? 0,
+      "additionalCharges",
+    );
 
-    if (!body.validUntil || typeof body.validUntil !== 'string') {
+    if (!body.validUntil || typeof body.validUntil !== "string") {
       return NextResponse.json(
-        { error: 'validUntil is required' },
-        { status: 400 }
+        { error: "validUntil is required" },
+        { status: 400 },
       );
     }
 
     const validUntilDate = new Date(body.validUntil);
     if (Number.isNaN(validUntilDate.getTime())) {
       return NextResponse.json(
-        { error: 'validUntil must be a valid date' },
-        { status: 400 }
+        { error: "validUntil must be a valid date" },
+        { status: 400 },
       );
     }
 
-    const terms = body.terms && typeof body.terms === 'string' ? body.terms : undefined;
+    const terms =
+      body.terms && typeof body.terms === "string" ? body.terms : undefined;
 
-    const totalCost = machineCost + shippingCost + installationCost + additionalCharges;
+    const totalCost =
+      machineCost + shippingCost + installationCost + additionalCharges;
 
     const order = await prisma.order.findUnique({
       where: { id: orderId },
@@ -93,7 +104,7 @@ export async function POST(
     });
 
     if (!order) {
-      return NextResponse.json({ error: 'Order not found' }, { status: 404 });
+      return NextResponse.json({ error: "Order not found" }, { status: 404 });
     }
 
     const year = validUntilDate.getFullYear();
@@ -115,14 +126,17 @@ export async function POST(
       data: {
         order_id: order.id,
         quotation_number: quotationNumber,
+        customer_name: order.customer_name,
+        customer_email: order.customer_email,
+        customer_phone: order.customer_phone,
+        machine_id: item?.machine_id,
+        machine_name: item?.product_name || "Machine",
+        quantity: item?.quantity || 1,
         machine_cost: machineCost,
         shipping_cost: shippingCost,
         installation_cost: installationCost,
-        additional_charges: additionalCharges,
         total_cost: totalCost,
-        valid_until: validUntilDate,
-        terms,
-        status: 'draft',
+        status: "draft",
       },
     });
 
@@ -133,10 +147,10 @@ export async function POST(
           quotationNumber,
           issueDate: new Date().toISOString(),
           validUntil: validUntilDate.toISOString(),
-          customerName: order.customer_name || 'Customer',
+          customerName: order.customer_name || "Customer",
           customerCompany: order.profile?.company || undefined,
           customerEmail: order.customer_email,
-          machineName: item?.product_name ?? 'Machine',
+          machineName: item?.product_name ?? "Machine",
           machineQuantity: item?.quantity ?? 1,
           machineCost,
           shippingCost,
@@ -145,14 +159,14 @@ export async function POST(
           totalCost,
           terms,
         }}
-      />
+      />,
     );
 
     // Upload PDF to Cloudinary (existing /api/upload pattern was file/buffer based; here we upload buffer)
     // Cloudinary uploader expects a resource; we send as base64.
     const uploaded = await uploadImageToCloudinary(Buffer.from(pdfBuffer), {
-      folder: 'dkm-quotations',
-      resource_type: 'auto',
+      folder: "dkm-quotations",
+      resource_type: "auto",
       transformation: undefined,
       overwrite: true,
     });
@@ -163,16 +177,16 @@ export async function POST(
     const transporter = await getEmailTransporter();
     if (!transporter) {
       return NextResponse.json(
-        { error: 'Email transporter not configured' },
-        { status: 500 }
+        { error: "Email transporter not configured" },
+        { status: 500 },
       );
     }
 
     const customerEmail = order.customer_email;
     if (!EMAIL_REGEX.test(customerEmail)) {
       return NextResponse.json(
-        { error: 'Customer email is invalid' },
-        { status: 400 }
+        { error: "Customer email is invalid" },
+        { status: 400 },
       );
     }
 
@@ -185,7 +199,7 @@ export async function POST(
         {
           filename: `${quotationNumber}.pdf`,
           content: Buffer.from(pdfBuffer),
-          contentType: 'application/pdf',
+          contentType: "application/pdf",
         },
       ],
     });
@@ -195,29 +209,31 @@ export async function POST(
         where: { id: quotation.id },
         data: {
           pdf_url: pdfUrl,
-          status: 'sent',
+          status: "sent",
         },
       });
 
       await tx.order.update({
         where: { id: order.id },
         data: {
-          status: 'quotation_sent',
+          status: "quotation_sent",
         },
       });
     });
 
     return NextResponse.json(
       { quotationId: quotation.id, quotationNumber },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
-    console.error('Quotation creation error:', error);
+    console.error("Quotation creation error:", error);
     // If email fails, we should NOT update statuses; however current code updates only after email success.
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : 'Failed to send quotation' },
-      { status: 500 }
+      {
+        error:
+          error instanceof Error ? error.message : "Failed to send quotation",
+      },
+      { status: 500 },
     );
   }
 }
-

@@ -1,4 +1,4 @@
-import QuotationsClient from './QuotationsClient';
+import QuotationsClient from "./QuotationsClient";
 
 export default function QuotationsPage() {
   return <QuotationsClient />;

@@ -1,56 +1,63 @@
-'use client'
+"use client";
 
 // Client testimonials preview — grid of review cards + trust badges
-import { motion, useInView } from 'framer-motion'
-import { useRef, useState } from 'react'
+import { motion, useInView } from "framer-motion";
+import { useRef, useState } from "react";
 
-import { Star, Quote, ChevronLeft, ChevronRight } from 'lucide-react'
-import Image from 'next/image'
+import { Star, Quote, ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
 
 export default function TestimonialsSection() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, amount: 0.1 })
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.1 });
 
   // Static client reviews (shown as cards)
   const testimonialsTranslations = [
     {
-      name: 'Henok',
-      initials: 'H',
-      role: 'Factory Owner',
-      content: 'The Poultry Feed Machine we installed has exceeded our expectations. The pellet quality is consistent, and the energy efficiency is remarkable.',
+      name: "Henok",
+      initials: "H",
+      role: "Factory Owner",
+      content:
+        "The Poultry Feed Machine we installed has exceeded our expectations. The pellet quality is consistent, and the energy efficiency is remarkable.",
       rating: 5,
-      location: 'Adam, Oromia, Ethiopia'
+      location: "Adam, Oromia, Ethiopia",
     },
     {
-      name: 'Hayu Samuel',
-      initials: 'S',
-      role: 'Operations Manager',
-      content: 'Dukan Machinery provided exceptional support during the setup of our cattle feed line. Their technical team is truly professional and knowledgeable.',
+      name: "Hayu Samuel",
+      initials: "S",
+      role: "Operations Manager",
+      content:
+        "Dukan Machinery provided exceptional support during the setup of our cattle feed line. Their technical team is truly professional and knowledgeable.",
       rating: 5,
-      location: 'Addis Ababa, Ethiopia'
+      location: "Addis Ababa, Ethiopia",
     },
     {
-      name: 'Meti solomon',
-      initials: 'M',
-      role: 'Agri-Industrial Consultant',
-      content: "Finding reliable custom industrial machines is tough, but Dukan's engineering standards are top-tier. They understand the nuances of feed processing.",
+      name: "Meti solomon",
+      initials: "M",
+      role: "Agri-Industrial Consultant",
+      content:
+        "Finding reliable custom industrial machines is tough, but Dukan's engineering standards are top-tier. They understand the nuances of feed processing.",
       rating: 5,
-      location: 'Harar, Ethiopia'
+      location: "Harar, Ethiopia",
     },
     {
-      name: 'Chala Berhan',
-      initials: 'T',
-      role: 'Production Director',
-      content: 'The hammer mill we purchased has been running continuously for 18 months with zero downtime. Outstanding build quality.',
+      name: "Chala Berhan",
+      initials: "T",
+      role: "Production Director",
+      content:
+        "The hammer mill we purchased has been running continuously for 18 months with zero downtime. Outstanding build quality.",
       rating: 5,
-      location: 'Jimma, Ethiopia'
-    }
-  ]
+      location: "Jimma, Ethiopia",
+    },
+  ];
 
-  const testimonials = testimonialsTranslations
+  const testimonials = testimonialsTranslations;
 
   return (
-    <section ref={ref} className="py-16 sm:py-20 md:py-24 bg-green-200 dark:bg-gray-900">
+    <section
+      ref={ref}
+      className="py-16 sm:py-20 md:py-24 bg-green-200 dark:bg-gray-900"
+    >
       <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -64,8 +71,10 @@ export default function TestimonialsSection() {
           </h2>
           <div className="w-16 sm:w-20 h-2 bg-orange-600 mx-auto mt-4 rounded-full"></div>
           <h2 className="text-sm sm:text-base md:text-xl lg:text-2xl font-black text-green-800 dark:text-gray-100 mt-4 mb-4 sm:mb-6">
-            What Our{' '}
-            <span className="text-orange-600 dark:text-orange-400">Clients Say</span>
+            What Our{" "}
+            <span className="text-orange-600 dark:text-orange-400">
+              Clients Say
+            </span>
           </h2>
         </motion.div>
 
@@ -109,7 +118,9 @@ export default function TestimonialsSection() {
                   <h4 className="font-black text-gray-900 dark:text-white text-sm sm:text-base">
                     {testimonial.name}
                   </h4>
-                  <p className="text-xs sm:text-sm text-gray-500">{testimonial.role}</p>
+                  <p className="text-xs sm:text-sm text-gray-500">
+                    {testimonial.role}
+                  </p>
                   <div className="flex items-center gap-1 mt-0.5">
                     <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
                     <span className="text-[10px] sm:text-xs text-gray-400">
@@ -118,8 +129,6 @@ export default function TestimonialsSection() {
                   </div>
                 </div>
               </div>
-
-             
             </motion.div>
           ))}
         </div>
@@ -134,16 +143,21 @@ export default function TestimonialsSection() {
           <div className="flex flex-wrap justify-center gap-4 sm:gap-6 md:gap-8 lg:gap-12 items-center">
             <div className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-gray-100 dark:bg-gray-800 shadow-sm rounded-full">
               <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-green-500 animate-pulse" />
-              <span className="text-sm sm:text-base md:text-lg text-gray-600 dark:text-gray-300">4.7/5 Average Rating</span>
+              <span className="text-sm sm:text-base md:text-lg text-gray-600 dark:text-gray-300">
+                4.7/5 Average Rating
+              </span>
             </div>
             <div className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-gray-100 dark:bg-gray-800 shadow-sm rounded-full">
-              <span className="text-orange-600 font-black text-sm sm:text-base md:text-lg">100+</span>
-              <span className="text-sm sm:text-base md:text-lg text-gray-600 dark:text-gray-300">Happy Clients</span>
+              <span className="text-orange-600 font-black text-sm sm:text-base md:text-lg">
+                100+
+              </span>
+              <span className="text-sm sm:text-base md:text-lg text-gray-600 dark:text-gray-300">
+                Happy Clients
+              </span>
             </div>
-            
           </div>
         </motion.div>
       </div>
     </section>
-  )
+  );
 }

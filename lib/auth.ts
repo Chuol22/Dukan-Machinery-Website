@@ -1,6 +1,6 @@
 // auth.ts — admin session verification and role guards
-import { cookies } from 'next/headers';
-import prisma from '@/lib/prisma';
+import { cookies } from "next/headers";
+import prisma from "@/lib/prisma";
 
 export type AdminSession = {
   email?: string;
@@ -11,12 +11,14 @@ export type AdminSession = {
 // Decode base64 session cookie from admin login
 export async function verifyAdminSession(): Promise<AdminSession | null> {
   const cookieStore = await cookies();
-  const sessionCookie = cookieStore.get('dkm_admin_session');
+  const sessionCookie = cookieStore.get("dkm_admin_session");
 
   if (!sessionCookie?.value) return null;
 
   try {
-    const decodedData = Buffer.from(sessionCookie.value, 'base64').toString('utf8');
+    const decodedData = Buffer.from(sessionCookie.value, "base64").toString(
+      "utf8",
+    );
     return JSON.parse(decodedData) as AdminSession;
   } catch {
     return null;
@@ -26,7 +28,7 @@ export async function verifyAdminSession(): Promise<AdminSession | null> {
 export interface UserProfile {
   id: string;
   email: string;
-  role: 'admin' | 'customer' | 'staff';
+  role: "admin" | "customer" | "staff";
   name?: string;
   avatar_url?: string;
   created_at: string;
@@ -43,12 +45,18 @@ export async function getCurrentUser(): Promise<UserProfile | null> {
     });
 
     return {
-      id: profile?.id || 'admin-id',
+      id: profile?.id || "admin-id",
       email: session.email,
-      role: profile?.role === 'admin' ? 'admin' : profile?.role === 'staff' ? 'staff' : 'customer',
+      role:
+        profile?.role === "admin"
+          ? "admin"
+          : profile?.role === "staff"
+            ? "staff"
+            : "customer",
       name: profile?.name || session.name,
       avatar_url: profile?.avatar_url || undefined,
-      created_at: profile?.created_at?.toISOString() || new Date().toISOString(),
+      created_at:
+        profile?.created_at?.toISOString() || new Date().toISOString(),
     };
   } catch {
     return null;
@@ -57,17 +65,17 @@ export async function getCurrentUser(): Promise<UserProfile | null> {
 
 export async function requireAuth() {
   const user = await getCurrentUser();
-  if (!user) throw new Error('Unauthorized');
+  if (!user) throw new Error("Unauthorized");
   return user;
 }
 
 export async function requireAdmin() {
   const user = await requireAuth();
-  if (user.role !== 'admin') throw new Error('Forbidden');
+  if (user.role !== "admin") throw new Error("Forbidden");
   return user;
 }
 
 export async function signOut() {
   const cookieStore = await cookies();
-  cookieStore.delete('dkm_admin_session');
+  cookieStore.delete("dkm_admin_session");
 }

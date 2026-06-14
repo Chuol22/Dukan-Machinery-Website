@@ -1,77 +1,99 @@
-'use client'
+"use client";
 
 // ChatMessage — single message bubble with markdown and actions
-import { motion } from 'framer-motion'
-import { Bot, User, CheckCheck, Copy, ThumbsUp, ThumbsDown } from 'lucide-react'
-import { useState } from 'react'
-import type { Message } from '@/types/chatbot.types'
+import { motion } from "framer-motion";
+import {
+  Bot,
+  User,
+  CheckCheck,
+  Copy,
+  ThumbsUp,
+  ThumbsDown,
+} from "lucide-react";
+import { useState } from "react";
+import type { Message } from "@/types/chatbot.types";
 
 interface ChatMessageProps {
-  message: Message
+  message: Message;
 }
 
 export default function ChatMessage({ message }: ChatMessageProps) {
-  const [isCopied, setIsCopied] = useState(false)
-  const [feedback, setFeedback] = useState<'like' | 'dislike' | null>(null)
-  const isBot = message.role === 'assistant'
+  const [isCopied, setIsCopied] = useState(false);
+  const [feedback, setFeedback] = useState<"like" | "dislike" | null>(null);
+  const isBot = message.role === "assistant";
 
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(message.content)
-    setIsCopied(true)
-    setTimeout(() => setIsCopied(false), 2000)
-  }
+    await navigator.clipboard.writeText(message.content);
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 2000);
+  };
 
-  const handleFeedback = (type: 'like' | 'dislike') => {
-    setFeedback(type)
-    console.log(`Feedback for message: ${type}`)
-  }
+  const handleFeedback = (type: "like" | "dislike") => {
+    setFeedback(type);
+    console.log(`Feedback for message: ${type}`);
+  };
 
   // Parse paragraphs, lists, and bold text
   const formatMessage = (content: string) => {
-    const paragraphs = content.split('\n\n')
-    
+    const paragraphs = content.split("\n\n");
+
     return paragraphs.map((paragraph, idx) => {
-      if (paragraph.trim().startsWith('- ') || paragraph.trim().startsWith('* ')) {
-        const items = paragraph.split('\n').filter(line => line.trim().startsWith('- ') || line.trim().startsWith('* '))
+      if (
+        paragraph.trim().startsWith("- ") ||
+        paragraph.trim().startsWith("* ")
+      ) {
+        const items = paragraph
+          .split("\n")
+          .filter(
+            (line) =>
+              line.trim().startsWith("- ") || line.trim().startsWith("* "),
+          );
         return (
           <ul key={idx} className="space-y-2 mt-2 mb-2">
             {items.map((item, i) => {
-              const itemContent = item.trim().substring(2)
+              const itemContent = item.trim().substring(2);
               return (
                 <li key={i} className="flex items-start gap-2.5">
                   <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-orange-500 mt-2" />
                   <span className="flex-1">{formatBoldText(itemContent)}</span>
                 </li>
-              )
+              );
             })}
           </ul>
-        )
+        );
       }
-      
+
       return (
-        <p key={idx} className={idx > 0 ? 'mt-3' : ''}>
+        <p key={idx} className={idx > 0 ? "mt-3" : ""}>
           {formatBoldText(paragraph)}
         </p>
-      )
-    })
-  }
+      );
+    });
+  };
 
   const formatBoldText = (text: string) => {
-    const boldRegex = /\*\*(.*?)\*\*/g
+    const boldRegex = /\*\*(.*?)\*\*/g;
     return text.split(boldRegex).map((part, i) => {
       if (i % 2 === 1) {
-        return <strong key={i} className="font-bold text-inherit border-b border-orange-500/30">{part}</strong>
+        return (
+          <strong
+            key={i}
+            className="font-bold text-inherit border-b border-orange-500/30"
+          >
+            {part}
+          </strong>
+        );
       }
-      return part
-    })
-  }
+      return part;
+    });
+  };
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 10, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.3, ease: 'easeOut' }}
-      className={`flex gap-3 group ${isBot ? 'justify-start' : 'justify-end'}`}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+      className={`flex gap-3 group ${isBot ? "justify-start" : "justify-end"}`}
     >
       {/* Bot avatar */}
       {isBot && (
@@ -83,12 +105,14 @@ export default function ChatMessage({ message }: ChatMessageProps) {
       )}
 
       {/* Message bubble */}
-      <div className={`max-w-[85%] flex flex-col ${isBot ? 'items-start' : 'items-end'}`}>
+      <div
+        className={`max-w-[85%] flex flex-col ${isBot ? "items-start" : "items-end"}`}
+      >
         <div
           className={`relative px-4 py-3 md:px-5 md:py-3.5 rounded-2xl shadow-sm transition-all ${
             isBot
-              ? 'bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-bl-none border border-gray-200/50 dark:border-gray-700/50'
-              : 'bg-gradient-to-br from-orange-500 to-orange-600 text-white rounded-br-none shadow-orange-500/20'
+              ? "bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-bl-none border border-gray-200/50 dark:border-gray-700/50"
+              : "bg-gradient-to-br from-orange-500 to-orange-600 text-white rounded-br-none shadow-orange-500/20"
           }`}
         >
           <div className="text-[15px] md:text-base leading-relaxed break-words">
@@ -98,12 +122,12 @@ export default function ChatMessage({ message }: ChatMessageProps) {
           {/* Timestamp */}
           <div
             className={`text-[10px] mt-1.5 font-medium uppercase tracking-wider ${
-              isBot ? 'text-gray-400' : 'text-white/60'
+              isBot ? "text-gray-400" : "text-white/60"
             }`}
           >
-            {new Date(message.timestamp).toLocaleTimeString([], { 
-              hour: '2-digit', 
-              minute: '2-digit' 
+            {new Date(message.timestamp).toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
             })}
           </div>
         </div>
@@ -124,22 +148,22 @@ export default function ChatMessage({ message }: ChatMessageProps) {
             </button>
             <div className="w-[1px] h-3 bg-gray-200 dark:bg-gray-700 self-center mx-0.5" />
             <button
-              onClick={() => handleFeedback('like')}
+              onClick={() => handleFeedback("like")}
               className={`p-1.5 rounded-lg transition-colors border border-transparent hover:border-gray-200 dark:hover:border-gray-700 ${
-                feedback === 'like'
-                  ? 'text-orange-500 bg-orange-500/5'
-                  : 'text-gray-400 hover:text-orange-500'
+                feedback === "like"
+                  ? "text-orange-500 bg-orange-500/5"
+                  : "text-gray-400 hover:text-orange-500"
               }`}
               title="Helpful"
             >
               <ThumbsUp className="w-3.5 h-3.5" />
             </button>
             <button
-              onClick={() => handleFeedback('dislike')}
+              onClick={() => handleFeedback("dislike")}
               className={`p-1.5 rounded-lg transition-colors border border-transparent hover:border-gray-200 dark:hover:border-gray-700 ${
-                feedback === 'dislike'
-                  ? 'text-red-500 bg-red-500/5'
-                  : 'text-gray-400 hover:text-red-500'
+                feedback === "dislike"
+                  ? "text-red-500 bg-red-500/5"
+                  : "text-gray-400 hover:text-red-500"
               }`}
               title="Not helpful"
             >
@@ -158,5 +182,5 @@ export default function ChatMessage({ message }: ChatMessageProps) {
         </div>
       )}
     </motion.div>
-  )
+  );
 }

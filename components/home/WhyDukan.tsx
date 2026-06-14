@@ -1,8 +1,8 @@
-'use client'
+"use client";
 
 // "Why Dukan" section — competitive advantages and animated company stats
-import { motion, useInView } from 'framer-motion'
-import { useRef } from 'react'
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 import {
   CheckCircle,
   Shield,
@@ -12,93 +12,115 @@ import {
   BarChart3,
   Settings,
   Users,
-} from 'lucide-react'
+} from "lucide-react";
 
-import { AnimatedCounter } from '@/components/shared/AnimatedCounter'
+import { AnimatedCounter } from "@/components/shared/AnimatedCounter";
 
 // Static advantage cards (icons assigned by index in JSX)
 const advantages = [
   {
     icon: CheckCircle,
-    title: 'Capacity Accuracy',
-    description: '±5% guaranteed capacity accuracy with real-world testing',
-    stat: '97.5%',
-    statLabel: 'Accuracy Rate',
+    title: "Capacity Accuracy",
+    description: "±5% guaranteed capacity accuracy with real-world testing",
+    stat: "97.5%",
+    statLabel: "Accuracy Rate",
   },
   {
     icon: Shield,
-    title: 'Durable Materials',
-    description: '304/316 stainless steel and HARDOX wear plates',
-    stat: '15+',
-    statLabel: 'Years Lifespan',
+    title: "Durable Materials",
+    description: "304/316 stainless steel and HARDOX wear plates",
+    stat: "15+",
+    statLabel: "Years Lifespan",
   },
   {
     icon: Globe,
-    title: 'International Standards',
-    description: 'ISO, CE, GMP+ certified machinery',
-    stat: '4+',
-    statLabel: 'Countries Served',
+    title: "International Standards",
+    description: "ISO, CE, GMP+ certified machinery",
+    stat: "4+",
+    statLabel: "Countries Served",
   },
   {
     icon: Headphones,
-    title: 'After-Sales Support',
-    description: '24/7 technical support and spare parts availability',
-    stat: '2hr',
-    statLabel: 'Response Time',
+    title: "After-Sales Support",
+    description: "24/7 technical support and spare parts availability",
+    stat: "2hr",
+    statLabel: "Response Time",
   },
-]
+];
 
 export default function WhyDukan() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, amount: 0.2 })
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.2 });
 
   // Advantage cards — title, description, and highlight stat
   const advantages = [
     {
-      title: 'Capacity Accuracy',
-      description: '±5% guaranteed capacity accuracy with real-world testing',
-      stat: '97.5%',
-      statLabel: 'Accuracy Rate',
+      title: "Capacity Accuracy",
+      description: "±5% guaranteed capacity accuracy with real-world testing",
+      stat: "97.5%",
+      statLabel: "Accuracy Rate",
     },
     {
-      title: 'Durable Materials',
-      description: '304/316 stainless steel and HARDOX wear plates',
-      stat: '15+',
-      statLabel: 'Years Lifespan',
+      title: "Durable Materials",
+      description: "304/316 stainless steel and HARDOX wear plates",
+      stat: "15+",
+      statLabel: "Years Lifespan",
     },
     {
-      title: 'International Standards',
-      description: 'ISO, CE, GMP+ certified machinery',
-      stat: '4+',
-      statLabel: 'Countries Served',
+      title: "International Standards",
+      description: "ISO, CE, GMP+ certified machinery",
+      stat: "4+",
+      statLabel: "Countries Served",
     },
     {
-      title: 'After-Sales Support',
-      description: '24/7 technical support and spare parts availability',
-      stat: '2hr',
-      statLabel: 'Response Time',
+      title: "After-Sales Support",
+      description: "24/7 technical support and spare parts availability",
+      stat: "2hr",
+      statLabel: "Response Time",
     },
-  ]
+  ];
 
   const statsTranslations = {
-    machinesInstalled: 'Machines Installed',
-    customerSatisfaction: 'Customer Satisfaction',
-    energyEfficiency: 'Energy Efficiency',
-    lessDowntime: 'Less Downtime',
-  }
+    machinesInstalled: "Machines Installed",
+    customerSatisfaction: "Customer Satisfaction",
+    energyEfficiency: "Energy Efficiency",
+    lessDowntime: "Less Downtime",
+  };
 
   // Animated counters shown in the green stats bar
   const stats = [
-    { value: 50, suffix: '+', label: statsTranslations.machinesInstalled, icon: Settings },
-    { value: 96, suffix: '%', label: statsTranslations.customerSatisfaction, icon: Users },
-    { value: 20, suffix: '%', label: statsTranslations.energyEfficiency, icon: Zap },
-    { value: 30, suffix: '%', label: statsTranslations.lessDowntime, icon: BarChart3 },
-  ]
+    {
+      value: 50,
+      suffix: "+",
+      label: statsTranslations.machinesInstalled,
+      icon: Settings,
+    },
+    {
+      value: 96,
+      suffix: "%",
+      label: statsTranslations.customerSatisfaction,
+      icon: Users,
+    },
+    {
+      value: 20,
+      suffix: "%",
+      label: statsTranslations.energyEfficiency,
+      icon: Zap,
+    },
+    {
+      value: 30,
+      suffix: "%",
+      label: statsTranslations.lessDowntime,
+      icon: BarChart3,
+    },
+  ];
 
   return (
-    <section ref={ref} className="py-16 sm:py-20 md:py-24 bg-white dark:bg-gray-900">
+    <section
+      ref={ref}
+      className="py-16 sm:py-20 md:py-24 bg-white dark:bg-gray-900"
+    >
       <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
-
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -132,10 +154,18 @@ export default function WhyDukan() {
               <div className="absolute inset-0 bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 transition-all duration-300" />
               <div className="relative p-4 sm:p-6 border border-gray-100 dark:border-gray-800 rounded-2xl hover:border-orange-400/30 transition-all duration-300 cursor-pointer">
                 <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-xl bg-orange-300 dark:bg-gray-700 flex items-center justify-center mb-3 sm:mb-4 animate-float">
-                  {index === 0 && <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-primary" />}
-                  {index === 1 && <Shield className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-primary" />}
-                  {index === 2 && <Globe className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-primary" />}
-                  {index === 3 && <Headphones className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-primary" />}
+                  {index === 0 && (
+                    <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-primary" />
+                  )}
+                  {index === 1 && (
+                    <Shield className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-primary" />
+                  )}
+                  {index === 2 && (
+                    <Globe className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-primary" />
+                  )}
+                  {index === 3 && (
+                    <Headphones className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-primary" />
+                  )}
                 </div>
                 <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl font-black text-green-800 dark:text-green-400 leading-tight mb-3 sm:mb-4">
                   {advantage.title}
@@ -144,8 +174,12 @@ export default function WhyDukan() {
                   {advantage.description}
                 </p>
                 <div className="pt-3 sm:pt-4 border-t border-gray-200 dark:border-gray-700">
-                  <div className="text-xl sm:text-2xl font-black text-primary">{advantage.stat}</div>
-                  <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">{advantage.statLabel}</div>
+                  <div className="text-xl sm:text-2xl font-black text-primary">
+                    {advantage.stat}
+                  </div>
+                  <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                    {advantage.statLabel}
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -171,7 +205,9 @@ export default function WhyDukan() {
                     startInView={isInView}
                   />
                 </div>
-                <div className="text-xs sm:text-sm opacity-90">{stat.label}</div>
+                <div className="text-xs sm:text-sm opacity-90">
+                  {stat.label}
+                </div>
               </div>
             ))}
           </div>
@@ -180,13 +216,12 @@ export default function WhyDukan() {
         {/* Trust badge */}
         <div className="mt-12 sm:mt-16 text-center">
           <p className="text-green-800 dark:text-green-400 text-xs sm:text-sm uppercase font-black tracking-widest sm:tracking-[0.2em]">
-            Trusted by{' '}
-            <span className="text-orange-600 dark:text-orange-400">100+</span>{' '}
+            Trusted by{" "}
+            <span className="text-orange-600 dark:text-orange-400">100+</span>{" "}
             businesses worldwide
           </p>
         </div>
-
       </div>
     </section>
-  )
+  );
 }

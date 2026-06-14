@@ -1,8 +1,8 @@
-'use client'
+"use client";
 
 // Featured machines — desktop grid + mobile swipe carousel
-import { useState, useRef } from 'react'
-import { motion, useInView, AnimatePresence } from 'framer-motion'
+import { useState, useRef } from "react";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 import {
   ArrowRight,
   Gauge,
@@ -13,53 +13,74 @@ import {
   ChevronRight,
   Play,
   Info,
-} from 'lucide-react'
-import Link from 'next/link'
-import Image from 'next/image'
-import Button from '@/components/ui/Button'
+} from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
+import Button from "@/components/ui/Button";
 
 // Spec icons for capacity and power labels
-const CapacityIcon = () =>
-<svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 512 512" className="text-secondary" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+const CapacityIcon = () => (
+  <svg
+    stroke="currentColor"
+    fill="currentColor"
+    strokeWidth="0"
+    viewBox="0 0 512 512"
+    className="text-secondary"
+    height="1em"
+    width="1em"
+    xmlns="http://www.w3.org/2000/svg"
+  >
     <path d="M510.28 445.86l-73.03-292.13c-3.8-15.19-16.44-25.72-30.87-25.72h-60.25c3.57-10.05 5.88-20.72 5.88-32 0-53.02-42.98-96-96-96s-96 42.98-96 96c0 11.28 2.3 21.95 5.88 32h-60.25c-14.43 0-27.08 10.54-30.87 25.72L1.72 445.86C-6.61 479.17 16.38 512 48.03 512h415.95c31.64 0 54.63-32.83 46.3-66.14zM256 128c-17.64 0-32-14.36-32-32s14.36-32 32-32 32 14.36 32 32-14.36 32-32 32z"></path>
-  </svg>;
+  </svg>
+);
 
-const PowerIcon = () =>
-<svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 320 512" className="text-secondary" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+const PowerIcon = () => (
+  <svg
+    stroke="currentColor"
+    fill="currentColor"
+    strokeWidth="0"
+    viewBox="0 0 320 512"
+    className="text-secondary"
+    height="1em"
+    width="1em"
+    xmlns="http://www.w3.org/2000/svg"
+  >
     <path d="M296 160H180.6l42.6-129.8C227.2 15 215.7 0 200 0H56C44 0 33.8 8.9 32.2 20.8l-32 240C-1.7 275.2 9.5 288 24 288h118.7L96.6 482.5c-3.6 15.2 8 29.5 23.3 29.5 8.4 0 16.4-4.4 20.8-12l176-304c9.3-15.9-2.2-36-20.7-36z"></path>
-  </svg>;
+  </svg>
+);
 
 // Static featured product data (replace with machines catalog when wired up)
 const featuredMachines = [
   {
     id: 1,
-    name: 'Cattle Feed Pellet Machine',
-    slug: 'cattle-feed-pellet-machine',  
-    shortDescription: 'High-capacity automatic feeding system for large-scale poultry operations',
-    capacity: '1.5 - 2 Tons/hr',
-    power: '15kW - 22kW',
-    image: '/images/machines/industry machine/Cattle Feed Pellet.jpg',
-   
+    name: "Cattle Feed Pellet Machine",
+    slug: "cattle-feed-pellet-machine",
+    shortDescription:
+      "High-capacity automatic feeding system for large-scale poultry operations",
+    capacity: "1.5 - 2 Tons/hr",
+    power: "15kW - 22kW",
+    image: "/images/machines/industry machine/Cattle Feed Pellet.jpg",
   },
   {
     id: 2,
-    name: 'Straw Cutting Machine',
-    slug: 'straw-cutting-machine',
-    shortDescription: 'Industrial hammer mill for fine grinding of various grains', 
-    capacity: '500 - 800 kg/hr',
-    power: '3kW - 5.5kW',
-    image: '/images/machines/industry machine/Straw cutting.jpg',  
+    name: "Straw Cutting Machine",
+    slug: "straw-cutting-machine",
+    shortDescription:
+      "Industrial hammer mill for fine grinding of various grains",
+    capacity: "500 - 800 kg/hr",
+    power: "3kW - 5.5kW",
+    image: "/images/machines/industry machine/Straw cutting.jpg",
   },
   {
     id: 3,
-    name: 'Cow Dung Drying Machine',
-    slug: 'cow-dung-drying-machine',
-    shortDescription: 'High-capacity pellet mill for quality feed pellets',  
-    capacity: '1000 kg/hr',
-    power: '7.5kW Industrial Motor',  
-    image: '/images/machines/industry machine/Cow dung.jpg', 
-  },   
-]
+    name: "Cow Dung Drying Machine",
+    slug: "cow-dung-drying-machine",
+    shortDescription: "High-capacity pellet mill for quality feed pellets",
+    capacity: "1000 kg/hr",
+    power: "7.5kW Industrial Motor",
+    image: "/images/machines/industry machine/Cow dung.jpg",
+  },
+];
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -69,7 +90,7 @@ const containerVariants = {
       staggerChildren: 0.1,
     },
   },
-}
+};
 
 const cardVariants = {
   hidden: { y: 50, opacity: 0 },
@@ -78,41 +99,43 @@ const cardVariants = {
     opacity: 1,
     transition: { duration: 0.5 },
   },
-}
+};
 
 export default function FeaturedMachines() {
-  const [hoveredCard, setHoveredCard] = useState<number | null>(null)
-  const [currentSlide, setCurrentSlide] = useState(0) // Mobile carousel index
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, amount: 0.2 })
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const [currentSlide, setCurrentSlide] = useState(0); // Mobile carousel index
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.2 });
 
   // Build machine list from translations + images
   const machinesTranslations = [
     {
-      name: 'Cattle Feed Pellet Machine',
-      shortDescription: 'High-capacity automatic feeding system for large-scale poultry operations',
-      capacity: '1.5 - 2 Tons/hr',
-      power: '15kW - 22kW',
+      name: "Cattle Feed Pellet Machine",
+      shortDescription:
+        "High-capacity automatic feeding system for large-scale poultry operations",
+      capacity: "1.5 - 2 Tons/hr",
+      power: "15kW - 22kW",
     },
     {
-      name: 'Straw Cutting Machine',
-      shortDescription: 'Industrial hammer mill for fine grinding of various grains',
-      capacity: '500 - 800 kg/hr',
-      power: '3kW - 5.5kW',
+      name: "Straw Cutting Machine",
+      shortDescription:
+        "Industrial hammer mill for fine grinding of various grains",
+      capacity: "500 - 800 kg/hr",
+      power: "3kW - 5.5kW",
     },
     {
-      name: 'Cow Dung Drying Machine',
-      shortDescription: 'High-capacity pellet mill for quality feed pellets',
-      capacity: '1000 kg/hr',
-      power: '7.5kW Industrial Motor',
+      name: "Cow Dung Drying Machine",
+      shortDescription: "High-capacity pellet mill for quality feed pellets",
+      capacity: "1000 kg/hr",
+      power: "7.5kW Industrial Motor",
     },
-  ]
+  ];
 
   const images = [
-    '/images/machines/industry machine/Cattle Feed Pellet.jpg',
-    '/images/machines/industry machine/Straw cutting.jpg',
-    '/images/machines/industry machine/Cow dung.jpg'
-  ]
+    "/images/machines/industry machine/Cattle Feed Pellet.jpg",
+    "/images/machines/industry machine/Straw cutting.jpg",
+    "/images/machines/industry machine/Cow dung.jpg",
+  ];
 
   const featuredMachines = machinesTranslations.map((machine, index) => ({
     id: index + 1,
@@ -122,20 +145,25 @@ export default function FeaturedMachines() {
     capacity: machine.capacity,
     power: machine.power,
     image: images[index],
-    category: 'General Purpose'
-  }))
+    category: "General Purpose",
+  }));
 
   // Carousel navigation (mobile only)
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % featuredMachines.length)
-  }
+    setCurrentSlide((prev) => (prev + 1) % featuredMachines.length);
+  };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + featuredMachines.length) % featuredMachines.length)
-  }
+    setCurrentSlide(
+      (prev) => (prev - 1 + featuredMachines.length) % featuredMachines.length,
+    );
+  };
 
   return (
-    <section ref={ref} className="py-16 sm:py-20 md:py-24 bg-gray-50 dark:bg-gray-900 overflow-hidden">
+    <section
+      ref={ref}
+      className="py-16 sm:py-20 md:py-24 bg-gray-50 dark:bg-gray-900 overflow-hidden"
+    >
       <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div
@@ -145,12 +173,15 @@ export default function FeaturedMachines() {
           className="text-center max-w-3xl mx-auto mb-12 sm:mb-16"
         >
           <h2 className="text-green-800 dark:text-green-400 font-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl uppercase tracking-wider">
-            Featured Machines<span className='text-orange-600'> Excellence</span>
+            Featured Machines
+            <span className="text-orange-600"> Excellence</span>
           </h2>
-          <div className='w-16 sm:w-20 h-2 bg-orange-600 mt-4 rounded-full mx-auto'></div>
+          <div className="w-16 sm:w-20 h-2 bg-orange-600 mt-4 rounded-full mx-auto"></div>
           <h5 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-black text-gray-900 dark:text-gray-100 mt-4 mb-4 sm:mb-6">
-            Our Best{' '}
-            <span className="text-primary dark:text-orange-400">Selling Products</span>
+            Our Best{" "}
+            <span className="text-primary dark:text-orange-400">
+              Selling Products
+            </span>
           </h5>
           <p className="text-sm sm:text-base md:text-lg text-gray-600 font-black dark:text-gray-400">
             High-performance machinery for your industrial needs
@@ -190,21 +221,25 @@ export default function FeaturedMachines() {
                   <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-2">
                     {machine.shortDescription}
                   </p>
-                  
+
                   {/* Machine Specs */}
                   <div className="flex items-center justify-between gap-2 pt-2 sm:pt-3 border-t border-gray-200 dark:border-gray-700">
                     <div className="flex flex-col items-center flex-1">
                       <span className="flex items-center gap-0.5 sm:gap-1 text-[8px] sm:text-[10px] text-gray-400 uppercase font-black mb-1">
                         <CapacityIcon /> Capacity
                       </span>
-                      <span className="text-[10px] sm:text-xs font-black text-primary dark:text-white">{machine.capacity}</span>
+                      <span className="text-[10px] sm:text-xs font-black text-primary dark:text-white">
+                        {machine.capacity}
+                      </span>
                     </div>
                     <div className="w-px h-5 sm:h-6 bg-gray-200 dark:border-gray-700"></div>
                     <div className="flex flex-col items-center flex-1">
                       <span className="flex items-center gap-0.5 sm:gap-1 text-[8px] sm:text-[10px] text-gray-400 uppercase font-black mb-1">
                         <PowerIcon /> Power
                       </span>
-                      <span className="text-[10px] sm:text-xs font-black text-primary dark:text-white">{machine.power}</span>
+                      <span className="text-[10px] sm:text-xs font-black text-primary dark:text-white">
+                        {machine.power}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -243,33 +278,37 @@ export default function FeaturedMachines() {
                 <h3 className="text-lg sm:text-xl font-black text-gray-900 dark:text-orange-400 mb-2">
                   {featuredMachines[currentSlide].name}
                 </h3>
-                  <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm mb-3 sm:mb-4">
-                    {featuredMachines[currentSlide].shortDescription}
-                  </p>
-                
+                <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm mb-3 sm:mb-4">
+                  {featuredMachines[currentSlide].shortDescription}
+                </p>
+
                 {/* Info */}
-              <div className="p-4 sm:p-6 md:p-8">
-                <h3 className="text-base sm:text-lg md:text-xl font-black text-primary dark:text-orange-400 mb-4 sm:mb-6 uppercase text-center border-b border-gray-200 dark:border-gray-700 pb-3 sm:pb-4">
-                  {featuredMachines[currentSlide].name}
-                </h3>
-                <div className="flex items-center justify-between gap-2">
-                  <div className="flex flex-col items-center flex-1">
-                    <span className="flex items-center gap-0.5 sm:gap-1 text-[8px] sm:text-[10px] text-gray-400 uppercase font-black mb-1">
-                      <CapacityIcon /> Capacity
-                    </span>
-                    <span className="text-[10px] sm:text-xs font-black text-primary dark:text-white">{featuredMachines[currentSlide].capacity}</span>
-                  </div>
-                  <div className="w-px h-6 sm:h-8 bg-gray-200 dark:bg-gray-700"></div>
-                  <div className="flex flex-col items-center flex-1">
-                    <span className="flex items-center gap-0.5 sm:gap-1 text-[8px] sm:text-[10px] text-gray-400 uppercase font-black mb-1">
-                      <PowerIcon /> Power
-                    </span>
-                    <span className="text-[10px] sm:text-xs font-black text-primary dark:text-white">{featuredMachines[currentSlide].power}</span>
+                <div className="p-4 sm:p-6 md:p-8">
+                  <h3 className="text-base sm:text-lg md:text-xl font-black text-primary dark:text-orange-400 mb-4 sm:mb-6 uppercase text-center border-b border-gray-200 dark:border-gray-700 pb-3 sm:pb-4">
+                    {featuredMachines[currentSlide].name}
+                  </h3>
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex flex-col items-center flex-1">
+                      <span className="flex items-center gap-0.5 sm:gap-1 text-[8px] sm:text-[10px] text-gray-400 uppercase font-black mb-1">
+                        <CapacityIcon /> Capacity
+                      </span>
+                      <span className="text-[10px] sm:text-xs font-black text-primary dark:text-white">
+                        {featuredMachines[currentSlide].capacity}
+                      </span>
+                    </div>
+                    <div className="w-px h-6 sm:h-8 bg-gray-200 dark:bg-gray-700"></div>
+                    <div className="flex flex-col items-center flex-1">
+                      <span className="flex items-center gap-0.5 sm:gap-1 text-[8px] sm:text-[10px] text-gray-400 uppercase font-black mb-1">
+                        <PowerIcon /> Power
+                      </span>
+                      <span className="text-[10px] sm:text-xs font-black text-primary dark:text-white">
+                        {featuredMachines[currentSlide].power}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-                <div className="flex gap-2 sm:gap-3"> 
+                <div className="flex gap-2 sm:gap-3">
                   <Link href="/order" className="flex-1">
                     <Button className="w-full bg-primary hover:bg-primary-dark text-xs sm:text-sm">
                       Order
@@ -302,15 +341,14 @@ export default function FeaturedMachines() {
                 onClick={() => setCurrentSlide(idx)}
                 className={`h-2 rounded-full transition-all duration-300 ${
                   currentSlide === idx
-                    ? 'w-8 bg-primary'
-                    : 'w-2 bg-gray-300 dark:bg-gray-600'
+                    ? "w-8 bg-primary"
+                    : "w-2 bg-gray-300 dark:bg-gray-600"
                 }`}
               />
             ))}
           </div>
         </div>
-         
       </div>
     </section>
-  )
+  );
 }
