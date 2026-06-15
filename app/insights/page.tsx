@@ -158,16 +158,14 @@ export default function InsightsPage() {
   const handleFilterChange = (filters: FilterOptions) => {
     let filtered: BlogPost[] = [...blogPosts];
 
-    // Search filter
+    // Search filter - FIXED: Added explicit type for 'tag' parameter
     if (filters.search) {
       const searchLower = filters.search.toLowerCase();
       filtered = filtered.filter((post: BlogPost) => {
         return (
           post.title.toLowerCase().includes(searchLower) ||
           post.excerpt.toLowerCase().includes(searchLower) ||
-          post.tags.some((tag: string) =>
-            tag.toLowerCase().includes(searchLower)
-          )
+          post.tags.some((tag: string) => tag.toLowerCase().includes(searchLower))
         );
       });
     }
