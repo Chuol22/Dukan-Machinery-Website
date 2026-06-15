@@ -158,7 +158,7 @@ export default function MachineDetailsPreview({
                     : "border-transparent hover:border-orange-500/50 hover:scale-105 hover:shadow-md"
                 }`}
               >
-                {m.image.endsWith(".mp4") ? (
+                {m.image && m.image.endsWith(".mp4") ? (
                   <video
                     src={m.image}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
@@ -166,12 +166,16 @@ export default function MachineDetailsPreview({
                     loop
                     playsInline
                   />
-                ) : (
+                ) : m.image ? (
                   <img
                     src={m.image}
                     alt={m.name}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
+                ) : (
+                  <div className="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                    <span className="text-gray-400 text-xs">No image</span>
+                  </div>
                 )}
                 <div
                   className={`absolute inset-0 ${selectedImageIndex === idx ? "bg-orange-500/10" : ""}`}
@@ -193,31 +197,35 @@ export default function MachineDetailsPreview({
             <div className="flex flex-col sm:flex-row items-center gap-6">
               <div className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-2xl bg-white p-3 shadow-2xl transform hover:scale-105 transition-all duration-500 hover:rotate-2">
                 <div className="w-full h-full rounded-xl overflow-hidden">
-                  {(
-                    thumbnailMachines[selectedImageIndex]?.image ||
-                    machine.image
-                  ).endsWith(".mp4") ? (
-                    <video
-                      src={
-                        thumbnailMachines[selectedImageIndex]?.image ||
-                        machine.image
-                      }
-                      className="w-full h-full object-contain"
-                      muted
-                      loop
-                      playsInline
-                      controls
-                    />
-                  ) : (
-                    <img
-                      src={
-                        thumbnailMachines[selectedImageIndex]?.image ||
-                        machine.image
-                      }
-                      alt={machine.name}
-                      className="w-full h-full object-contain"
-                    />
-                  )}
+                  {(() => {
+                    const imageSrc = thumbnailMachines[selectedImageIndex]?.image || machine.image;
+                    if (imageSrc && imageSrc.endsWith(".mp4")) {
+                      return (
+                        <video
+                          src={imageSrc}
+                          className="w-full h-full object-contain"
+                          muted
+                          loop
+                          playsInline
+                          controls
+                        />
+                      );
+                    } else if (imageSrc) {
+                      return (
+                        <img
+                          src={imageSrc}
+                          alt={machine.name}
+                          className="w-full h-full object-contain"
+                        />
+                      );
+                    } else {
+                      return (
+                        <div className="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                          <span className="text-gray-400 text-sm">No image available</span>
+                        </div>
+                      );
+                    }
+                  })()}
                 </div>
               </div>
               <div className="flex-1 text-center sm:text-left">

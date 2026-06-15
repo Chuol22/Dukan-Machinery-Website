@@ -2,6 +2,7 @@
 import { NextResponse } from "next/server";
 import { verifyAdminSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { machinesData as staticMachinesData } from "@/data/machinesData";
 
 export async function GET() {
   try {
@@ -10,40 +11,54 @@ export async function GET() {
       orderBy: { created_at: "asc" },
     });
 
+    // Create a map of static machines by slug for fallback
+    const staticMachineMap = new Map(
+      staticMachinesData.map((m) => [m.slug, m])
+    );
+
     // Map to the shape the frontend MachinesClient expects
-    const machines = data.map((m) => ({
-      id: m.id,
-      slug: m.slug,
-      name: m.name,
-      image: m.image || "",
-      gallery: m.gallery || [],
-      category: m.category?.name || m.type || "",
-      type: m.type,
-      capacity:
-        (m.specifications as Record<string, string> | null)?.capacity || "",
-      power: (m.specifications as Record<string, string> | null)?.power || "",
-      weight: (m.specifications as Record<string, string> | null)?.weight || "",
-      dimensions:
-        (m.specifications as Record<string, string> | null)?.dimensions || "",
-      voltage:
-        (m.specifications as Record<string, string> | null)?.voltage || "",
-      warranty:
-        (m.specifications as Record<string, string> | null)?.warranty || "",
-      description: m.description || "",
-      features: m.features || [],
-      applications: m.applications || [],
-      price: m.price > 0 ? `ETB ${m.price.toLocaleString()}` : "Call for price",
-      available: m.is_available,
-      availability_status:
-        m.inventory_status ||
-        (m.is_available ? "available" : "out_of_stock"),
-      inventory_status: m.inventory_status || "available",
-      motor_type:
-        (m.specifications as Record<string, string> | null)?.motor_type || "",
-      input: m.input || "",
-      output: m.output || "",
-      process: m.process || "",
-    }));
+    const machines = data.map((m) => {
+      const staticMachine = staticMachineMap.get(m.slug);
+
+      // Use database image if available, otherwise fall back to static data
+      // Use a default placeholder if both are empty
+      const image = m.image || staticMachine?.image || "/images/machines/Custom Industrial Machines.jpg";
+      const gallery = m.gallery?.length ? m.gallery : staticMachine?.gallery || [];
+
+      return {
+        id: m.id,
+        slug: m.slug,
+        name: m.name,
+        image,
+        gallery,
+        category: m.category?.name || m.type || "",
+        type: m.type,
+        capacity:
+          (m.specifications as Record<string, string> | null)?.capacity || "",
+        power: (m.specifications as Record<string, string> | null)?.power || "",
+        weight: (m.specifications as Record<string, string> | null)?.weight || "",
+        dimensions:
+          (m.specifications as Record<string, string> | null)?.dimensions || "",
+        voltage:
+          (m.specifications as Record<string, string> | null)?.voltage || "",
+        warranty:
+          (m.specifications as Record<string, string> | null)?.warranty || "",
+        description: m.description || "",
+        features: m.features || [],
+        applications: m.applications || [],
+        price: m.price > 0 ? `ETB ${m.price.toLocaleString()}` : "Call for price",
+        available: m.is_available,
+        availability_status:
+          m.inventory_status ||
+          (m.is_available ? "available" : "out_of_stock"),
+        inventory_status: m.inventory_status || "available",
+        motor_type:
+          (m.specifications as Record<string, string> | null)?.motor_type || "",
+        input: m.input || "",
+        output: m.output || "",
+        process: m.process || "",
+      };
+    });
 
     return NextResponse.json({ machines });
   } catch (error) {

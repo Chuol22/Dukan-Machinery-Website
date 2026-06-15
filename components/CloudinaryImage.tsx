@@ -37,6 +37,17 @@ export default function CloudinaryImage({
 
   // If it's not a Cloudinary URL, use regular img tag
   if (!isCloudinaryUrl) {
+    // Don't render if src is empty
+    if (!src || src === "") {
+      return (
+        <div
+          className={`flex items-center justify-center bg-gray-100 dark:bg-gray-800 ${className}`}
+          style={style}
+        >
+          <ImageIcon className="w-8 h-8 text-gray-400" />
+        </div>
+      );
+    }
     return (
       <img
         src={src}
