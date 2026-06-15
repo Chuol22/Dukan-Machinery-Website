@@ -167,7 +167,7 @@ export default function InsightsPage() {
         return (
           post.title.toLowerCase().includes(searchLower) ||
           post.excerpt.toLowerCase().includes(searchLower) ||
-          post.tags.some((tag) =>
+post.tags.some((tag: string) =>
             tag.toLowerCase().includes(searchLower)
           )
         );
