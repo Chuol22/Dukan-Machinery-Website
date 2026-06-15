@@ -44,9 +44,9 @@ const ensureCompletePostData = (posts: BlogPost[]): BlogPost[] => {
   return posts.map((post) => ({
     ...post,
     author: {
-      name: post.author?.name || "Dukan Machinery",
-      avatar: post.author?.avatar || "",
-      bio: post.author?.bio || "Industry expert at Dukan Machinery",
+      name: post.author?.name  "Dukan Machinery",
+      avatar: post.author?.avatar  "",
+      bio: post.author?.bio  "Industry expert at Dukan Machinery",
     },
   }));
 };
@@ -149,7 +149,7 @@ const allTags = [...new Set(blogPosts.flatMap((post) => post.tags))];
 export default function InsightsPage() {
   const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>(blogPosts);
   const [featuredPost, setFeaturedPost] = useState<BlogPost>(
-    blogPosts.find((p) => p.featured) || blogPosts[0],
+    blogPosts.find((p) => p.featured)  blogPosts[0],
   );
   const [regularPosts, setRegularPosts] = useState<BlogPost[]>(
     blogPosts.filter((p) => !p.featured),
@@ -163,8 +163,8 @@ export default function InsightsPage() {
       const searchLower = filters.search.toLowerCase();
       filtered = filtered.filter(
         (post) =>
-          post.title.toLowerCase().includes(searchLower) ||
-          post.excerpt.toLowerCase().includes(searchLower) ||
+          post.title.toLowerCase().includes(searchLower) 
+          post.excerpt.toLowerCase().includes(searchLower) 
           post.tags.some((tag: string) =>
             tag.toLowerCase().includes(searchLower),
           ),
@@ -259,9 +259,7 @@ export default function InsightsPage() {
       category: "Case Study",
       image: "/images/blog/insights/ethiopian-agri.jpg",
     },
-  ];
-
-  return (
+  ];return (
     <div className="min-h-screen bg-white dark:bg-gray-900 flex flex-col">
       <main className="grow pt-24">
         {/* Hero Section */}
@@ -336,9 +334,7 @@ export default function InsightsPage() {
                 Industry <span className="text-orange-500">Insights</span>
               </h2>
               <div className="w-20 h-1 bg-orange-500 mx-auto rounded-full" />
-            </motion.div>
-
-            <div className="grid md:grid-cols-3 gap-8">
+            </motion.div><div className="grid md:grid-cols-3 gap-8">
               {industryInsights.map((insight, idx) => (
                 <motion.div
                   key={idx}
