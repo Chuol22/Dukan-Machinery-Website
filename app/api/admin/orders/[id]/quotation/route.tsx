@@ -20,8 +20,8 @@ type QuotationCreateBody = {
   terms?: string;
 };
 
-const parsePositiveNumber = (v: unknown, field: string): number => {
-  const n = typeof v === "string" ? Number(v) : (v as number);
+const parsePositiveNumber = (v: string | number | undefined, field: string): number => {
+  const n = typeof v === "string" ? Number(v) : v;
   const num = Number(n);
   if (!Number.isFinite(num) || num < 0) {
     throw new Error(`${field} must be a non-negative number`);

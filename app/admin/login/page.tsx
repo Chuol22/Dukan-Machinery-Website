@@ -39,7 +39,7 @@ export default function AdminLoginPage() {
       // Success, route to admin home page
       router.push("/admin");
       router.refresh();
-    } catch (err: unknown) {
+    } catch (err: Error | unknown) {
       const msg =
         err instanceof Error
           ? err.message

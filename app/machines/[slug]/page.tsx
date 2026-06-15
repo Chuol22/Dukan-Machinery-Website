@@ -13,7 +13,14 @@ import RelatedMachines from "@/components/machines/RelatedMachines";
 import { getMachineBySlug, getAllMachineSlugs } from "@/data/machinesData";
 
 // Tab components
-const TabButton = ({ active, onClick, children, icon }: any) => (
+interface TabButtonProps {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+  icon: React.ReactNode;
+}
+
+const TabButton = ({ active, onClick, children, icon }: TabButtonProps) => (
   <button
     onClick={onClick}
     className={`flex items-center gap-1.5 pb-3 px-2 font-black text-xs sm:text-sm uppercase tracking-wider transition border-b-2 ${

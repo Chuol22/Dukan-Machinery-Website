@@ -1,6 +1,6 @@
 export interface ChatMessageLike {
   role: string;
-  content?: unknown;
+  content?: string | null;
   tool_call_id?: string;
   tool_calls?: Array<{
     id?: string;

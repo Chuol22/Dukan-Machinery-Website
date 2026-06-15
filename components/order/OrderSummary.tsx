@@ -13,8 +13,42 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
+interface CustomerInfo {
+  fullName?: string;
+  companyName?: string;
+  email?: string;
+  phone?: string;
+  address?: string;
+  name?: string;
+  company?: string;
+}
+
+interface DeliveryInfo {
+  preferredDate?: string;
+  deliveryAddress?: string;
+  specialInstructions?: string;
+}
+
+interface OrderData {
+  orderId?: number | string;
+  machineName?: string;
+  quantity?: number;
+  unitPrice?: number;
+  totalPrice?: number;
+  feedType?: string;
+  powerSource?: string;
+  requiredCapacity?: { value: string; unit: string };
+  timeline?: string;
+  customerInfo?: CustomerInfo;
+  contactInfo?: CustomerInfo;
+  deliveryInfo?: DeliveryInfo;
+  paymentMethod?: string;
+  termsAccepted?: boolean;
+  status?: string;
+}
+
 interface OrderSummaryProps {
-  orderData: any;
+  orderData: OrderData;
   type: "standard" | "custom";
 }
 

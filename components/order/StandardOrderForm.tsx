@@ -106,7 +106,7 @@ export default function StandardOrderForm({
   );
 
   // Parse price string (ranges or single value) to number
-  const priceToNumber = (price: unknown): number => {
+  const priceToNumber = (price: string | number | undefined | null): number => {
     if (typeof price === "number") return price;
     if (!price) return 0;
     const str = String(price);
@@ -241,7 +241,7 @@ export default function StandardOrderForm({
     }
   };
 
-  const updateFormData = (field: string, value: unknown) => {
+  const updateFormData = (field: string, value: string | number | boolean | string[]) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) {
       setErrors((prev) => {

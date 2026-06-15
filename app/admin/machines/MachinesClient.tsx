@@ -299,7 +299,7 @@ export default function MachinesClient({
     }
   };
 
-  const updateField = (field: string, value: unknown) => {
+  const updateField = (field: string, value: string | number | boolean | string[]) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     if (formErrors[field]) {
       setFormErrors((prev) => {

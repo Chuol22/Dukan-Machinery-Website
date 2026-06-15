@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyAdminSession } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 
-const normalizeStringArray = (v: unknown) => {
+const normalizeStringArray = (v: string | string[] | undefined | null) => {
   if (Array.isArray(v)) return v.map(String);
   if (typeof v === "string")
     return v
@@ -13,7 +13,7 @@ const normalizeStringArray = (v: unknown) => {
   return [];
 };
 
-const parsePrice = (raw: unknown): number => {
+const parsePrice = (raw: string | number | undefined | null): number => {
   if (typeof raw === "number") return raw;
   if (typeof raw === "string") {
     const cleaned = raw.replace(/[^0-9.]/g, "");
@@ -45,7 +45,7 @@ export async function PUT(
       return !["out_of_stock", "maintenance", "discontinued"].includes(s);
     };
 
-    const updateData: Record<string, unknown> = {
+    const updateData: Record<string, string | number | boolean | string[] | Record<string, string> | null | undefined> = {
       name: rest.name,
       image: rest.image,
       gallery: normalizeStringArray(rest.gallery),

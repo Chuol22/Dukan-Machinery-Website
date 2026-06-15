@@ -28,7 +28,14 @@ interface MachineDetailsPreviewProps {
 }
 
 // Tab nav button with active underline state
-const TabButton = ({ active, onClick, children, icon }: any) => (
+interface TabButtonProps {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+  icon: React.ReactNode;
+}
+
+const TabButton = ({ active, onClick, children, icon }: TabButtonProps) => (
   <button
     onClick={onClick}
     className={`flex items-center gap-1.5 pb-3 px-2 font-black text-xs sm:text-sm uppercase tracking-wider transition border-b-2 ${
@@ -43,7 +50,13 @@ const TabButton = ({ active, onClick, children, icon }: any) => (
 );
 
 // Single maintenance task row with priority badge
-const MaintenanceItem = ({ title, priority, frequency }: any) => {
+interface MaintenanceItemProps {
+  title: string;
+  priority: string;
+  frequency: string;
+}
+
+const MaintenanceItem = ({ title, priority, frequency }: MaintenanceItemProps) => {
   const priorityColors: Record<string, string> = {
     High: "bg-red-100 text-red-700",
     Medium: "bg-yellow-100 text-yellow-700",

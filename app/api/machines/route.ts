@@ -17,7 +17,7 @@ export async function GET() {
     );
 
     // Map to the shape the frontend MachinesClient expects
-    const machines = data.map((m) => {
+    const machines = data.map((m: { id: string; slug: string; name: string; image: string | null; gallery: string[] | null; category: { name: string } | null; type: string; specifications: Record<string, string> | null; description: string | null; features: string[] | null; applications: string[] | null; price: number; is_available: boolean; inventory_status: string | null; input: string | null; output: string | null; process: string | null }) => {
       const staticMachine = staticMachineMap.get(m.slug);
 
       // Use database image if available, otherwise fall back to static data
@@ -79,7 +79,7 @@ export async function POST(request: Request) {
 
     const payload = await request.json();
 
-    const normalizeStringArray = (v: unknown) => {
+    const normalizeStringArray = (v: string | string[] | undefined | null) => {
       if (Array.isArray(v)) return v.map(String);
       if (typeof v === "string")
         return v
@@ -115,7 +115,7 @@ export async function POST(request: Request) {
     } = payload;
 
     // Parse price – strip currency prefix / commas, fallback to 0
-    const parsePrice = (raw: unknown): number => {
+    const parsePrice = (raw: string | number | undefined | null): number => {
       if (typeof raw === "number") return raw;
       if (typeof raw === "string") {
         const cleaned = raw.replace(/[^0-9.]/g, "");

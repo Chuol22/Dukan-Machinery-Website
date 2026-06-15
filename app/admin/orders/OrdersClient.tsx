@@ -132,7 +132,7 @@ export default function OrdersClient() {
       const orders = data.orders ?? [];
 
       const normalizeStatus = (
-        raw: unknown,
+        raw: string | undefined | null,
       ): "pending" | "confirmed" | "rejected" => {
         const s = String(raw ?? "")
           .trim()
@@ -153,14 +153,12 @@ export default function OrdersClient() {
         return "pending";
       };
 
-      const normalizedOrders = (orders as unknown[]).map((order) => {
-        const o = order as { status?: unknown } & Partial<OrderRow> &
-          Record<string, unknown>;
-        const nextStatus = normalizeStatus(o.status);
+      const normalizedOrders = (orders as Array<{ status?: string | null } & Partial<OrderRow> & Record<string, string | number | boolean | null>>).map((order) => {
+        const nextStatus = normalizeStatus(order.status);
         return {
-          ...(o as OrderRow),
+          ...order,
           status: nextStatus,
-        };
+        } as OrderRow;
       });
 
       setRows(normalizedOrders);

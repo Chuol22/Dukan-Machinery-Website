@@ -20,7 +20,7 @@ export async function PUT(
     }
 
     const body = await request.json();
-    const { status } = body as { status: unknown };
+    const { status } = body as { status: string | undefined };
 
     // Validate status value
     if (!status || !VALID_STATUSES.includes(status as InquiryStatus)) {

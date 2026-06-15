@@ -45,13 +45,13 @@ export default function NotificationsPage() {
           const data = await res.json();
           type IncomingNotif = {
             id?: string;
-            type?: unknown;
-            title?: unknown;
-            message?: unknown;
-            created_at?: unknown;
-            read?: unknown;
-            order_id?: unknown;
-            totalAmount?: unknown;
+            type?: string;
+            title?: string;
+            message?: string;
+            created_at?: string | Date;
+            read?: boolean;
+            order_id?: string;
+            totalAmount?: number;
           };
 
           const notifs: OrderNotification[] = (data.notifications ?? [])

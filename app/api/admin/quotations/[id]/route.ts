@@ -48,7 +48,15 @@ export async function PUT(
     const body = await request.json();
     const { status, pdf_url } = body;
 
-    const updateData: any = {};
+    interface QuotationUpdateData {
+      status?: string;
+      sent_at?: Date;
+      approved_at?: Date;
+      rejected_at?: Date;
+      pdf_url?: string;
+    }
+
+    const updateData: QuotationUpdateData = {};
     if (status) {
       updateData.status = status;
       if (status === "sent") updateData.sent_at = new Date();

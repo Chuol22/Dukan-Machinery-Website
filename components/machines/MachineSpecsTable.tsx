@@ -50,7 +50,12 @@ const SpecCard = ({
 );
 
 // Label/value row inside a spec group
-const InfoRow = ({ label, value }: any) => (
+interface InfoRowProps {
+  label: string;
+  value: string;
+}
+
+const InfoRow = ({ label, value }: InfoRowProps) => (
   <div className="flex justify-between items-center py-2 px-3 bg-white dark:bg-gray-800 rounded-lg text-xs sm:text-sm">
     <span className="font-bold text-gray-600 dark:text-gray-400">{label}:</span>
     <span className="font-black text-green-700 dark:text-white">{value}</span>
