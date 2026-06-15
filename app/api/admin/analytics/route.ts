@@ -19,6 +19,7 @@ const addMonths = (d: Date, delta: number) => {
 
 export async function GET() {
   try {
+    // Verify admin session
     const session = await verifyAdminSession();
     if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -27,6 +28,7 @@ export async function GET() {
     const now = new Date();
     const earliest = addMonths(toStartOfMonth(now), -MONTHS_BACK + 1);
 
+    // Run all queries in parallel with error handling for each
     const [
       totalOrders,
       pendingOrders,
@@ -42,21 +44,21 @@ export async function GET() {
       inquiriesPerMonthRows,
       topMachinesRows,
     ] = await Promise.all([
-      prisma.order.count(),
-      prisma.order.count({ where: { status: "pending" } }),
-      prisma.order.count({ where: { status: "accepted" } }),
-      prisma.order.count({ where: { status: "rejected" } }),
-      prisma.machine.count(),
-      prisma.machine.count({ where: { is_available: true } }),
-      prisma.customer.count(),
+      prisma.order.count().catch(() => 0),
+      prisma.order.count({ where: { status: "pending" } }).catch(() => 0),
+      prisma.order.count({ where: { status: "accepted" } }).catch(() => 0),
+      prisma.order.count({ where: { status: "rejected" } }).catch(() => 0),
+      prisma.machine.count().catch(() => 0),
+      prisma.machine.count({ where: { is_available: true } }).catch(() => 0),
+      prisma.customer.count().catch(() => 0),
       prisma.order.groupBy({
         by: ["status"],
         _count: true,
-      }),
+      }).catch(() => []),
       prisma.machine.groupBy({
         by: ["inventory_status"],
         _count: true,
-      }),
+      }).catch(() => []),
       prisma.order.groupBy({
         by: ["created_at"],
         _count: true,
@@ -65,7 +67,7 @@ export async function GET() {
             gte: earliest,
           },
         },
-      }),
+      }).catch(() => []),
       prisma.customer.groupBy({
         by: ["createdAt"],
         _count: true,
@@ -74,7 +76,7 @@ export async function GET() {
             gte: earliest,
           },
         },
-      }),
+      }).catch(() => []),
       prisma.inquiry.groupBy({
         by: ["createdAt"],
         _count: true,
@@ -83,123 +85,163 @@ export async function GET() {
             gte: earliest,
           },
         },
-      }),
-      // Top machines by order item count
+      }).catch(() => []),
       prisma.orderItem.groupBy({
         by: ["machine_id"],
         _count: true,
-        // orderBy/take combo is brittle across Prisma versions.
-        // Keep it type-safe by omitting `take` and sorting in JS.
-      }),
+      }).catch(() => []),
     ]);
 
-    // Convert groupBy(created_at) rows into per-month counts.
-    const seedMonths: Array<{ month: string; count: number }> = Array.from(
-      { length: MONTHS_BACK },
-      (_, i) => {
-        const d = addMonths(toStartOfMonth(earliest), i);
-        return {
-          month: monthLabel(d),
-          count: 0,
-        };
-      },
-    );
+    // Create array of months for the last 12 months
+    const monthsArray = Array.from({ length: MONTHS_BACK }, (_, i) => {
+      const d = addMonths(toStartOfMonth(earliest), i);
+      return {
+        month: monthLabel(d),
+        fullDate: d,
+      };
+    });
 
-    const monthIndex = (d: Date) => {
-      const sd = toStartOfMonth(earliest);
-      const diffMonths =
-        (d.getFullYear() - sd.getFullYear()) * 12 +
-        (d.getMonth() - sd.getMonth());
+    // Helper function to find month index
+    const monthIndex = (date: Date) => {
+      const startDate = toStartOfMonth(earliest);
+      const diffMonths = 
+        (date.getFullYear() - startDate.getFullYear()) * 12 +
+        (date.getMonth() - startDate.getMonth());
       return diffMonths;
     };
 
-    const ordersPerMonth = seedMonths.map((m) => ({
+    // Process orders per month
+    const ordersPerMonth = monthsArray.map((m) => ({
       month: m.month,
       orders: 0,
     }));
-    for (const r of ordersPerMonthRows) {
-      const d = new Date(r.created_at as unknown as string | Date);
-      const idx = monthIndex(d);
-      if (idx >= 0 && idx < ordersPerMonth.length) {
-        ordersPerMonth[idx].orders += Number(r._count);
+    
+    if (ordersPerMonthRows && ordersPerMonthRows.length > 0) {
+      for (const row of ordersPerMonthRows) {
+        if (row.created_at) {
+          const date = new Date(row.created_at as unknown as string | Date);
+          if (!isNaN(date.getTime())) {
+            const idx = monthIndex(date);
+            if (idx >= 0 && idx < ordersPerMonth.length) {
+              ordersPerMonth[idx].orders += Number(row._count) || 0;
+            }
+          }
+        }
       }
     }
 
-    const customerGrowth = seedMonths.map((m) => ({
+    // Process customer growth
+    const customerGrowth = monthsArray.map((m) => ({
       month: m.month,
       customers: 0,
     }));
-    for (const r of customerGrowthRows) {
-      const d = new Date(r.createdAt as unknown as string | Date);
-      const idx = monthIndex(d);
-      if (idx >= 0 && idx < customerGrowth.length) {
-        customerGrowth[idx].customers += Number(r._count);
+    
+    if (customerGrowthRows && customerGrowthRows.length > 0) {
+      for (const row of customerGrowthRows) {
+        if (row.createdAt) {
+          const date = new Date(row.createdAt as unknown as string | Date);
+          if (!isNaN(date.getTime())) {
+            const idx = monthIndex(date);
+            if (idx >= 0 && idx < customerGrowth.length) {
+              customerGrowth[idx].customers += Number(row._count) || 0;
+            }
+          }
+        }
       }
     }
 
-    const inquiryTrends = seedMonths.map((m) => ({
+    // Process inquiry trends
+    const inquiryTrends = monthsArray.map((m) => ({
       month: m.month,
       inquiries: 0,
     }));
-    for (const r of inquiriesPerMonthRows) {
-      const d = new Date(r.createdAt as unknown as string | Date);
-      const idx = monthIndex(d);
-      if (idx >= 0 && idx < inquiryTrends.length) {
-        inquiryTrends[idx].inquiries += Number(r._count);
+    
+    if (inquiriesPerMonthRows && inquiriesPerMonthRows.length > 0) {
+      for (const row of inquiriesPerMonthRows) {
+        if (row.createdAt) {
+          const date = new Date(row.createdAt as unknown as string | Date);
+          if (!isNaN(date.getTime())) {
+            const idx = monthIndex(date);
+            if (idx >= 0 && idx < inquiryTrends.length) {
+              inquiryTrends[idx].inquiries += Number(row._count) || 0;
+            }
+          }
+        }
       }
     }
 
-    const orderStatusDistribution = orderStatuses.map((s) => ({
-      status: s.status,
-      count: s._count,
-    }));
+    // Process order status distribution
+    const orderStatusDistribution = orderStatuses && orderStatuses.length > 0
+      ? orderStatuses.map((s) => ({
+          status: s.status,
+          count: s._count,
+        }))
+      : [];
 
-    const machineAvailabilityDistribution = machineAvailability.map((s) => ({
-      inventory_status: s.inventory_status,
-      count: s._count,
-    }));
+    // Process machine availability distribution
+    const machineAvailabilityDistribution = machineAvailability && machineAvailability.length > 0
+      ? machineAvailability.map((s) => ({
+          inventory_status: s.inventory_status,
+          count: s._count,
+        }))
+      : [];
 
-    // topMachines by joining machine name
-    const machineIds = topMachinesRows.map((r) => r.machine_id);
-    const machines = await prisma.machine.findMany({
-      where: { id: { in: machineIds } },
-      select: { id: true, name: true },
-    });
-    const nameById = new Map(machines.map((m) => [m.id, m.name] as const));
+    // Process top machines
+    let topMachines: Array<{ machineName: string; orders: number }> = [];
+    
+    if (topMachinesRows && topMachinesRows.length > 0) {
+      const machineIds = topMachinesRows
+        .map((row) => row.machine_id)
+        .filter((id): id is string => id !== null);
+      
+      if (machineIds.length > 0) {
+        const machines = await prisma.machine.findMany({
+          where: { id: { in: machineIds } },
+          select: { id: true, name: true },
+        }).catch(() => []);
+        
+        const nameById = new Map(machines.map((m) => [m.id, m.name]));
+        
+        topMachines = topMachinesRows
+          .map((row) => ({
+            machineName: nameById.get(row.machine_id) ?? "Unknown Machine",
+            orders: row._count,
+          }))
+          .sort((a, b) => b.orders - a.orders)
+          .slice(0, 10); // Get top 10 machines
+      }
+    }
 
-    const topMachines = topMachinesRows.map((r) => ({
-      machineName: nameById.get(r.machine_id) ?? "Unknown",
-      orders: r._count,
-    }));
-
+    // Return successful response
     return NextResponse.json({
+      success: true,
       stats: {
-        totalOrders,
-        pendingOrders,
-        acceptedOrders,
-        rejectedOrders,
-        totalMachines,
-        availableMachines,
-        totalCustomers,
+        totalOrders: totalOrders || 0,
+        pendingOrders: pendingOrders || 0,
+        acceptedOrders: acceptedOrders || 0,
+        rejectedOrders: rejectedOrders || 0,
+        totalMachines: totalMachines || 0,
+        availableMachines: availableMachines || 0,
+        totalCustomers: totalCustomers || 0,
       },
-      ordersPerMonth,
-      topMachines,
-      orderStatusDistribution,
-      customerGrowth,
-      machineAvailabilityDistribution,
-      inquiryTrends,
+      ordersPerMonth: ordersPerMonth || [],
+      topMachines: topMachines || [],
+      orderStatusDistribution: orderStatusDistribution || [],
+      customerGrowth: customerGrowth || [],
+      machineAvailabilityDistribution: machineAvailabilityDistribution || [],
+      inquiryTrends: inquiryTrends || [],
     });
+    
   } catch (error) {
-    console.error("Analytics API error:", error);
+    console.error("Analytics API error details:", error);
+    
+    // Return a proper error response with more details
     return NextResponse.json(
-      {
-        error: "Internal server error",
-        debug: {
-          message: error instanceof Error ? error.message : String(error),
-          name: error instanceof Error ? error.name : undefined,
-        },
+      { 
+        error: "Failed to fetch analytics data",
+        details: error instanceof Error ? error.message : "Unknown error",
       },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }
