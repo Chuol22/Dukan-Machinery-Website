@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import { verifyAdminSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
+// Force dynamic rendering to prevent build-time database connection attempts
+export const dynamic = 'force-dynamic';
+
 const MONTHS_BACK = 12;
 
 const monthLabel = (d: Date) => {
@@ -208,7 +211,7 @@ export async function GET() {
             orders: row._count,
           }))
           .sort((a, b) => b.orders - a.orders)
-          .slice(0, 10); // Get top 10 machines
+          .slice(0, 10);
       }
     }
 
