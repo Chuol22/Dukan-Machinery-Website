@@ -2,8 +2,9 @@ import { NextResponse } from "next/server";
 import { verifyAdminSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
-// Force dynamic rendering to prevent build-time database connection attempts
+// CRITICAL: Force dynamic rendering to prevent build-time execution
 export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
 
 const MONTHS_BACK = 12;
 
@@ -21,6 +22,14 @@ const addMonths = (d: Date, delta: number) => {
 };
 
 export async function GET() {
+  // Check if Prisma is available (prevents build-time errors)
+  if (!prisma) {
+    return NextResponse.json(
+      { error: "Database not available during build time" },
+      { status: 503 }
+    );
+  }
+
   try {
     // Verify admin session
     const session = await verifyAdminSession();
