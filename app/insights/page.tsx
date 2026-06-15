@@ -197,7 +197,7 @@ export default function InsightsPage() {
       }
       filtered = filtered.filter((post: BlogPost) => new Date(post.publishedAt) >= filterDate);
     }
-
+    
     // Sort
     switch (filters.sortBy) {
       case "newest":
@@ -230,6 +230,8 @@ export default function InsightsPage() {
     if (featured) setFeaturedPost(featured);
     setRegularPosts(regular);
   };
+
+  // Rest of your component remains the same...
 
   const industryInsights = [
     {
