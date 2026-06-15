@@ -161,24 +161,25 @@ export default function InsightsPage() {
     // Search filter
     if (filters.search) {
       const searchLower = filters.search.toLowerCase();
-      filtered = filtered.filter(
-        (post) =>
+      filtered = filtered.filter((post: BlogPost) => {
+        return (
           post.title.toLowerCase().includes(searchLower) ||
           post.excerpt.toLowerCase().includes(searchLower) ||
           post.tags.some((tag: string) =>
-            tag.toLowerCase().includes(searchLower),
-          ),
-      );
+            tag.toLowerCase().includes(searchLower)
+          )
+        );
+      });
     }
 
     // Category filter
     if (filters.category) {
-      filtered = filtered.filter((post) => post.category === filters.category);
+      filtered = filtered.filter((post: BlogPost) => post.category === filters.category);
     }
 
     // Tag filter
     if (filters.tag) {
-      filtered = filtered.filter((post) => post.tags.includes(filters.tag));
+      filtered = filtered.filter((post: BlogPost) => post.tags.includes(filters.tag));
     }
 
     // Date range filter
@@ -196,9 +197,7 @@ export default function InsightsPage() {
           filterDate.setFullYear(now.getFullYear() - 1);
           break;
       }
-      filtered = filtered.filter(
-        (post) => new Date(post.publishedAt) >= filterDate,
-      );
+      filtered = filtered.filter((post: BlogPost) => new Date(post.publishedAt) >= filterDate);
     }
 
     // Sort
