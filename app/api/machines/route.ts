@@ -17,8 +17,13 @@ const toSpecifications = (specs: any): Record<string, string> | null => {
   return null;
 };
 
+import { syncStaticMachinesToDatabase } from "@/lib/db-sync";
+
 export async function GET() {
   try {
+    // Auto-sync missing static machines to database
+    await syncStaticMachinesToDatabase();
+
     const data = await prisma.machine.findMany({
       include: { category: true },
       orderBy: { created_at: "asc" },

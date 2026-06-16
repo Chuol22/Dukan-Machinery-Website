@@ -1,6 +1,7 @@
 // data-service.ts — Unified data access layer
 import prisma from "@/lib/prisma";
 import { machinesData, getMachineBySlug as getStaticMachineBySlug } from "@/data/machinesData";
+import { syncStaticMachinesToDatabase } from "./db-sync";
 
 // Helper to convert null to undefined
 const nullToUndefined = <T>(value: T | null): T | undefined => {
@@ -119,6 +120,9 @@ export const machineService = {
     const machines: UnifiedMachine[] = [];
 
     try {
+      // Auto-sync missing static machines to database
+      await syncStaticMachinesToDatabase();
+
       // Get from Prisma
       const dbMachines = await prisma.machine.findMany({
         where: { is_available: true },
