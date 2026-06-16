@@ -64,56 +64,69 @@ export default function MachinesCatalog({
               <div className="grid lg:grid-cols-2 gap-8">
                 {/* Image/Video Section */}
                 <div>
-                  <div className="relative h-60 bg-gray-200 dark:bg-gray-700 rounded-2xl overflow-hidden mb-4 group cursor-pointer">
-                    {machine.image.endsWith(".mp4") ? (
-                      <video
-                        src={machine.image}
-                        className="w-full h-full object-contain p-2 transition-transform duration-500 group-hover:scale-105"
-                        muted
-                        loop
-                        playsInline
-                        onMouseEnter={(e) => e.currentTarget.play()}
-                        onMouseLeave={(e) => e.currentTarget.pause()}
-                      />
-                    ) : (
-                      <CloudinaryImage
-                        src={machine.image}
-                        alt={machine.name}
-                        width={600}
-                        height={400}
-                        className="w-full h-full object-contain p-2 transition-transform duration-500 group-hover:scale-105"
-                      />
-                    )}
-                    <button
-                      onClick={() => onViewDetails(machine.id)}
-                      className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300"
-                    >
-                      <div className="bg-orange-500 text-white p-4 rounded-full shadow-xl transform hover:scale-110 transition">
-                        <Play size={40} fill="white" />
-                      </div>
-                    </button>
-                  </div>
-                  <div className="flex gap-2 overflow-x-auto pb-2">
-                    <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 border-2 border-transparent hover:border-orange-500 transition cursor-pointer">
-                      {machine.image.endsWith(".mp4") ? (
-                        <video
-                          src={machine.image}
-                          className="w-full h-full object-cover"
-                          muted
-                          loop
-                          playsInline
-                        />
-                      ) : (
-                        <CloudinaryImage
-                          src={machine.image}
-                          alt={machine.name}
-                          width={80}
-                          height={80}
-                          className="w-full h-full object-cover"
-                        />
-                      )}
-                    </div>
-                  </div>
+                  {/* Determine if this machine media is a video */}
+                  {(() => {
+                    const isVideo = machine.image && (machine.image.toLowerCase().endsWith(".mp4") || machine.image.toLowerCase().endsWith(".webm"));
+                    // Use first gallery image as poster for video thumbnails
+                    const poster = (machine as { gallery?: string[] }).gallery?.[0] || "/images/machines/Custom Industrial Machines.jpg";
+                    return (
+                      <>
+                        <div className="relative h-60 bg-gray-200 dark:bg-gray-700 rounded-2xl overflow-hidden mb-4 group cursor-pointer">
+                          {isVideo ? (
+                            <video
+                              src={machine.image}
+                              className="w-full h-full object-contain p-2 transition-transform duration-500 group-hover:scale-105"
+                              muted
+                              loop
+                              playsInline
+                              preload="none"
+                              poster={poster}
+                              onMouseEnter={(e) => e.currentTarget.play().catch(() => {})}
+                              onMouseLeave={(e) => { e.currentTarget.pause(); e.currentTarget.currentTime = 0; }}
+                            />
+                          ) : (
+                            <CloudinaryImage
+                              src={machine.image}
+                              alt={machine.name}
+                              width={600}
+                              height={400}
+                              className="w-full h-full object-contain p-2 transition-transform duration-500 group-hover:scale-105"
+                            />
+                          )}
+                          <button
+                            onClick={() => onViewDetails(machine.id)}
+                            className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300"
+                          >
+                            <div className="bg-orange-500 text-white p-4 rounded-full shadow-xl transform hover:scale-110 transition">
+                              <Play size={40} fill="white" />
+                            </div>
+                          </button>
+                        </div>
+                        <div className="flex gap-2 overflow-x-auto pb-2">
+                          <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 border-2 border-transparent hover:border-orange-500 transition cursor-pointer">
+                            {isVideo ? (
+                              <video
+                                src={machine.image}
+                                className="w-full h-full object-cover"
+                                muted
+                                playsInline
+                                preload="none"
+                                poster={poster}
+                              />
+                            ) : (
+                              <CloudinaryImage
+                                src={machine.image}
+                                alt={machine.name}
+                                width={80}
+                                height={80}
+                                className="w-full h-full object-cover"
+                              />
+                            )}
+                          </div>
+                        </div>
+                      </>
+                    );
+                  })()}
                 </div>
 
                 {/* Details Section */}

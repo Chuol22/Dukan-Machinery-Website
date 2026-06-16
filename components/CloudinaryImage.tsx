@@ -31,17 +31,33 @@ export default function CloudinaryImage({
   const [imageError, setImageError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Check if the image is already a Cloudinary URL
-  const isCloudinaryUrl =
-    src.includes("res.cloudinary.com") || src.includes("cloudinary://");
+  // Check if the source is a video
+  const isVideo = src ? src.toLowerCase().endsWith(".mp4") || src.toLowerCase().endsWith(".webm") : false;
 
-  // If it's not a Cloudinary URL, use regular img tag
-  if (!isCloudinaryUrl) {
-    // Don't render if src is empty
+  if (isVideo) {
+    return (
+      <video
+        src={src}
+        className={className}
+        style={style}
+        muted
+        playsInline
+        controls={width && width > 100 ? true : false}
+        preload="metadata"
+      />
+    );
+  }
+
+  // Check if it's a local asset or non-Cloudinary external URL
+  const isLocalOrExternalNonCloudinary =
+    !src || src.startsWith("/") || (src.startsWith("http") && !src.includes("res.cloudinary.com") && !src.includes("cloudinary://"));
+
+  // If it's not a Cloudinary asset, use regular img tag
+  if (isLocalOrExternalNonCloudinary) {
     if (!src || src === "") {
       return (
         <div
-          className={`flex items-center justify-center bg-gray-100 dark:bg-gray-800 ${className}`}
+          className={`flex items-center justify-center bg-gray-150 dark:bg-gray-800 ${className}`}
           style={style}
         >
           <ImageIcon className="w-8 h-8 text-gray-400" />
@@ -63,24 +79,24 @@ export default function CloudinaryImage({
     );
   }
 
-  // Extract public ID from Cloudinary URL
+  // Extract public ID from Cloudinary URL or return it directly if it's a public ID
   const getPublicId = (url: string): string => {
     if (url.includes("cloudinary://")) {
-      // Handle cloudinary:// format
       const parts = url.split("cloudinary://")[1];
       const pathParts = parts.split("/");
       return pathParts.slice(1).join("/");
     }
 
-    // Handle https://res.cloudinary.com format
     const urlParts = url.split("/");
     const uploadIndex = urlParts.indexOf("upload");
     if (uploadIndex !== -1) {
-      const publicId = urlParts.slice(uploadIndex + 1).join("/");
-      // Remove transformation parameters
-      return publicId.split("/")[0] === "v"
-        ? publicId.split("/").slice(2).join("/")
-        : publicId;
+      const afterUpload = urlParts.slice(uploadIndex + 1);
+      // Find a version segment (e.g. v1718536294)
+      const versionIndex = afterUpload.findIndex((part) => /^v\d+$/.test(part));
+      if (versionIndex !== -1) {
+        return afterUpload.slice(versionIndex + 1).join("/");
+      }
+      return afterUpload.join("/");
     }
 
     return url;
@@ -91,7 +107,7 @@ export default function CloudinaryImage({
   if (imageError) {
     return (
       <div
-        className={`flex items-center justify-center bg-gray-100 dark:bg-gray-800 ${className}`}
+        className={`flex items-center justify-center bg-gray-150 dark:bg-gray-800 ${className}`}
         style={style}
       >
         <ImageIcon className="w-8 h-8 text-gray-400" />
@@ -102,7 +118,7 @@ export default function CloudinaryImage({
   return (
     <div className={className} style={style}>
       {isLoading && (
-        <div className="absolute inset-0 bg-gray-100 dark:bg-gray-800 animate-pulse" />
+        <div className="absolute inset-0 bg-gray-150 dark:bg-gray-800 animate-pulse" />
       )}
       <CldImage
         src={publicId}

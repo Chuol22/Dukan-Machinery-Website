@@ -171,18 +171,21 @@ export default function MachineDetailsPreview({
                     : "border-transparent hover:border-orange-500/50 hover:scale-105 hover:shadow-md"
                 }`}
               >
-                {m.image && m.image.endsWith(".mp4") ? (
+                {m.image && (m.image.toLowerCase().endsWith(".mp4") || m.image.toLowerCase().endsWith(".webm")) ? (
                   <video
                     src={m.image}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     muted
                     loop
                     playsInline
+                    preload="none"
+                    poster="/images/machines/Custom Industrial Machines.jpg"
                   />
                 ) : m.image ? (
                   <img
                     src={m.image}
                     alt={m.name}
+                    loading="lazy"
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                 ) : (
@@ -212,7 +215,8 @@ export default function MachineDetailsPreview({
                 <div className="w-full h-full rounded-xl overflow-hidden">
                   {(() => {
                     const imageSrc = thumbnailMachines[selectedImageIndex]?.image || machine.image;
-                    if (imageSrc && imageSrc.endsWith(".mp4")) {
+                    const isVid = imageSrc && (imageSrc.toLowerCase().endsWith(".mp4") || imageSrc.toLowerCase().endsWith(".webm"));
+                    if (isVid) {
                       return (
                         <video
                           src={imageSrc}
@@ -221,6 +225,8 @@ export default function MachineDetailsPreview({
                           loop
                           playsInline
                           controls
+                          preload="metadata"
+                          poster="/images/machines/Custom Industrial Machines.jpg"
                         />
                       );
                     } else if (imageSrc) {

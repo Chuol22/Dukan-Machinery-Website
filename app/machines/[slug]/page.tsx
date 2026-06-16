@@ -96,11 +96,26 @@ export default function MachineDetailPage({
           <div className="flex flex-col sm:flex-row items-center gap-6">
             <div className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-2xl bg-white p-3 shadow-2xl transform hover:scale-105 transition-all duration-500 hover:rotate-2">
               <div className="w-full h-full rounded-xl overflow-hidden">
-                <img
-                  src={machine.image}
-                  alt={machine.name}
-                  className="w-full h-full object-contain"
-                />
+                {machine.image && (machine.image.endsWith(".mp4") || machine.image.endsWith(".webm")) ? (
+                  <video
+                    src={machine.image}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className="w-full h-full object-contain"
+                  />
+                ) : machine.image ? (
+                  <img
+                    src={machine.image}
+                    alt={machine.name}
+                    className="w-full h-full object-contain"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                    <span className="text-gray-400 text-xs">No image</span>
+                  </div>
+                )}
               </div>
             </div>
             <div className="flex-1 text-center sm:text-left">

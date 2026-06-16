@@ -40,11 +40,28 @@ export default function RelatedMachines({
             >
               <Link href={`/machines/${machine.slug}`}>
                 <div className="relative h-48 overflow-hidden">
-                  <img
-                    src={machine.image}
-                    alt={machine.name}
-                    className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-500"
-                  />
+                  {machine.image && (machine.image.endsWith(".mp4") || machine.image.endsWith(".webm")) ? (
+                    <video
+                      src={machine.image}
+                      muted
+                      playsInline
+                      loop
+                      preload="none"
+                      onMouseEnter={(e) => e.currentTarget.play().catch(() => {})}
+                      onMouseLeave={(e) => { e.currentTarget.pause(); e.currentTarget.currentTime = 0; }}
+                      className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-500"
+                    />
+                  ) : machine.image ? (
+                    <img
+                      src={machine.image}
+                      alt={machine.name}
+                      className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-500"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gray-100 dark:bg-gray-600 flex items-center justify-center">
+                      <span className="text-gray-400 text-xs">No image</span>
+                    </div>
+                  )}
                 </div>
                 <div className="p-4">
                   <h4 className="font-black text-green-700 dark:text-white mb-2 line-clamp-2">

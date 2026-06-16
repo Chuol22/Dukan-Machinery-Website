@@ -47,8 +47,20 @@ export default function OptimizedImage({
 }: OptimizedImageProps) {
   if (!src) return null;
   if (isLikelyVideo(src)) {
-    // This component is intended for images. Keep behavior safe.
-    return <img src={src} alt={alt} className={className} style={style} />;
+    // Render a proper video element for video sources instead of a broken img
+    return (
+      <video
+        src={src}
+        className={className}
+        style={style}
+        muted
+        playsInline
+        loop
+        preload="none"
+        onMouseEnter={(e) => (e.currentTarget.play().catch(() => {}))}
+        onMouseLeave={(e) => { e.currentTarget.pause(); e.currentTarget.currentTime = 0; }}
+      />
+    );
   }
 
   // If using fill, we don't require width/height.
