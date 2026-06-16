@@ -2,25 +2,30 @@
 import prisma from "@/lib/prisma";
 import { machinesData, getMachineBySlug as getStaticMachineBySlug } from "@/data/machinesData";
 
+// Helper to convert null to undefined
+const nullToUndefined = <T>(value: T | null): T | undefined => {
+  return value === null ? undefined : value;
+};
+
 // Unified Machine interface that works with both Prisma and static data
 export interface UnifiedMachine {
   id: string;
   slug: string;
   name: string;
-  description?: string;
-  image?: string;
-  gallery?: string[];
+  description?: string | null;
+  image?: string | null;
+  gallery?: string[] | null;
   category: string;
   type: string;
   price: number | string;
-  specifications?: Record<string, any>;
-  input?: string;
-  output?: string;
-  process?: string;
-  features?: string[];
-  applications?: string[];
+  specifications?: Record<string, unknown> | null;
+  input?: string | null;
+  output?: string | null;
+  process?: string | null;
+  features?: string[] | null;
+  applications?: string[] | null;
   isAvailable?: boolean;
-  stockQuantity?: number;
+  stockQuantity?: number | null;
 }
 
 // Unified Order interface
@@ -29,14 +34,14 @@ export interface UnifiedOrder {
   orderNumber: string;
   customerName: string;
   customerEmail: string;
-  customerPhone?: string;
+  customerPhone?: string | null;
   status: string;
   paymentStatus: string;
   total: number;
   items: UnifiedOrderItem[];
-  trackingNumber?: string;
-  shippedAt?: Date;
-  deliveredAt?: Date;
+  trackingNumber?: string | null;
+  shippedAt?: Date | null;
+  deliveredAt?: Date | null;
   createdAt: Date;
 }
 
@@ -65,16 +70,16 @@ export const machineService = {
           id: dbMachine.id,
           slug: dbMachine.slug,
           name: dbMachine.name,
-          description: dbMachine.description,
-          image: dbMachine.image,
+          description: nullToUndefined(dbMachine.description),
+          image: nullToUndefined(dbMachine.image),
           gallery: dbMachine.gallery,
           category: dbMachine.category.name,
           type: dbMachine.type,
           price: dbMachine.price,
-          specifications: dbMachine.specifications as Record<string, any>,
-          input: dbMachine.input,
-          output: dbMachine.output,
-          process: dbMachine.process,
+          specifications: dbMachine.specifications as Record<string, unknown> | null,
+          input: nullToUndefined(dbMachine.input),
+          output: nullToUndefined(dbMachine.output),
+          process: nullToUndefined(dbMachine.process),
           features: dbMachine.features,
           applications: dbMachine.applications,
           isAvailable: dbMachine.is_available,
@@ -125,16 +130,16 @@ export const machineService = {
           id: machine.id,
           slug: machine.slug,
           name: machine.name,
-          description: machine.description,
-          image: machine.image,
+          description: nullToUndefined(machine.description),
+          image: nullToUndefined(machine.image),
           gallery: machine.gallery,
           category: machine.category.name,
           type: machine.type,
           price: machine.price,
-          specifications: machine.specifications as Record<string, any>,
-          input: machine.input,
-          output: machine.output,
-          process: machine.process,
+          specifications: machine.specifications as Record<string, unknown> | null,
+          input: nullToUndefined(machine.input),
+          output: nullToUndefined(machine.output),
+          process: nullToUndefined(machine.process),
           features: machine.features,
           applications: machine.applications,
           isAvailable: machine.is_available,
@@ -227,7 +232,7 @@ export const orderService = {
         orderNumber: order.order_number,
         customerName: order.customer_name,
         customerEmail: order.customer_email,
-        customerPhone: order.customer_phone,
+        customerPhone: nullToUndefined(order.customer_phone),
         status: order.status,
         paymentStatus: order.payment_status,
         total: order.total,
@@ -239,9 +244,9 @@ export const orderService = {
           price: item.price,
           total: item.total,
         })),
-        trackingNumber: order.tracking_number,
-        shippedAt: order.shipped_at,
-        deliveredAt: order.delivered_at,
+        trackingNumber: nullToUndefined(order.tracking_number),
+        shippedAt: nullToUndefined(order.shipped_at),
+        deliveredAt: nullToUndefined(order.delivered_at),
         createdAt: order.created_at,
       };
     } catch (error) {
@@ -273,7 +278,7 @@ export const orderService = {
         orderNumber: order.order_number,
         customerName: order.customer_name,
         customerEmail: order.customer_email,
-        customerPhone: order.customer_phone,
+        customerPhone: nullToUndefined(order.customer_phone),
         status: order.status,
         paymentStatus: order.payment_status,
         total: order.total,
@@ -285,9 +290,9 @@ export const orderService = {
           price: item.price,
           total: item.total,
         })),
-        trackingNumber: order.tracking_number,
-        shippedAt: order.shipped_at,
-        deliveredAt: order.delivered_at,
+        trackingNumber: nullToUndefined(order.tracking_number),
+        shippedAt: nullToUndefined(order.shipped_at),
+        deliveredAt: nullToUndefined(order.delivered_at),
         createdAt: order.created_at,
       };
     } catch (error) {
@@ -322,7 +327,7 @@ export const orderService = {
         orderNumber: order.order_number,
         customerName: order.customer_name,
         customerEmail: order.customer_email,
-        customerPhone: order.customer_phone,
+        customerPhone: nullToUndefined(order.customer_phone),
         status: order.status,
         paymentStatus: order.payment_status,
         total: order.total,
@@ -334,9 +339,9 @@ export const orderService = {
           price: item.price,
           total: item.total,
         })),
-        trackingNumber: order.tracking_number,
-        shippedAt: order.shipped_at,
-        deliveredAt: order.delivered_at,
+        trackingNumber: nullToUndefined(order.tracking_number),
+        shippedAt: nullToUndefined(order.shipped_at),
+        deliveredAt: nullToUndefined(order.delivered_at),
         createdAt: order.created_at,
       }));
     } catch (error) {
@@ -366,7 +371,7 @@ export const categoryService = {
     }
   },
 
-  async getBySlug(slug: string): Promise<{ id: string; name: string; slug: string; description?: string } | null> {
+  async getBySlug(slug: string): Promise<{ id: string; name: string; slug: string; description?: string | null } | null> {
     try {
       const category = await prisma.category.findUnique({
         where: { slug },
@@ -378,7 +383,7 @@ export const categoryService = {
         id: category.id,
         name: category.name,
         slug: category.slug,
-        description: category.description,
+        description: nullToUndefined(category.description),
       };
     } catch (error) {
       console.error("Error fetching category:", error);

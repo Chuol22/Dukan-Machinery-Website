@@ -9,7 +9,6 @@ import {
   Settings,
   CheckCircle,
   AlertCircle,
-  ArrowLeft,
 } from "lucide-react";
 import StandardOrderForm from "@/components/order/StandardOrderForm";
 import CustomRequestForm, {
@@ -43,14 +42,39 @@ type StandardOrderSubmitData = {
   termsAccepted: boolean;
 };
 
-type CustomOrderSubmitData = CustomRequestData;
-
-type OrderSummaryData = (StandardOrderSubmitData | CustomOrderSubmitData) & {
-  type: "standard" | "custom";
-  orderId?: string;
-  status?: string;
-  submittedAt?: Date;
+type RequiredCapacity = {
+  value?: string;
+  unit?: string;
 };
+
+// Convert CustomRequestData -> the value shape expected by OrderSummary (string)
+
+
+
+type OrderSummaryData =
+  | (
+      | (StandardOrderSubmitData & {
+          type: "standard";
+          orderId?: string;
+          status?: string;
+          submittedAt?: Date;
+        })
+      | (CustomRequestData & {
+          type: "custom";
+          orderId?: string;
+          status?: string;
+          submittedAt?: Date;
+          requiredCapacity?: {
+            // match OrderSummary's display type
+            value?: string;
+            unit?: "kg/day" | "tons/day" | "quintals/day" | string;
+          };
+        })
+    );
+
+
+
+
 
 type SubmissionState = "idle" | "submitting" | "success" | "error";
 
@@ -94,69 +118,73 @@ export default function OrderContent() {
   const [orderType, setOrderType] = useState<"standard" | "custom">("standard");
   const [orderData, setOrderData] = useState<OrderSummaryData | null>(null);
   const [showSummary, setShowSummary] = useState(false);
-  const [submissionState, setSubmissionState] =
-    useState<SubmissionState>("idle");
+  const [submissionState, setSubmissionState] = useState<SubmissionState>("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  // Handlers
+  // Handler for standard order submission
   const handleStandardOrderSubmit = useCallback(
     async (data: StandardOrderSubmitData) => {
       setSubmissionState("submitting");
       setErrorMessage(null);
 
       try {
-        // Generate a unique order ID
         const orderId = `DKM-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 
-        const orderWithMeta = {
+        const orderWithMeta: OrderSummaryData = {
           ...data,
-          type: "standard" as const,
+          type: "standard",
           orderId,
           submittedAt: new Date(),
           status: "pending",
         };
 
-        // Simulate API call (replace with actual API call)
-        // const response = await fetch('/api/send-order', {
-        //   method: 'POST',
-        //   headers: { 'Content-Type': 'application/json' },
-        //   body: JSON.stringify(orderWithMeta),
-        // });
-        //
-        // if (!response.ok) throw new Error('Failed to submit order');
-
-        // For demo, simulate delay
+        // Simulate API call
         await new Promise((resolve) => setTimeout(resolve, 1000));
 
         setOrderData(orderWithMeta);
         setShowSummary(true);
         setSubmissionState("success");
-
-        // Reset submission state after animation
         setTimeout(() => setSubmissionState("idle"), 2000);
       } catch (error) {
         console.error("Order submission error:", error);
         setErrorMessage(
-          error instanceof Error ? error.message : "Failed to submit order",
+          error instanceof Error ? error.message : "Failed to submit order"
         );
         setSubmissionState("error");
         setTimeout(() => setSubmissionState("idle"), 3000);
       }
     },
-    [],
+    []
   );
 
+  // Handler for custom order submission
   const handleCustomOrderSubmit = useCallback(
-    async (data: CustomOrderSubmitData) => {
+    async (data: CustomRequestData) => {
+
+
+
       setSubmissionState("submitting");
       setErrorMessage(null);
 
       try {
         const orderId = `CST-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 
-        const orderWithMeta = {
+        const orderWithMeta: OrderSummaryData = {
           ...data,
-          type: "custom" as const,
+          type: "custom",
+          // normalize capacity.value to string for OrderSummary
+          requiredCapacity: {
+            // CustomRequestData carries number|string union depending on form; normalize to string
+            value:
+              data.requiredCapacity && "value" in data.requiredCapacity
+                ? String((data.requiredCapacity as { value: unknown }).value)
+                : "",
+            unit:
+              data.requiredCapacity && "unit" in data.requiredCapacity
+                ? String((data.requiredCapacity as { unit: unknown }).unit)
+                : "",
+          },
+
           orderId,
           submittedAt: new Date(),
           status: "pending",
@@ -172,13 +200,13 @@ export default function OrderContent() {
       } catch (error) {
         console.error("Custom request submission error:", error);
         setErrorMessage(
-          error instanceof Error ? error.message : "Failed to submit request",
+          error instanceof Error ? error.message : "Failed to submit request"
         );
         setSubmissionState("error");
         setTimeout(() => setSubmissionState("idle"), 3000);
       }
     },
-    [],
+    []
   );
 
   const handleNewOrder = useCallback(() => {
@@ -192,7 +220,25 @@ export default function OrderContent() {
     router.back();
   }, [router]);
 
-  // Show loading state while submitting
+  // Helper to convert orderData for OrderSummary compatibility
+  const getOrderDataForSummary = (data: OrderSummaryData) => {
+    // OrderSummary expects requiredCapacity?.value to be a STRING (not undefined)
+    if (data.type === "custom") {
+      return {
+        ...data,
+        requiredCapacity: {
+          value:
+            data.requiredCapacity?.value !== undefined
+              ? String(data.requiredCapacity.value)
+              : "",
+          unit: data.requiredCapacity?.unit ?? "",
+        },
+      };
+    }
+    return data;
+  };
+
+  // Show loading state
   if (submissionState === "submitting") {
     return (
       <div className="bg-white dark:bg-gray-900 min-h-screen flex flex-col items-center justify-center">
@@ -206,7 +252,7 @@ export default function OrderContent() {
             Processing Your Order...
           </h3>
           <p className="text-gray-500 dark:text-gray-400 mt-2">
-            Please don't close this window
+            Please do not close this window
           </p>
         </motion.div>
       </div>
@@ -228,9 +274,7 @@ export default function OrderContent() {
           <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
             Submission Failed
           </h3>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">
-            {errorMessage}
-          </p>
+          <p className="text-gray-600 dark:text-gray-400 mb-6">{errorMessage}</p>
           <div className="flex gap-4 justify-center">
             <button
               onClick={handleNewOrder}
@@ -265,7 +309,6 @@ export default function OrderContent() {
                 variants={scaleIn}
                 transition={{ duration: 0.5 }}
               >
-                {/* Success Badge */}
                 {submissionState === "success" && (
                   <motion.div
                     initial={{ opacity: 0, y: -20 }}
@@ -281,7 +324,10 @@ export default function OrderContent() {
                   </motion.div>
                 )}
 
-                <OrderSummary orderData={orderData} type={orderData.type} />
+                <OrderSummary
+                  orderData={getOrderDataForSummary(orderData)}
+                  type={orderData.type}
+                />
 
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
@@ -370,7 +416,7 @@ export default function OrderContent() {
               </div>
             </motion.div>
 
-            {/* Forms with Animation */}
+            {/* Forms */}
             <AnimatePresence mode="wait">
               {orderType === "standard" ? (
                 <motion.div
@@ -414,7 +460,7 @@ export default function OrderContent() {
                   { icon: "🚚", text: "Global Shipping" },
                   { icon: "✅", text: "24/7 Support" },
                   { icon: "📦", text: "Quality Guarantee" },
-                ].map((badge, index) => (
+                ].map((badge) => (
                   <motion.div
                     key={badge.text}
                     variants={fadeInUp}

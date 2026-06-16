@@ -4,6 +4,19 @@ import { verifyAdminSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { machinesData as staticMachinesData } from "@/data/machinesData";
 
+// Helper to safely convert JsonValue to Record<string, string>
+const toSpecifications = (specs: any): Record<string, string> | null => {
+  if (!specs) return null;
+  if (typeof specs === 'object' && specs !== null) {
+    const result: Record<string, string> = {};
+    for (const [key, value] of Object.entries(specs)) {
+      result[key] = String(value);
+    }
+    return result;
+  }
+  return null;
+};
+
 export async function GET() {
   try {
     const data = await prisma.machine.findMany({
@@ -17,8 +30,9 @@ export async function GET() {
     );
 
     // Map to the shape the frontend MachinesClient expects
-    const machines = data.map((m: { id: string; slug: string; name: string; image: string | null; gallery: string[] | null; category: { name: string } | null; type: string; specifications: Record<string, string> | null; description: string | null; features: string[] | null; applications: string[] | null; price: number; is_available: boolean; inventory_status: string | null; input: string | null; output: string | null; process: string | null }) => {
+    const machines = data.map((m) => {
       const staticMachine = staticMachineMap.get(m.slug);
+      const specifications = toSpecifications(m.specifications);
 
       // Use database image if available, otherwise fall back to static data
       // Use a default placeholder if both are empty
@@ -33,27 +47,20 @@ export async function GET() {
         gallery,
         category: m.category?.name || m.type || "",
         type: m.type,
-        capacity:
-          (m.specifications as Record<string, string> | null)?.capacity || "",
-        power: (m.specifications as Record<string, string> | null)?.power || "",
-        weight: (m.specifications as Record<string, string> | null)?.weight || "",
-        dimensions:
-          (m.specifications as Record<string, string> | null)?.dimensions || "",
-        voltage:
-          (m.specifications as Record<string, string> | null)?.voltage || "",
-        warranty:
-          (m.specifications as Record<string, string> | null)?.warranty || "",
+        capacity: specifications?.capacity || "",
+        power: specifications?.power || "",
+        weight: specifications?.weight || "",
+        dimensions: specifications?.dimensions || "",
+        voltage: specifications?.voltage || "",
+        warranty: specifications?.warranty || "",
         description: m.description || "",
         features: m.features || [],
         applications: m.applications || [],
         price: m.price > 0 ? `ETB ${m.price.toLocaleString()}` : "Call for price",
         available: m.is_available,
-        availability_status:
-          m.inventory_status ||
-          (m.is_available ? "available" : "out_of_stock"),
+        availability_status: m.inventory_status || (m.is_available ? "available" : "out_of_stock"),
         inventory_status: m.inventory_status || "available",
-        motor_type:
-          (m.specifications as Record<string, string> | null)?.motor_type || "",
+        motor_type: specifications?.motor_type || "",
         input: m.input || "",
         output: m.output || "",
         process: m.process || "",
@@ -212,9 +219,7 @@ export async function POST(request: Request) {
       availability_status:
         machine.inventory_status ||
         (machine.is_available ? "available" : "out_of_stock"),
-      motor_type:
-        (machine.specifications as Record<string, string> | null)?.motor_type ||
-        "",
+      motor_type: motor_type || "",
       input: machine.input || "",
       output: machine.output || "",
       process: machine.process || "",

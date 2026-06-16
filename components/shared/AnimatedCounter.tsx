@@ -16,15 +16,19 @@ export const AnimatedCounter = ({
   duration = 2,
   startInView = true,
 }: AnimatedCounterProps) => {
-  const [displayValue, setDisplayValue] = useState(0);
-  const [hasAnimated, setHasAnimated] = useState(false);
+  const [displayValue, setDisplayValue] = useState(() => 0);
+
+  const hasAnimatedRef = useRef(false);
   const animationRef = useRef<number | null>(null);
   const startTimeRef = useRef<number | null>(null);
 
   useEffect(() => {
     // Reset when end value changes
-    setHasAnimated(false);
-    setDisplayValue(0);
+    hasAnimatedRef.current = false;
+    // Avoid setState-on-effect-body warning; initial render shows 0 anyway.
+
+
+
 
     // Clear any existing animation
     if (animationRef.current) {
@@ -32,9 +36,10 @@ export const AnimatedCounter = ({
     }
 
     // Start animation if in view and not already animated
-    if (startInView && !hasAnimated) {
+    if (startInView && !hasAnimatedRef.current) {
       startTimeRef.current = performance.now();
       const durationMs = duration * 1000;
+
 
       const animate = (currentTime: number) => {
         if (!startTimeRef.current) return;
@@ -51,10 +56,11 @@ export const AnimatedCounter = ({
         if (progress < 1) {
           animationRef.current = requestAnimationFrame(animate);
         } else {
-          setHasAnimated(true);
+          hasAnimatedRef.current = true;
           setDisplayValue(end);
         }
       };
+
 
       animationRef.current = requestAnimationFrame(animate);
     }
@@ -65,7 +71,8 @@ export const AnimatedCounter = ({
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [end, duration, startInView, hasAnimated]);
+  }, [end, duration, startInView]);
+
 
   return (
     <span>
