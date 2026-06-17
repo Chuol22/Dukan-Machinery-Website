@@ -66,7 +66,7 @@ export default function MachinesCatalog({
                 <div>
                   {/* Determine if this machine media is a video */}
                   {(() => {
-                    const isVideo = machine.image && (machine.image.toLowerCase().endsWith(".mp4") || machine.image.toLowerCase().endsWith(".webm"));
+                    const isVideo = machine.image && (machine.image.toLowerCase().endsWith(".mp4") || machine.image.toLowerCase().endsWith(".webm") || machine.image.includes("cloudinary.com/video"));
                     // Use first gallery image as poster for video thumbnails
                     const poster = (machine as { gallery?: string[] }).gallery?.[0] || "/images/machines/Custom Industrial Machines.jpg";
                     return (
@@ -74,15 +74,39 @@ export default function MachinesCatalog({
                         <div className="relative h-60 bg-gray-200 dark:bg-gray-700 rounded-2xl overflow-hidden mb-4 group cursor-pointer">
                           {isVideo ? (
                             <video
+                              key={machine.image}
                               src={machine.image}
                               className="w-full h-full object-contain p-2 transition-transform duration-500 group-hover:scale-105"
                               muted
                               loop
                               playsInline
-                              preload="none"
+                              preload="metadata"
                               poster={poster}
-                              onMouseEnter={(e) => e.currentTarget.play().catch(() => {})}
-                              onMouseLeave={(e) => { e.currentTarget.pause(); e.currentTarget.currentTime = 0; }}
+                              crossOrigin="anonymous"
+                              onMouseEnter={(e) => {
+                                const video = e.currentTarget;
+                                video.play().catch((error) => {
+                                  console.error('Video play failed:', machine.name, error);
+                                });
+                              }}
+                              onMouseLeave={(e) => { 
+                                const video = e.currentTarget;
+                                video.pause(); 
+                                video.currentTime = 0; 
+                              }}
+                              onError={(e) => {
+                                console.error('Video load error:', machine.name, machine.image);
+                                // Fallback to poster image on error
+                                const videoEl = e.currentTarget;
+                                const parent = videoEl.parentElement;
+                                if (parent) {
+                                  const img = document.createElement('img');
+                                  img.src = poster;
+                                  img.className = videoEl.className;
+                                  img.alt = machine.name;
+                                  parent.replaceChild(img, videoEl);
+                                }
+                              }}
                             />
                           ) : (
                             <CloudinaryImage
@@ -106,12 +130,14 @@ export default function MachinesCatalog({
                           <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 border-2 border-transparent hover:border-orange-500 transition cursor-pointer">
                             {isVideo ? (
                               <video
+                                key={`thumb-${machine.image}`}
                                 src={machine.image}
                                 className="w-full h-full object-cover"
                                 muted
                                 playsInline
-                                preload="none"
+                                preload="metadata"
                                 poster={poster}
+                                crossOrigin="anonymous"
                               />
                             ) : (
                               <CloudinaryImage
