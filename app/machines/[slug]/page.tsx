@@ -12,6 +12,7 @@ import ProcessDiagram from "@/components/machines/ProcessDiagram";
 import RelatedMachines from "@/components/machines/RelatedMachines";
 import AskQuestionButton from "@/components/AskQuestionButton";
 import { getMachineBySlug, getAllMachineSlugs } from "@/data/machinesData";
+import EnhancedVideo from "@/components/EnhancedVideo";
 
 // Tab components
 interface TabButtonProps {
@@ -98,30 +99,19 @@ export default function MachineDetailPage({
             <div className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-2xl bg-white p-3 shadow-2xl transform hover:scale-105 transition-all duration-500 hover:rotate-2">
               <div className="w-full h-full rounded-xl overflow-hidden">
                 {machine.image && (machine.image.endsWith(".mp4") || machine.image.endsWith(".webm") || machine.image.includes("cloudinary.com/video")) ? (
-                  <video
-                    key={machine.image}
+                  <EnhancedVideo
                     src={machine.image}
+                    poster={machine.gallery?.[0] || "/images/machines/Custom Industrial Machines.jpg"}
+                    machineId={machine.id}
+                    machineName={machine.name}
                     autoPlay
                     muted
                     loop
                     playsInline
-                    preload="metadata"
-                    crossOrigin="anonymous"
-                    className="w-full h-full object-contain"
-                    poster={machine.gallery?.[0] || "/images/machines/Custom Industrial Machines.jpg"}
-                    onError={(e) => {
-                      console.error('Video load error:', machine.name, machine.image);
-                      // Fallback to poster image on error
-                      const videoEl = e.currentTarget;
-                      const parent = videoEl.parentElement;
-                      if (parent && machine.gallery?.[0]) {
-                        const img = document.createElement('img');
-                        img.src = machine.gallery[0];
-                        img.className = videoEl.className;
-                        img.alt = machine.name;
-                        parent.replaceChild(img, videoEl);
-                      }
-                    }}
+                    className="w-full h-full"
+                    enableRetry={true}
+                    maxRetries={3}
+                    onLoadError={(err) => console.error('[MachineDetail]', err)}
                   />
                 ) : machine.image ? (
                   <img

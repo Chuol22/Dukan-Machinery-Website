@@ -6,12 +6,15 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { ChevronRight, Play } from "lucide-react";
 import CloudinaryImage from "@/components/CloudinaryImage";
+import EnhancedVideo from "@/components/EnhancedVideo";
+import { isMonitoringEnabled } from "@/lib/services/video";
 
 interface Machine {
   id: string | number;
   slug: string;
   name: string;
   image: string;
+  gallery?: string[];
   capacity: string;
   power: string;
   input: string;
@@ -31,6 +34,20 @@ export default function MachinesCatalog({
   machines,
   onViewDetails,
 }: MachinesCatalogProps) {
+  // Enable monitoring for catalog videos in development environment
+  const monitoringEnabled = isMonitoringEnabled();
+  
+  // Enhanced error callback for detailed logging
+  const handleVideoError = React.useCallback((error: { code: number; message: string; url: string }, machineId: string | number, machineName: string) => {
+    console.error('[MachinesCatalog] Video error:', {
+      machineId,
+      machineName,
+      error,
+      context: 'catalog-hover-video',
+      timestamp: new Date().toISOString()
+    });
+  }, []);
+
   return (
     <section id="machines-section" className="py-20 bg-white dark:bg-gray-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -68,45 +85,26 @@ export default function MachinesCatalog({
                   {(() => {
                     const isVideo = machine.image && (machine.image.toLowerCase().endsWith(".mp4") || machine.image.toLowerCase().endsWith(".webm") || machine.image.includes("cloudinary.com/video"));
                     // Use first gallery image as poster for video thumbnails
-                    const poster = (machine as { gallery?: string[] }).gallery?.[0] || "/images/machines/Custom Industrial Machines.jpg";
+                    const poster = machine.gallery?.[0] || "/images/machines/Custom Industrial Machines.jpg";
                     return (
                       <>
                         <div className="relative h-60 bg-gray-200 dark:bg-gray-700 rounded-2xl overflow-hidden mb-4 group cursor-pointer">
                           {isVideo ? (
-                            <video
-                              key={machine.image}
+                            <EnhancedVideo
                               src={machine.image}
-                              className="w-full h-full object-contain p-2 transition-transform duration-500 group-hover:scale-105"
+                              poster={poster}
+                              machineId={typeof machine.id === 'number' ? machine.id : parseInt(String(machine.id))}
+                              machineName={machine.name}
                               muted
                               loop
                               playsInline
-                              preload="metadata"
-                              poster={poster}
-                              crossOrigin="anonymous"
-                              onMouseEnter={(e) => {
-                                const video = e.currentTarget;
-                                video.play().catch((error) => {
-                                  console.error('Video play failed:', machine.name, error);
-                                });
-                              }}
-                              onMouseLeave={(e) => { 
-                                const video = e.currentTarget;
-                                video.pause(); 
-                                video.currentTime = 0; 
-                              }}
-                              onError={(e) => {
-                                console.error('Video load error:', machine.name, machine.image);
-                                // Fallback to poster image on error
-                                const videoEl = e.currentTarget;
-                                const parent = videoEl.parentElement;
-                                if (parent) {
-                                  const img = document.createElement('img');
-                                  img.src = poster;
-                                  img.className = videoEl.className;
-                                  img.alt = machine.name;
-                                  parent.replaceChild(img, videoEl);
-                                }
-                              }}
+                              playOnHover
+                              className="w-full h-full transition-transform duration-500 group-hover:scale-105"
+                              enableTransformations={false}
+                              enableRetry={true}
+                              maxRetries={3}
+                              enableMonitoring={monitoringEnabled}
+                              onLoadError={(err) => handleVideoError(err, machine.id, machine.name)}
                             />
                           ) : (
                             <CloudinaryImage
@@ -129,15 +127,18 @@ export default function MachinesCatalog({
                         <div className="flex gap-2 overflow-x-auto pb-2">
                           <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 border-2 border-transparent hover:border-orange-500 transition cursor-pointer">
                             {isVideo ? (
-                              <video
-                                key={`thumb-${machine.image}`}
+                              <EnhancedVideo
                                 src={machine.image}
-                                className="w-full h-full object-cover"
+                                poster={poster}
+                                machineId={typeof machine.id === 'number' ? machine.id : parseInt(String(machine.id))}
+                                machineName={machine.name}
                                 muted
                                 playsInline
-                                preload="metadata"
-                                poster={poster}
-                                crossOrigin="anonymous"
+                                className="w-full h-full"
+                                enableRetry={false}
+                                maxRetries={0}
+                                enableMonitoring={monitoringEnabled}
+                                onLoadError={(err) => handleVideoError(err, machine.id, machine.name)}
                               />
                             ) : (
                               <CloudinaryImage
