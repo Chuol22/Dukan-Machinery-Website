@@ -1,10 +1,11 @@
 "use client";
 
 // MachineDetailsPreview — tabbed detail panel with thumbnail machine picker
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Play } from "lucide-react";
+import MachineSpecsTable from "./MachineSpecsTable";
 
 interface Machine {
   id: string | number;
@@ -20,6 +21,18 @@ interface Machine {
   output: string;
   process: string;
   price: string;
+  weight?: string;
+  dimensions?: string;
+  voltage?: string;
+  warranty?: string;
+  rpm?: string;
+  material?: string;
+  extractionRate?: string;
+  waterConsumption?: string;
+  fiberThickness?: string;
+  operation?: string;
+  noiseLevel?: string;
+  operators?: string;
 }
 
 interface MachineDetailsPreviewProps {
@@ -100,11 +113,54 @@ export default function MachineDetailsPreview({
   allMachines,
 }: MachineDetailsPreviewProps) {
   // Active tab and selected thumbnail index
-  const [activeTab, setActiveTab] = useState("maintenance");
+  const [activeTab, setActiveTab] = useState("specifications");
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [activeMedia, setActiveMedia] = useState<string | null>(null);
 
-  // Lookup machine from catalog by ID
-  const machine = allMachines.find((m) => String(m.id) === String(machineId));
+  // Sync selected index when machineId prop changes
+  useEffect(() => {
+    const idx = allMachines.findIndex((m) => String(m.id) === String(machineId));
+    if (idx !== -1) {
+      setSelectedImageIndex(idx);
+    }
+  }, [machineId, allMachines]);
+
+  // Lookup machine from catalog by currently selected thumbnail index
+  const machine = allMachines[selectedImageIndex] || allMachines.find((m) => String(m.id) === String(machineId));
+
+  // Sync active media when selected machine changes
+  useEffect(() => {
+    if (machine) {
+      setActiveMedia(machine.image);
+    }
+  }, [machine]);
+
+  // Build list of distinct gallery items for the currently selected machine
+  const distinctGallery = useMemo(() => {
+    if (!machine) return [];
+    const list = [machine.image, ...(machine.gallery || [])].filter(Boolean);
+    return Array.from(new Set(list));
+  }, [machine]);
+
+  // Helper to resolve specific poster image from gallery
+  const getPosterImage = (m: Machine) => {
+    if (m.gallery && m.gallery.length > 0) {
+      const specificImage = m.gallery.find(
+        (img) =>
+          !img.toLowerCase().endsWith(".mp4") &&
+          !img.toLowerCase().endsWith(".webm") &&
+          !img.toLowerCase().includes("custom industrial machines")
+      );
+      if (specificImage) return specificImage;
+
+      const anyImage = m.gallery.find(
+        (img) => !img.toLowerCase().endsWith(".mp4") && !img.toLowerCase().endsWith(".webm")
+      );
+      if (anyImage) return anyImage;
+    }
+    return "/images/machines/Custom Industrial Machines.jpg";
+  };
+
   if (!machine) return null;
 
   // Detail panel tab definitions
@@ -179,7 +235,7 @@ export default function MachineDetailsPreview({
                     loop
                     playsInline
                     preload="none"
-                    poster="/images/machines/Custom Industrial Machines.jpg"
+                    poster={getPosterImage(m)}
                   />
                 ) : m.image ? (
                   <img
@@ -211,41 +267,79 @@ export default function MachineDetailsPreview({
           {/* Header */}
           <div className="relative bg-gradient-to-br from-green-900 to-green-800 p-6 sm:p-8">
             <div className="flex flex-col sm:flex-row items-center gap-6">
-              <div className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-2xl bg-white p-3 shadow-2xl transform hover:scale-105 transition-all duration-500 hover:rotate-2">
-                <div className="w-full h-full rounded-xl overflow-hidden">
-                  {(() => {
-                    const imageSrc = thumbnailMachines[selectedImageIndex]?.image || machine.image;
-                    const isVid = imageSrc && (imageSrc.toLowerCase().endsWith(".mp4") || imageSrc.toLowerCase().endsWith(".webm"));
-                    if (isVid) {
-                      return (
-                        <video
-                          src={imageSrc}
-                          className="w-full h-full object-contain"
-                          muted
-                          loop
-                          playsInline
-                          controls
-                          preload="metadata"
-                          poster="/images/machines/Custom Industrial Machines.jpg"
-                        />
-                      );
-                    } else if (imageSrc) {
-                      return (
-                        <img
-                          src={imageSrc}
-                          alt={machine.name}
-                          className="w-full h-full object-contain"
-                        />
-                      );
-                    } else {
-                      return (
-                        <div className="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                          <span className="text-gray-400 text-sm">No image available</span>
-                        </div>
-                      );
-                    }
-                  })()}
+              <div className="flex flex-col items-center gap-2">
+                <div className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-2xl bg-white p-3 shadow-2xl transform hover:scale-105 transition-all duration-500 hover:rotate-2">
+                  <div className="w-full h-full rounded-xl overflow-hidden">
+                    {(() => {
+                      const imageSrc = activeMedia || machine.image;
+                      const isVid = imageSrc && (imageSrc.toLowerCase().endsWith(".mp4") || imageSrc.toLowerCase().endsWith(".webm"));
+                      if (isVid) {
+                        return (
+                          <video
+                            src={imageSrc}
+                            className="w-full h-full object-contain"
+                            muted
+                            loop
+                            playsInline
+                            controls
+                            preload="metadata"
+                            poster={getPosterImage(machine)}
+                          />
+                        );
+                      } else if (imageSrc) {
+                        return (
+                          <img
+                            src={imageSrc}
+                            alt={machine.name}
+                            className="w-full h-full object-contain"
+                          />
+                        );
+                      } else {
+                        return (
+                          <div className="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                            <span className="text-gray-400 text-sm">No image available</span>
+                          </div>
+                        );
+                      }
+                    })()}
+                  </div>
                 </div>
+                {/* Clickable gallery thumbnails for selected machine */}
+                {distinctGallery.length > 1 && (
+                  <div className="flex gap-1 max-w-[130px] sm:max-w-[170px] md:max-w-[200px] overflow-x-auto pb-1 mt-1 scrollbar-thin scrollbar-thumb-orange-500">
+                    {distinctGallery.map((mediaUrl, idx) => {
+                      const isThumbVid = mediaUrl.toLowerCase().endsWith(".mp4") || mediaUrl.toLowerCase().endsWith(".webm");
+                      const isActive = activeMedia === mediaUrl;
+                      return (
+                        <button
+                          key={idx}
+                          type="button"
+                          onClick={() => setActiveMedia(mediaUrl)}
+                          className={`w-8 h-8 rounded border-2 transition-all duration-300 flex-shrink-0 overflow-hidden relative ${
+                            isActive ? "border-orange-500 scale-105" : "border-transparent hover:border-orange-500/50"
+                          }`}
+                        >
+                          {isThumbVid ? (
+                            <div className="relative w-full h-full bg-black flex items-center justify-center">
+                              <Play className="text-white absolute z-10 w-2.5 h-2.5 opacity-80" />
+                              <img
+                                src={getPosterImage(machine)}
+                                alt="video thumbnail"
+                                className="w-full h-full object-cover opacity-60"
+                              />
+                            </div>
+                          ) : (
+                            <img
+                              src={mediaUrl}
+                              alt={`gallery thumbnail ${idx}`}
+                              className="w-full h-full object-cover"
+                            />
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
               <div className="flex-1 text-center sm:text-left">
                 <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-2 drop-shadow-lg">
@@ -289,86 +383,7 @@ export default function MachineDetailsPreview({
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                 >
-                  <h3 className="text-lg sm:text-xl font-black text-green-700 dark:text-white mb-4 flex items-center gap-2">
-                    📊 Technical Specifications
-                  </h3>
-
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-                    <div className="bg-gradient-to-br from-blue-500 to-blue-600 p-3 rounded-lg text-white shadow-sm hover:scale-105 transition">
-                      <div className="text-xl mb-1">⚙️</div>
-                      <p className="text-[10px] opacity-90">Capacity</p>
-                      <p className="font-black text-xs">{machine.capacity}</p>
-                    </div>
-                    <div className="bg-gradient-to-br from-yellow-500 to-yellow-600 p-3 rounded-lg text-white shadow-sm hover:scale-105 transition">
-                      <div className="text-xl mb-1">⚡</div>
-                      <p className="text-[10px] opacity-90">Power</p>
-                      <p className="font-black text-xs">{machine.power}</p>
-                    </div>
-                    <div className="bg-gradient-to-br from-purple-500 to-purple-600 p-3 rounded-lg text-white shadow-sm hover:scale-105 transition">
-                      <div className="text-xl mb-1">🏋️</div>
-                      <p className="text-[10px] opacity-90">Weight</p>
-                      <p className="font-black text-xs">850 kg</p>
-                    </div>
-                    <div className="bg-gradient-to-br from-indigo-500 to-indigo-600 p-3 rounded-lg text-white shadow-sm hover:scale-105 transition">
-                      <div className="text-xl mb-1">📏</div>
-                      <p className="text-[10px] opacity-90">Dimensions</p>
-                      <p className="font-black text-xs">2.5×1.2×1.8m</p>
-                    </div>
-                  </div>
-
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4">
-                      <h4 className="font-black text-green-700 dark:text-white mb-3 flex items-center gap-2">
-                        📦 General
-                      </h4>
-                      <div className="space-y-2">
-                        <div className="flex justify-between py-2 px-3 bg-white dark:bg-gray-800 rounded-lg text-sm">
-                          <span className="font-bold">Model:</span>
-                          <span className="font-black">
-                            {machine.name.split(" ").slice(0, 2).join(" ")}
-                          </span>
-                        </div>
-                        <div className="flex justify-between py-2 px-3 bg-white dark:bg-gray-800 rounded-lg text-sm">
-                          <span className="font-bold">Type:</span>
-                          <span className="font-black">{machine.type}</span>
-                        </div>
-                        <div className="flex justify-between py-2 px-3 bg-white dark:bg-gray-800 rounded-lg text-sm">
-                          <span className="font-bold">Material:</span>
-                          <span className="font-black">
-                            Stainless Steel 304
-                          </span>
-                        </div>
-                        <div className="flex justify-between py-2 px-3 bg-white dark:bg-gray-800 rounded-lg text-sm">
-                          <span className="font-bold">Warranty:</span>
-                          <span className="font-black">18 months</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4">
-                      <h4 className="font-black text-green-700 dark:text-white mb-3 flex items-center gap-2">
-                        🎯 Performance
-                      </h4>
-                      <div className="space-y-2">
-                        <div className="flex justify-between py-2 px-3 bg-white dark:bg-gray-800 rounded-lg text-sm">
-                          <span className="font-bold">Extraction Rate:</span>
-                          <span className="font-black">95%</span>
-                        </div>
-                        <div className="flex justify-between py-2 px-3 bg-white dark:bg-gray-800 rounded-lg text-sm">
-                          <span className="font-bold">Water Consumption:</span>
-                          <span className="font-black">500 L/ton</span>
-                        </div>
-                        <div className="flex justify-between py-2 px-3 bg-white dark:bg-gray-800 rounded-lg text-sm">
-                          <span className="font-bold">RPM:</span>
-                          <span className="font-black">1440 RPM</span>
-                        </div>
-                        <div className="flex justify-between py-2 px-3 bg-white dark:bg-gray-800 rounded-lg text-sm">
-                          <span className="font-bold">Voltage:</span>
-                          <span className="font-black">380V, 3 Phase</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <MachineSpecsTable machine={machine} />
                 </motion.div>
               )}
 

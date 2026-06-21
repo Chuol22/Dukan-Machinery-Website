@@ -11,6 +11,7 @@ import {
   Sparkles,
   MessageCircle,
   Zap,
+  RotateCcw,
 } from "lucide-react";
 
 import ChatMessage from "./ChatMessage";
@@ -60,32 +61,39 @@ export default function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
   };
 
   return (
-    <div className="flex flex-col h-full bg-white dark:bg-gray-900">
+    <div className="flex flex-col h-full bg-white dark:bg-gray-900 rounded-xl overflow-hidden shadow-2xl">
       {/* Header */}
-      <div className="flex-shrink-0 bg-gradient-to-r from-orange-600 via-orange-500 to-orange-600 px-4 py-3 rounded-t-2xl shadow-md">
+      <div className="flex-shrink-0 bg-gradient-to-r from-green-950 via-green-900 to-green-950 px-4 py-3 border-b-2 border-orange-500 shadow-md">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-white/10 rounded-xl flex items-center justify-center">
-              <Bot className="w-4 h-4 text-white" />
+            <div className="w-9 h-9 bg-orange-500/10 border border-orange-500/35 rounded-xl flex items-center justify-center">
+              <Bot className="w-5 h-5 text-orange-500" />
             </div>
             <div>
-              <h3 className="text-white font-bold text-sm">
-                Dukan AI Assistant
+              <h3 className="text-white font-black text-sm uppercase tracking-wider">
+                DKM AI Assistant
               </h3>
-              <div className="flex items-center gap-1">
-                <span className="w-1 h-1 bg-green-400 rounded-full animate-pulse" />
-                <p className="text-white/80 text-xs">Online</p>
+              <div className="flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-ping" />
+                <p className="text-gray-300 text-[10px] font-bold uppercase tracking-widest">Active & Ready</p>
               </div>
             </div>
           </div>
 
-          <div className="flex gap-1">
+          <div className="flex items-center gap-1">
+            <button
+              onClick={handleNewChat}
+              className="p-1.5 hover:bg-white/10 rounded-lg transition-colors"
+              title="Clear chat"
+            >
+              <RotateCcw className="w-4 h-4 text-white/80 hover:text-white" />
+            </button>
             <button
               onClick={onClose}
-              className="p-2 hover:bg-white/15 rounded-lg transition-colors"
+              className="p-1.5 hover:bg-white/10 rounded-lg transition-colors"
               title="Close"
             >
-              <X className="w-4 h-4 text-white" />
+              <X className="w-4 h-4 text-white/80 hover:text-white" />
             </button>
           </div>
         </div>
@@ -95,7 +103,7 @@ export default function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
       <div className="flex-1 flex flex-col overflow-hidden bg-gray-50/50 dark:bg-gray-950/20 backdrop-blur-[2px]">
         <div
           ref={messagesRef}
-          className="flex-1 overflow-y-auto px-4 py-4 space-y-4 scrollbar-thin scrollbar-thumb-neutral-200 dark:scrollbar-thumb-neutral-800"
+          className="flex-1 overflow-y-auto px-4 py-6 space-y-6 scrollbar-thin scrollbar-thumb-neutral-200 dark:scrollbar-thumb-neutral-800"
         >
           <AnimatePresence initial={false}>
             {messages.map((msg, i) => (
@@ -125,14 +133,14 @@ export default function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
 
         {/* Quick actions — shown on new chat */}
         {messages.length <= 1 && (
-          <div className="px-4 py-2 bg-gradient-to-t from-white via-white to-transparent dark:from-neutral-900 dark:via-neutral-900">
+          <div className="px-3 py-1.5 bg-gradient-to-t from-white via-white to-transparent dark:from-neutral-900 dark:via-neutral-900">
             <QuickActions onActionClick={handleQuickAction} />
           </div>
         )}
       </div>
 
       {/* Message input */}
-      <div className="p-4 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900">
+      <div className="p-2 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900">
         <div className="flex gap-3 items-center bg-gray-100 dark:bg-gray-800 rounded-2xl p-1 focus-within:ring-2 focus-within:ring-orange-500/20 transition-all">
           <input
             value={inputValue}

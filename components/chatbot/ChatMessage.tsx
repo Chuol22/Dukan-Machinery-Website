@@ -98,7 +98,7 @@ export default function ChatMessage({ message }: ChatMessageProps) {
       {/* Bot avatar */}
       {isBot && (
         <div className="flex-shrink-0 self-end mb-1">
-          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-orange-600 to-orange-500 flex items-center justify-center shadow-md border-2 border-white dark:border-gray-800">
+          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-green-800 to-green-600 flex items-center justify-center shadow-md border-2 border-white dark:border-gray-800">
             <Bot className="w-5 h-5 text-white" />
           </div>
         </div>
@@ -176,7 +176,7 @@ export default function ChatMessage({ message }: ChatMessageProps) {
       {/* User avatar */}
       {!isBot && (
         <div className="flex-shrink-0 self-end mb-1">
-          <div className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center shadow-md border-2 border-white dark:border-gray-800">
+          <div className="w-9 h-9 rounded-full bg-orange-500 flex items-center justify-center shadow-md border-2 border-white dark:border-gray-800">
             <User className="w-5 h-5 text-white" />
           </div>
         </div>

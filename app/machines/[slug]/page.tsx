@@ -79,6 +79,9 @@ export default function MachineDetailPage({
     },
   ];
 
+  // Build list of distinct gallery items
+  const galleryImages = Array.from(new Set([machine.image, ...(machine.gallery || [])].filter(Boolean)));
+
   return (
     <div className="min-h-screen bg-white dark:bg-neutral-800">
       {/* Back Button */}
@@ -92,274 +95,253 @@ export default function MachineDetailPage({
         </button>
       </div>
 
-      {/* Machine Header */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="bg-gradient-to-br from-green-900 to-green-800 rounded-2xl p-6 sm:p-8">
-          <div className="flex flex-col sm:flex-row items-center gap-6">
-            <div className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-2xl bg-white p-3 shadow-2xl transform hover:scale-105 transition-all duration-500 hover:rotate-2">
-              <div className="w-full h-full rounded-xl overflow-hidden">
-                {machine.image && (machine.image.endsWith(".mp4") || machine.image.endsWith(".webm") || machine.image.includes("cloudinary.com/video")) ? (
-                  <EnhancedVideo
-                    src={machine.image}
-                    poster={machine.gallery?.[0] || "/images/machines/Custom Industrial Machines.jpg"}
-                    machineId={machine.id}
-                    machineName={machine.name}
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    className="w-full h-full"
-                    enableRetry={true}
-                    maxRetries={3}
-                    onLoadError={(err) => console.error('[MachineDetail]', err)}
-                  />
-                ) : machine.image ? (
-                  <img
-                    src={machine.image}
-                    alt={machine.name}
-                    className="w-full h-full object-contain"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                    <span className="text-gray-400 text-xs">No image</span>
-                  </div>
-                )}
-              </div>
-            </div>
-            <div className="flex-1 text-center sm:text-left">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-2 drop-shadow-lg">
-                {machine.name}
-              </h1>
-              <div className="inline-block bg-orange-500 px-4 py-2 rounded-full">
-                <p className="text-sm font-black text-white">
-                  {machine.type} Equipment
-                </p>
-              </div>
+      {/* Machine Header Banner */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+        <div className="bg-gradient-to-br from-green-950 via-green-900 to-green-950 rounded-2xl p-6 sm:p-8 border-b-4 border-orange-500 shadow-xl">
+          <div className="text-center sm:text-left">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-3 drop-shadow-lg uppercase tracking-tight">
+              {machine.name}
+            </h1>
+            <div className="inline-block bg-orange-500 px-4 py-1.5 rounded-full shadow-md">
+              <p className="text-xs sm:text-sm font-black text-white uppercase tracking-wider">
+                {machine.type} Equipment
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Tabs Navigation */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="border-b border-neutral-200 dark:border-neutral-700 overflow-x-auto">
-          <div className="flex gap-2 sm:gap-4 min-w-max">
-            {tabs.map((tab) => (
-              <TabButton
-                key={tab.id}
-                active={activeTab === tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                icon={tab.icon}
-              >
-                {tab.label}
-              </TabButton>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Tab Content */}
+      {/* Main Details Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <AnimatePresence mode="wait">
-          {activeTab === "specifications" && (
-            <motion.div
-              key="specs"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-            >
-              <MachineSpecsTable machine={machine} />
-            </motion.div>
-          )}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+          
+          {/* Left Column: Media Gallery */}
+          <div className="lg:col-span-5">
+            <MachineGallery images={galleryImages} productName={machine.name} />
+          </div>
 
-          {activeTab === "process" && (
-            <motion.div
-              key="process"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-            >
-              <ProcessDiagram process={machine.process} />
-            </motion.div>
-          )}
+          {/* Right Column: specifications & tabs */}
+          <div className="lg:col-span-7 space-y-6">
+            {/* Tabs Navigation */}
+            <div className="border-b border-neutral-200 dark:border-neutral-700 overflow-x-auto">
+              <div className="flex gap-2 sm:gap-4 min-w-max">
+                {tabs.map((tab) => (
+                  <TabButton
+                    key={tab.id}
+                    active={activeTab === tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    icon={tab.icon}
+                  >
+                    {tab.label}
+                  </TabButton>
+                ))}
+              </div>
+            </div>
 
-          {activeTab === "features" && (
-            <motion.div
-              key="features"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              className="space-y-6"
-            >
-              <div className="bg-neutral-50 dark:bg-neutral-700/50 rounded-xl p-6">
-                <h3 className="text-lg sm:text-xl font-black text-green-700 dark:text-white mb-4 flex items-center gap-2">
-                  <span className="text-xl">⭐</span>
-                  Key Features
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {(
-                    machine.features || [
-                      "Heavy-duty construction",
-                      "Energy efficient motor",
-                      "Easy maintenance",
-                      "Safety guards included",
-                      "CE Certified",
-                      "24/7 technical support",
-                    ]
-                  ).map((feature: string, index: number) => (
-                    <div key={index} className="flex items-center gap-2 p-2">
-                      <svg
-                        className="w-5 h-5 text-orange-500 flex-shrink-0"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      <span className="text-sm text-neutral-600 dark:text-neutral-300">
-                        {feature}
-                      </span>
+            {/* Tab Content */}
+            <AnimatePresence mode="wait">
+              {activeTab === "specifications" && (
+                <motion.div
+                  key="specs"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                >
+                  <MachineSpecsTable machine={machine} />
+                </motion.div>
+              )}
+
+              {activeTab === "process" && (
+                <motion.div
+                  key="process"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                >
+                  <ProcessDiagram process={machine.process} />
+                </motion.div>
+              )}
+
+              {activeTab === "features" && (
+                <motion.div
+                  key="features"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  className="space-y-6"
+                >
+                  <div className="bg-neutral-50 dark:bg-neutral-750 p-6 rounded-xl border border-neutral-200/40 dark:border-neutral-700/40">
+                    <h3 className="text-lg sm:text-xl font-black text-green-700 dark:text-white mb-4 flex items-center gap-2">
+                      <span className="text-xl">⭐</span>
+                      Key Features
+                    </h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {(
+                        machine.features || [
+                          "Heavy-duty construction",
+                          "Energy efficient motor",
+                          "Easy maintenance",
+                          "Safety guards included",
+                          "CE Certified",
+                          "24/7 technical support",
+                        ]
+                      ).map((feature: string, index: number) => (
+                        <div key={index} className="flex items-center gap-2 p-2">
+                          <svg
+                            className="w-5 h-5 text-orange-500 flex-shrink-0"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                          <span className="text-sm text-neutral-600 dark:text-neutral-300">
+                            {feature}
+                          </span>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              </div>
+                  </div>
 
-              <div className="bg-neutral-50 dark:bg-neutral-700/50 rounded-xl p-6">
-                <h3 className="text-lg sm:text-xl font-black text-green-700 dark:text-white mb-4 flex items-center gap-2">
-                  <span className="text-xl">📦</span>
-                  Applications
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {(
-                    machine.applications || [
-                      "Agricultural processing",
-                      "Commercial production",
-                      "Industrial manufacturing",
-                      "Small to medium enterprises",
-                    ]
-                  ).map((app: string, index: number) => (
-                    <span
-                      key={index}
-                      className="bg-orange-500/10 text-orange-600 dark:text-orange-400 text-xs font-black px-3 py-1 rounded-full"
-                    >
-                      {app}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          )}
+                  <div className="bg-neutral-50 dark:bg-neutral-750 p-6 rounded-xl border border-neutral-200/40 dark:border-neutral-700/40">
+                    <h3 className="text-lg sm:text-xl font-black text-green-700 dark:text-white mb-4 flex items-center gap-2">
+                      <span className="text-xl">📦</span>
+                      Applications
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                      {(
+                        machine.applications || [
+                          "Agricultural processing",
+                          "Commercial production",
+                          "Industrial manufacturing",
+                          "Small to medium enterprises",
+                        ]
+                      ).map((app: string, index: number) => (
+                        <span
+                          key={index}
+                          className="bg-orange-500/10 text-orange-600 dark:text-orange-400 text-xs font-black px-3 py-1 rounded-full"
+                        >
+                          {app}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+              )}
 
-          {activeTab === "maintenance" && (
-            <motion.div
-              key="maintenance"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              className="bg-neutral-50 dark:bg-neutral-700/50 rounded-xl p-6"
-            >
-              <h3 className="text-lg sm:text-xl font-black text-green-700 dark:text-white mb-4 flex items-center gap-2">
-                <span className="text-xl">🔧</span>
-                Maintenance Schedule
-              </h3>
-              <div className="space-y-4">
-                <div className="p-4 bg-white dark:bg-neutral-800 rounded-lg">
-                  <h4 className="font-black text-green-700 dark:text-white mb-2">
-                    Daily Checks
-                  </h4>
-                  <ul className="list-disc list-inside space-y-1 text-sm text-neutral-600 dark:text-neutral-300">
-                    <li>Check oil levels and lubricate moving parts</li>
-                    <li>Inspect belts and chains for tension and wear</li>
-                    <li>Clean machine surfaces and remove debris</li>
-                    <li>Verify safety guards are in place</li>
-                  </ul>
-                </div>
-                <div className="p-4 bg-white dark:bg-neutral-800 rounded-lg">
-                  <h4 className="font-black text-green-700 dark:text-white mb-2">
-                    Weekly Maintenance
-                  </h4>
-                  <ul className="list-disc list-inside space-y-1 text-sm text-neutral-600 dark:text-neutral-300">
-                    <li>Inspect all bolts and tighten if necessary</li>
-                    <li>Check electrical connections</li>
-                    <li>Clean or replace air filters</li>
-                    <li>Test emergency stop systems</li>
-                  </ul>
-                </div>
-                <div className="p-4 bg-white dark:bg-neutral-800 rounded-lg">
-                  <h4 className="font-black text-green-700 dark:text-white mb-2">
-                    Monthly Service
-                  </h4>
-                  <ul className="list-disc list-inside space-y-1 text-sm text-neutral-600 dark:text-neutral-300">
-                    <li>Complete machine inspection by technician</li>
-                    <li>Replace worn parts</li>
-                    <li>Calibrate control systems</li>
-                    <li>Update service records</li>
-                  </ul>
-                </div>
-              </div>
-            </motion.div>
-          )}
+              {activeTab === "maintenance" && (
+                <motion.div
+                  key="maintenance"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  className="bg-neutral-50 dark:bg-neutral-750 p-6 rounded-xl border border-neutral-200/40 dark:border-neutral-700/40"
+                >
+                  <h3 className="text-lg sm:text-xl font-black text-green-700 dark:text-white mb-4 flex items-center gap-2">
+                    <span className="text-xl">🔧</span>
+                    Maintenance Schedule
+                  </h3>
+                  <div className="space-y-4">
+                    <div className="p-4 bg-white dark:bg-neutral-800 rounded-lg shadow-sm border border-neutral-100 dark:border-neutral-700">
+                      <h4 className="font-black text-green-700 dark:text-white mb-2">
+                        Daily Checks
+                      </h4>
+                      <ul className="list-disc list-inside space-y-1 text-sm text-neutral-600 dark:text-neutral-300">
+                        <li>Check oil levels and lubricate moving parts</li>
+                        <li>Inspect belts and chains for tension and wear</li>
+                        <li>Clean machine surfaces and remove debris</li>
+                        <li>Verify safety guards are in place</li>
+                      </ul>
+                    </div>
+                    <div className="p-4 bg-white dark:bg-neutral-800 rounded-lg shadow-sm border border-neutral-100 dark:border-neutral-700">
+                      <h4 className="font-black text-green-700 dark:text-white mb-2">
+                        Weekly Maintenance
+                      </h4>
+                      <ul className="list-disc list-inside space-y-1 text-sm text-neutral-600 dark:text-neutral-300">
+                        <li>Inspect all bolts and tighten if necessary</li>
+                        <li>Check electrical connections</li>
+                        <li>Clean or replace air filters</li>
+                        <li>Test emergency stop systems</li>
+                      </ul>
+                    </div>
+                    <div className="p-4 bg-white dark:bg-neutral-800 rounded-lg shadow-sm border border-neutral-100 dark:border-neutral-700">
+                      <h4 className="font-black text-green-700 dark:text-white mb-2">
+                        Monthly Service
+                      </h4>
+                      <ul className="list-disc list-inside space-y-1 text-sm text-neutral-600 dark:text-neutral-300">
+                        <li>Complete machine inspection by technician</li>
+                        <li>Replace worn parts</li>
+                        <li>Calibrate control systems</li>
+                        <li>Update service records</li>
+                      </ul>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
 
-          {activeTab === "warranty" && (
-            <motion.div
-              key="warranty"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              className="bg-neutral-50 dark:bg-neutral-700/50 rounded-xl p-6"
-            >
-              <h3 className="text-lg sm:text-xl font-black text-green-700 dark:text-white mb-4 flex items-center gap-2">
-                <span className="text-xl">🛡️</span>
-                Warranty & Support
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="p-4 bg-white dark:bg-neutral-800 rounded-lg">
-                  <h4 className="font-black text-green-700 dark:text-white mb-2 flex items-center gap-2">
-                    <span>🏆</span>
-                    Standard Warranty
-                  </h4>
-                  <p className="text-sm text-neutral-600 dark:text-neutral-300">
-                    {machine.warranty || "18 months"} comprehensive warranty
-                    covering manufacturing defects and material quality.
-                  </p>
-                </div>
-                <div className="p-4 bg-white dark:bg-neutral-800 rounded-lg">
-                  <h4 className="font-black text-green-700 dark:text-white mb-2 flex items-center gap-2">
-                    <span>🎧</span>
-                    Technical Support
-                  </h4>
-                  <p className="text-sm text-neutral-600 dark:text-neutral-300">
-                    24/7 phone and email support. On-site service available
-                    within 48 hours.
-                  </p>
-                </div>
-                <div className="p-4 bg-white dark:bg-neutral-800 rounded-lg">
-                  <h4 className="font-black text-green-700 dark:text-white mb-2 flex items-center gap-2">
-                    <span>🚚</span>
-                    Spare Parts
-                  </h4>
-                  <p className="text-sm text-neutral-600 dark:text-neutral-300">
-                    Genuine spare parts available with express shipping
-                    worldwide.
-                  </p>
-                </div>
-                <div className="p-4 bg-white dark:bg-neutral-800 rounded-lg">
-                  <h4 className="font-black text-green-700 dark:text-white mb-2 flex items-center gap-2">
-                    <span>⏰</span>
-                    Lifetime Support
-                  </h4>
-                  <p className="text-sm text-neutral-600 dark:text-neutral-300">
-                    Free technical consultation and training for the lifetime of
-                    the machine.
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              {activeTab === "warranty" && (
+                <motion.div
+                  key="warranty"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  className="bg-neutral-50 dark:bg-neutral-750 p-6 rounded-xl border border-neutral-200/40 dark:border-neutral-700/40"
+                >
+                  <h3 className="text-lg sm:text-xl font-black text-green-700 dark:text-white mb-4 flex items-center gap-2">
+                    <span className="text-xl">🛡️</span>
+                    Warranty & Support
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="p-4 bg-white dark:bg-neutral-800 rounded-lg shadow-sm border border-neutral-100 dark:border-neutral-700">
+                      <h4 className="font-black text-green-700 dark:text-white mb-2 flex items-center gap-2">
+                        <span>🏆</span>
+                        Standard Warranty
+                      </h4>
+                      <p className="text-sm text-neutral-600 dark:text-neutral-300">
+                        {machine.warranty || "18 months"} comprehensive warranty
+                        covering manufacturing defects and material quality.
+                      </p>
+                    </div>
+                    <div className="p-4 bg-white dark:bg-neutral-800 rounded-lg shadow-sm border border-neutral-100 dark:border-neutral-700">
+                      <h4 className="font-black text-green-700 dark:text-white mb-2 flex items-center gap-2">
+                        <span>🎧</span>
+                        Technical Support
+                      </h4>
+                      <p className="text-sm text-neutral-600 dark:text-neutral-300">
+                        24/7 phone and email support. On-site service available
+                        within 48 hours.
+                      </p>
+                    </div>
+                    <div className="p-4 bg-white dark:bg-neutral-800 rounded-lg shadow-sm border border-neutral-100 dark:border-neutral-700">
+                      <h4 className="font-black text-green-700 dark:text-white mb-2 flex items-center gap-2">
+                        <span>🚚</span>
+                        Spare Parts
+                      </h4>
+                      <p className="text-sm text-neutral-600 dark:text-neutral-300">
+                        Genuine spare parts available with express shipping
+                        worldwide.
+                      </p>
+                    </div>
+                    <div className="p-4 bg-white dark:bg-neutral-800 rounded-lg shadow-sm border border-neutral-100 dark:border-neutral-700">
+                      <h4 className="font-black text-green-700 dark:text-white mb-2 flex items-center gap-2">
+                        <span>⏰</span>
+                        Lifetime Support
+                      </h4>
+                      <p className="text-sm text-neutral-600 dark:text-neutral-300">
+                        Free technical consultation and training for the lifetime of
+                        the machine.
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+        </div>
       </section>
 
       {/* CTA Section */}

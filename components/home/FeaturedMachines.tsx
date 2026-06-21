@@ -17,6 +17,7 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import Button from "@/components/ui/Button";
+import { machinesData } from "@/data/machinesData";
 
 // Spec icons for capacity and power labels
 const CapacityIcon = () => (
@@ -49,38 +50,21 @@ const PowerIcon = () => (
   </svg>
 );
 
-// Static featured product data (replace with machines catalog when wired up)
-const featuredMachines = [
-  {
-    id: 1,
-    name: "Cattle Feed Pellet Machine",
-    slug: "cattle-feed-pellet-machine",
-    shortDescription:
-      "High-capacity automatic feeding system for large-scale poultry operations",
-    capacity: "1.5 - 2 Tons/hr",
-    power: "15kW - 22kW",
-    image: "/images/machines/industry machine/Cattle Feed Pellet.jpg",
-  },
-  {
-    id: 2,
-    name: "Straw Cutting Machine",
-    slug: "straw-cutting-machine",
-    shortDescription:
-      "Industrial hammer mill for fine grinding of various grains",
-    capacity: "500 - 800 kg/hr",
-    power: "3kW - 5.5kW",
-    image: "/images/machines/industry machine/Straw cutting.jpg",
-  },
-  {
-    id: 3,
-    name: "Cow Dung Drying Machine",
-    slug: "cow-dung-drying-machine",
-    shortDescription: "High-capacity pellet mill for quality feed pellets",
-    capacity: "1000 kg/hr",
-    power: "7.5kW Industrial Motor",
-    image: "/images/machines/industry machine/Cow dung.jpg",
-  },
-];
+// Select 6 diverse machines from the full catalog to showcase
+  // This picks different machines to show variety in the gallery
+  const featuredMachineIds = [3, 9, 11, 4, 6, 10]; // Cattle Feed, Straw Cutting, Maize Grinding, Chicken Feed, Cow Dung, Sugarcane
+  const featuredMachinesFromData = machinesData
+    .filter(machine => featuredMachineIds.includes(machine.id))
+    .map(machine => ({
+      id: machine.id,
+      name: machine.name,
+      slug: machine.slug,
+      shortDescription: machine.description || `${machine.capacity} capacity ${machine.type.toLowerCase()} machine`,
+      capacity: machine.capacity,
+      power: machine.power,
+      image: machine.image,
+      category: machine.category,
+    }));
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -107,46 +91,20 @@ export default function FeaturedMachines() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.2 });
 
-  // Build machine list from translations + images
-  const machinesTranslations = [
-    {
-      name: "Cattle Feed Pellet Machine",
-      shortDescription:
-        "High-capacity automatic feeding system for large-scale poultry operations",
-      capacity: "1.5 - 2 Tons/hr",
-      power: "15kW - 22kW",
-    },
-    {
-      name: "Straw Cutting Machine",
-      shortDescription:
-        "Industrial hammer mill for fine grinding of various grains",
-      capacity: "500 - 800 kg/hr",
-      power: "3kW - 5.5kW",
-    },
-    {
-      name: "Cow Dung Drying Machine",
-      shortDescription: "High-capacity pellet mill for quality feed pellets",
-      capacity: "1000 kg/hr",
-      power: "7.5kW Industrial Motor",
-    },
-  ];
-
-  const images = [
-    "/images/machines/industry machine/Cattle Feed Pellet.jpg",
-    "/images/machines/industry machine/Straw cutting.jpg",
-    "/images/machines/industry machine/Cow dung.jpg",
-  ];
-
-  const featuredMachines = machinesTranslations.map((machine, index) => ({
-    id: index + 1,
-    name: machine.name,
-    slug: `machine-${index + 1}`,
-    shortDescription: machine.shortDescription,
-    capacity: machine.capacity,
-    power: machine.power,
-    image: images[index],
-    category: "General Purpose",
-  }));
+  // Select 6 diverse machines from the full catalog to showcase
+  const featuredMachineIds = [3, 9, 11, 4, 6, 10]; // Different machines for variety
+  const featuredMachines = machinesData
+    .filter(machine => featuredMachineIds.includes(machine.id))
+    .map(machine => ({
+      id: machine.id,
+      name: machine.name,
+      slug: machine.slug,
+      shortDescription: machine.description || `${machine.capacity} capacity ${machine.type.toLowerCase()} machine`,
+      capacity: machine.capacity,
+      power: machine.power,
+      image: machine.image,
+      category: machine.category,
+    }));
 
   // Carousel navigation (mobile only)
   const nextSlide = () => {
@@ -201,49 +159,62 @@ export default function FeaturedMachines() {
               onHoverEnd={() => setHoveredCard(null)}
               className="group relative"
             >
-              <div className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300">
-                {/* Image Container */}
-                <div className="relative h-48 sm:h-56 overflow-hidden bg-gray-200 dark:bg-gray-700">
-                  <Image
-                    src={machine.image}
-                    alt={machine.name}
-                    fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-500"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                  />
-                </div>
+              <Link href={`/machines/${machine.slug}`}>
+                <div className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300">
+                  {/* Image Container */}
+                  <div className="relative h-48 sm:h-56 overflow-hidden bg-gray-200 dark:bg-gray-700">
+                    {machine.image.endsWith('.mp4') ? (
+                      <video
+                        src={machine.image}
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                    ) : (
+                      <Image
+                        src={machine.image}
+                        alt={machine.name}
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform duration-500"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      />
+                    )}
+                  </div>
 
-                {/* Content */}
-                <div className="p-3 sm:p-4">
-                  <h3 className="text-base sm:text-lg font-black text-green-900 dark:text-orange-400 mb-2">
-                    {machine.name}
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-2">
-                    {machine.shortDescription}
-                  </p>
+                  {/* Content */}
+                  <div className="p-3 sm:p-4">
+                    <h3 className="text-base sm:text-lg font-black text-green-900 dark:text-orange-400 mb-2">
+                      {machine.name}
+                    </h3>
+                    <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-2">
+                      {machine.shortDescription}
+                    </p>
 
-                  {/* Machine Specs */}
-                  <div className="flex items-center justify-between gap-2 pt-2 sm:pt-3 border-t border-gray-200 dark:border-gray-700">
-                    <div className="flex flex-col items-center flex-1">
-                      <span className="flex items-center gap-0.5 sm:gap-1 text-[8px] sm:text-[10px] text-gray-400 uppercase font-black mb-1">
-                        <CapacityIcon /> Capacity
-                      </span>
-                      <span className="text-[10px] sm:text-xs font-black text-primary dark:text-white">
-                        {machine.capacity}
-                      </span>
-                    </div>
-                    <div className="w-px h-5 sm:h-6 bg-gray-200 dark:border-gray-700"></div>
-                    <div className="flex flex-col items-center flex-1">
-                      <span className="flex items-center gap-0.5 sm:gap-1 text-[8px] sm:text-[10px] text-gray-400 uppercase font-black mb-1">
-                        <PowerIcon /> Power
-                      </span>
-                      <span className="text-[10px] sm:text-xs font-black text-primary dark:text-white">
-                        {machine.power}
-                      </span>
+                    {/* Machine Specs */}
+                    <div className="flex items-center justify-between gap-2 pt-2 sm:pt-3 border-t border-gray-200 dark:border-gray-700">
+                      <div className="flex flex-col items-center flex-1">
+                        <span className="flex items-center gap-0.5 sm:gap-1 text-[8px] sm:text-[10px] text-gray-400 uppercase font-black mb-1">
+                          <CapacityIcon /> Capacity
+                        </span>
+                        <span className="text-[10px] sm:text-xs font-black text-primary dark:text-white">
+                          {machine.capacity}
+                        </span>
+                      </div>
+                      <div className="w-px h-5 sm:h-6 bg-gray-200 dark:border-gray-700"></div>
+                      <div className="flex flex-col items-center flex-1">
+                        <span className="flex items-center gap-0.5 sm:gap-1 text-[8px] sm:text-[10px] text-gray-400 uppercase font-black mb-1">
+                          <PowerIcon /> Power
+                        </span>
+                        <span className="text-[10px] sm:text-xs font-black text-primary dark:text-white">
+                          {machine.power}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             </motion.div>
           ))}
         </div>
@@ -259,20 +230,33 @@ export default function FeaturedMachines() {
               transition={{ duration: 0.3 }}
               className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg"
             >
-              <div className="relative h-64 sm:h-72 md:h-80 overflow-hidden">
-                <Image
-                  src={featuredMachines[currentSlide].image}
-                  alt={featuredMachines[currentSlide].name}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 60vw"
-                />
-                <div className="absolute top-3 sm:top-4 left-3 sm:left-4">
-                  <span className="px-2 sm:px-3 py-1 bg-secondary text-white text-xs sm:text-sm font-black rounded-full">
-                    {featuredMachines[currentSlide].category}
-                  </span>
+              <Link href={`/machines/${featuredMachines[currentSlide].slug}`}>
+                <div className="relative h-64 sm:h-72 md:h-80 overflow-hidden">
+                  {featuredMachines[currentSlide].image.endsWith('.mp4') ? (
+                    <video
+                      src={featuredMachines[currentSlide].image}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <Image
+                      src={featuredMachines[currentSlide].image}
+                      alt={featuredMachines[currentSlide].name}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 60vw"
+                    />
+                  )}
+                  <div className="absolute top-3 sm:top-4 left-3 sm:left-4">
+                    <span className="px-2 sm:px-3 py-1 bg-secondary text-white text-xs sm:text-sm font-black rounded-full">
+                      {featuredMachines[currentSlide].category}
+                    </span>
+                  </div>
                 </div>
-              </div>
+              </Link>
 
               <div className="p-3 sm:p-4">
                 <h3 className="text-lg sm:text-xl font-black text-gray-900 dark:text-orange-400 mb-2">
@@ -309,9 +293,14 @@ export default function FeaturedMachines() {
                 </div>
 
                 <div className="flex gap-2 sm:gap-3">
-                  <Link href="/order" className="flex-1">
+                  <Link href={`/machines/${featuredMachines[currentSlide].slug}`} className="flex-1">
                     <Button className="w-full bg-primary hover:bg-primary-dark text-xs sm:text-sm">
-                      Order
+                      View Details
+                    </Button>
+                  </Link>
+                  <Link href="/order" className="flex-1">
+                    <Button className="w-full bg-secondary hover:bg-secondary-dark text-xs sm:text-sm">
+                      Order Now
                     </Button>
                   </Link>
                 </div>

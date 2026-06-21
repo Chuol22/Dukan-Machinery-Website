@@ -16,7 +16,7 @@ export default function AdminPage() {
   return (
     <div className="space-y-6">
       {/* Welcome Banner */}
-      <div className="bg-green-300  rounded-2xl p-6 md:p-8 text-white shadow-lg">
+      <div className="bg-green-500  rounded-2xl p-6 md:p-8 text-white shadow-lg">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <h2

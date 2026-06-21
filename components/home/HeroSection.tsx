@@ -1,17 +1,12 @@
 "use client";
 
-// Hero banner — video background, typing headline, and primary CTAs
-import React, { useState, useEffect, useRef } from "react";
+// Hero Section — 2-column premium layout with Framer Motion slide-in animations
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Settings, ChevronRight } from "lucide-react";
 
 export default function HeroSection() {
-  // Layout & media state
-  const [headerHeight, setHeaderHeight] = useState(0);
-  const [videoLoaded, setVideoLoaded] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
-
   // Typing animation state — cycles through headline suffixes
   const [typedText, setTypedText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
@@ -23,7 +18,7 @@ export default function HeroSection() {
     "of Modern Technology",
     "for great Innovation",
   ];
-  const typingSpeed = 200;
+  const typingSpeed = 150;
   const deletingSpeed = 50;
   const pauseTime = 2000;
 
@@ -52,152 +47,103 @@ export default function HeroSection() {
     return () => clearTimeout(timer);
   }, [typedText, isDeleting, loopIndex]);
 
-  // Offset content below fixed navbar (updates on resize)
-  useEffect(() => {
-    const updateHeaderHeight = () => {
-      const header = document.querySelector("header");
-      if (header) {
-        setHeaderHeight(header.offsetHeight);
-      }
-    };
-
-    updateHeaderHeight();
-    window.addEventListener("resize", updateHeaderHeight);
-
-    const observer = new ResizeObserver(updateHeaderHeight);
-    const header = document.querySelector("header");
-    if (header) {
-      observer.observe(header);
-    }
-
-    return () => {
-      window.removeEventListener("resize", updateHeaderHeight);
-      observer.disconnect();
-    };
-  }, []);
-
-  // Autoplay background video once ready
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.addEventListener("canplay", () => setVideoLoaded(true));
-      videoRef.current
-        .play()
-        .catch((e) => console.log("Video autoplay failed:", e));
-    }
-  }, []);
-
   return (
-    <div className="min-h-screen bg-green-800 dark:bg-gray-900 -mt-16 lg:-mt-20">
-      <div className="relative overflow-hidden">
-        {/* Layered video background with dark gradient overlays */}
-        <div className="absolute inset-0">
-          {!videoLoaded && (
-            <div className="absolute inset-0 bg-linear-to-r from-green-800 via-green-800 to-orange-100 animate-pulse" />
-          )}
+    <section className="relative bg-gradient-to-br from-green-950 via-green-900 to-neutral-900 overflow-hidden py-16 lg:py-20">
+      {/* Background decorative blobs - cleaner and more subtle */}
+      <div className="absolute top-10 left-10 w-96 h-96 bg-green-500/8 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-10 right-10 w-96 h-96 bg-orange-500/8 rounded-full blur-3xl pointer-events-none" />
 
-          <video
-            ref={videoRef}
-            autoPlay
-            loop
-            muted
-            playsInline
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
-              videoLoaded ? "opacity-100" : "opacity-0"
-            }`}
-            poster="/images/hero/dkmlogo.png"
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+          
+          {/* Left side: Headline, description, and CTA buttons */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="lg:col-span-5 space-y-5 text-left"
           >
-            <source
-              src="/videos/machines/Chicken Feed Mill Machine.mp4"
-              type="video/mp4"
-            />
-          </video>
 
-          <div className="absolute inset-0 bg-black/60" />
-          <div className="absolute inset-0 bg-linear-to-r from-green-900/50 via-green-800/20 to-black-100" />
-          <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-black-100" />
-        </div>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight drop-shadow-md">
+              Industrial Machinery <br className="hidden sm:inline" />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-300">Solutions</span>{" "}
+              <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-orange-500 font-bold mt-2 min-h-[3rem] tracking-wide">
+                <span>Machinery {typedText}</span>
+                <span
+                  className="typed-cursor inline-block w-0.5 h-6 bg-orange-500 ml-1 animate-pulse"
+                  aria-hidden="true"
+                >
+                  |
+                </span>
+              </div>
+            </h1>
 
-        {/* Foreground content — headline, tagline, action buttons */}
-        <div
-          className="relative"
-          style={{
-            paddingTop: `${headerHeight + 40}px`,
-            paddingBottom: "60px",
-          }}
-        >
-          <div className="container-custom mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="max-w-5xl mx-auto text-center"
-            >
-              {/* Main headline + animated "Machinery …" suffix */}
-              <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3, duration: 0.6 }}
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white dark:text-shadow-white mb-4 leading-tight"
+            <p className="text-gray-300 text-sm sm:text-base md:text-lg leading-relaxed max-w-2xl">
+              Precision Engineering for Agricultural and Industrial applications. We design, manufacture, and deliver robust machinery built to last and optimize your yields.
+            </p>
+
+            {/* Accent Highlight box */}
+            <div className="border-l-4 border-orange-500 bg-white/5 dark:bg-black/10 p-4 rounded-r-xl max-w-xl backdrop-blur-xs">
+              <p className="text-gray-300 text-xs sm:text-sm">
+                <span className="font-black text-white">High Durability & Yields:</span> Built with premium Stainless Steel 304 and heavy-duty components for long-term operations.
+              </p>
+            </div>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-wrap gap-4 pt-2">
+              <Link
+                href="/machines"
+                className="group inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 bg-orange-500 hover:bg-orange-600 text-white font-black rounded-full transition-all duration-300 uppercase text-xs sm:text-sm tracking-wider shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40 hover:-translate-y-0.5"
               >
-                Industrial Machinery Solutions
-                <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-orange-500 dark:text-shadow-white xl:text-4xl font-black mt-4 h-16 sm:h-20 md:h-24 drop-shadow-md">
-                  <span>Machinery {typedText}</span>
-                  <span
-                    className="typed-cursor inline-block w-0.5 sm:w-1 h-6 sm:h-8 md:h-10 bg-orange-500 ml-1 animate-pulse"
-                    aria-hidden="true"
-                  >
-                    |
+                <span>View Machines</span>
+                <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
+
+              <Link
+                href="/order"
+                className="group inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 bg-transparent border-2 border-white/80 hover:border-orange-500 hover:text-orange-500 text-white font-black rounded-full transition-all duration-300 uppercase text-xs sm:text-sm tracking-wider hover:-translate-y-0.5"
+              >
+                <span>Order Custom</span>
+                <Settings className="w-4 h-4 group-hover:rotate-90 transition-transform" />
+              </Link>
+            </div>
+          </motion.div>
+
+          {/* Right side: Large, high-quality agriculture image - BIGGER AND CLEANER */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+            className="lg:col-span-7"
+          >
+            <div className="relative group">
+              {/* Cleaner outer glow effect */}
+              <div className="absolute -inset-3 bg-gradient-to-r from-orange-400 to-green-500 rounded-3xl blur-2xl opacity-20 group-hover:opacity-30 transition duration-700" />
+              
+              {/* Larger image container with improved aspect ratio */}
+              <div className="relative aspect-[16/11] w-full overflow-hidden rounded-3xl border border-white/10 shadow-2xl bg-neutral-900">
+                <img
+                  src="/images/hero/homeimage.jpg"
+                  alt="Agriculture Industrial Machinery Solutions"
+                  className="w-full h-full object-cover object-center transform hover:scale-105 transition-transform duration-700"
+                />
+                
+                {/* Overlay card with cleaner design */}
+                <div className="absolute bottom-6 left-6 right-6 bg-gradient-to-r from-black/80 to-black/70 backdrop-blur-lg p-5 rounded-2xl border border-white/10 flex items-center justify-between shadow-xl">
+                  <div>
+                    <p className="text-xs text-orange-400 font-black uppercase tracking-widest mb-0.5">Premium Quality</p>
+                    <p className="text-base text-white font-black">Agricultural Equipment</p>
+                  </div>
+                  <span className="bg-gradient-to-r from-green-600 to-green-500 text-white text-xs font-black px-4 py-2 rounded-full uppercase tracking-wider shadow-lg">
+                    Made in Ethiopia
                   </span>
                 </div>
-              </motion.h1>
+              </div>
+            </div>
+          </motion.div>
 
-              {/* Value proposition card */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4, duration: 0.6 }}
-                className="max-w-4xl mx-auto mt-6 sm:mt-8 md:mt-10 mb-8 sm:mb-10 md:mb-12 px-4"
-              >
-                <div className="bg-white/95 dark:bg-gray-800/95 rounded-xl shadow-lg p-4 sm:p-6 md:p-8 lg:p-10 border-b-4 border-orange-500 hover:shadow-xl transition-all duration-300">
-                  <p className="text-gray-700 dark:text-gray-200 text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed">
-                    <span className="font-black text-gray-900 dark:text-white">
-                      Precision engineering
-                    </span>{" "}
-                    for agricultural and industrial applications.{" "}
-                    <span className="inline-block mx-0.5 sm:mx-1 px-1.5 sm:px-2 py-0.5 bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400 font-bold rounded-md">
-                      Built to Last
-                    </span>
-                  </p>
-                </div>
-              </motion.div>
-
-              {/* Primary CTAs — catalog browse & custom order */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5, duration: 0.6 }}
-                className="flex flex-wrap gap-3 sm:gap-4 md:gap-6 mt-6 sm:mt-8 md:mt-10 justify-center px-4"
-              >
-                <Link
-                  href="/machines"
-                  className="group relative px-5 sm:px-6 md:px-8 lg:px-10 py-3 sm:py-3.5 md:py-4 bg-linear-to-r from-orange-600 to-orange-500 text-white font-black rounded-xl sm:rounded-2xl transition-all duration-300 uppercase text-xs sm:text-sm md:text-base tracking-wider shadow-2xl shadow-orange-600/30 hover:shadow-2xl hover:shadow-orange-600/50 hover:-translate-y-1 active:translate-y-0 hover:from-orange-500 hover:to-orange-400 min-w-35 sm:min-w-40 md:min-w-50 flex items-center justify-center gap-2"
-                >
-                  <span>View Machines</span>
-                  <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform duration-300" />
-                </Link>
-
-                <Link
-                  href="/order"
-                  className="group relative px-5 sm:px-6 md:px-8 lg:px-10 py-3 sm:py-3.5 md:py-4 bg-white/10 backdrop-blur-md border-2 border-white/60 text-white font-black rounded-xl sm:rounded-2xl transition-all duration-300 uppercase text-xs sm:text-sm md:text-base tracking-wider hover:bg-white hover:text-gray-900 hover:border-white hover:shadow-2xl hover:-translate-y-1 active:translate-y-0 min-w-35 sm:min-w-40 md:min-w-55 flex items-center justify-center gap-2"
-                >
-                  <span>Order Custom</span>
-                  <Settings className="w-3 h-3 sm:w-4 sm:h-4 group-hover:rotate-90 transition-transform duration-300" />
-                </Link>
-              </motion.div>
-            </motion.div>
-          </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

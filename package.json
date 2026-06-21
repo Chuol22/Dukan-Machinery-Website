@@ -7,9 +7,11 @@
     "postinstall": "prisma generate",
     "build": "prisma generate && next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "verify-chatbot": "node scripts/verify-chatbot-setup.js"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "@prisma/client": "^5.22.0",
     "@react-pdf/renderer": "^4.5.1",
     "cloudinary": "^2.10.0",

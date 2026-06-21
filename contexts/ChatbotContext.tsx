@@ -34,27 +34,97 @@ export function ChatProvider({ children }: { children: ReactNode }) {
       timestamp: new Date(),
     };
 
+    let updatedMessages: Message[] = [];
     setMessages((prev) => {
-      const nextMessages = normalizeMessagesForModel([...prev, userMessage]);
+      updatedMessages = [...prev, userMessage];
+      const nextMessages = normalizeMessagesForModel(updatedMessages);
       return nextMessages as Message[];
     });
+    
     setIsProcessing(true);
 
-    // Rule-based AI response with brief delay for UX
-    setTimeout(() => {
-      const response = getAIResponse(content);
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          messages: updatedMessages.map((m) => ({
+            role: m.role,
+            content: m.content,
+          })),
+        }),
+      });
+
+      let data: any = null;
+      try {
+        data = await response.json();
+      } catch (e) {
+        // Ignore parsing error, we will fallback to generic error below
+      }
+
+      if (!response.ok) {
+        if (data && data.reply) {
+          const botMessage: Message = {
+            id: (Date.now() + 1).toString(),
+            role: "assistant",
+            content: data.reply,
+            timestamp: new Date(),
+          };
+          setMessages((prev) => {
+            const nextMessages = normalizeMessagesForModel([...prev, botMessage]);
+            return nextMessages as Message[];
+          });
+          return;
+        }
+        throw new Error("Chatbot API response was not OK");
+      }
+
+      const reply = data?.reply || "Sorry, I couldn't process your request.";
+
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        content: response,
+        content: reply,
         timestamp: new Date(),
       };
+
       setMessages((prev) => {
         const nextMessages = normalizeMessagesForModel([...prev, botMessage]);
         return nextMessages as Message[];
       });
+    } catch (error) {
+      console.error("[ChatbotContext] API error:", error);
+      
+      // Create a helpful error message based on the error type
+      let errorContent = "⚠️ **Connection Error**\n\n";
+      
+      if (error instanceof TypeError && error.message.includes("fetch")) {
+        errorContent += "Cannot reach the AI service. Please check:\n\n";
+        errorContent += "• Your internet connection\n";
+        errorContent += "• The development server is running\n";
+        errorContent += "• No firewall blocking the request\n\n";
+        errorContent += "**Try:** Refresh the page or contact support.";
+      } else {
+        errorContent += "I'm having trouble connecting to the AI service.\n\n";
+        errorContent += "**What you can do:**\n";
+        errorContent += "• Wait a moment and try again\n";
+        errorContent += "• Browse our [Machines Catalog](/machines)\n";
+        errorContent += "• [Contact our team](/contact) directly\n\n";
+        errorContent += "We apologize for the inconvenience!";
+      }
+      
+      const botMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        role: "assistant",
+        content: errorContent,
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, botMessage]);
+    } finally {
       setIsProcessing(false);
-    }, 500);
+    }
   }, []);
 
   const clearMessages = useCallback(() => {

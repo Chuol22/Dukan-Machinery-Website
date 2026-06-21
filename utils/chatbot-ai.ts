@@ -29,5 +29,5 @@ export function getAIResponse(userMessage: string): string {
     }
   }
 
-  return "Thank you for your interest in Dukan Machinery! 🏭\n\nTo better assist you, could you please:\n\n1. **Specify the machine type** (poultry feed, animal feed, etc.)\n2. **Share your required capacity** (in tons/hour)\n3. **Mention if you need standard or custom solution**\n\nAlternatively, you can:\n• **Call us**: +971 4 123 4567\n• **Email**: sales@dukanmachinery.com\n• **WhatsApp**: Click the button below\n\nHow can I help you today?";
+  return "Thank you for your interest in Dukan Machinery! 🏭\n\nTo better assist you, could you please:\n\n1. **Specify the machine type** (poultry feed, animal feed, etc.)\n2. **Share your required capacity** (in tons/hour)\n3. **Mention if you need standard or custom solution**\n\nAlternatively, you can:\n• **Call us**: +251 912 713 823\n• **Email**: sales@dukanmachinery.com\n• **WhatsApp**: Click the button below\n\nHow can I help you today?";
 }

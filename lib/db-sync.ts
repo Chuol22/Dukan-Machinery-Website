@@ -64,6 +64,28 @@ export async function syncStaticMachinesToDatabase() {
       }
     }
 
+    // 4.5 Force-sync gallery arrays if they differ from static data
+    // Fetch all galleries in ONE query instead of N individual queries
+    const allGalleries = await prisma.machine.findMany({
+      select: { id: true, slug: true, gallery: true }
+    });
+    const galleryMap = new Map(allGalleries.map(m => [m.id, m.gallery]));
+
+    for (const dbM of dbMachines) {
+      const staticM = machinesData.find(sm => sm.slug === dbM.slug);
+      if (staticM) {
+        const dbMFullGallery = galleryMap.get(dbM.id) || [];
+        const staticGallery = staticM.gallery || [];
+        if (JSON.stringify(dbMFullGallery) !== JSON.stringify(staticGallery)) {
+          await prisma.machine.update({
+            where: { id: dbM.id },
+            data: { gallery: staticGallery }
+          });
+          console.log(`[db-sync] Force-synced updated gallery for: ${dbM.slug}`);
+        }
+      }
+    }
+
     // 5. Seed missing machines
     if (missingMachines.length > 0) {
       console.log(`[db-sync] Found ${missingMachines.length} missing machines. Seeding...`);

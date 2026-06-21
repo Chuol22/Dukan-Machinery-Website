@@ -17,7 +17,31 @@ Next.js application for machinery sales, customer orders, and admin operations.
 
 - **Public site** — machine catalog, product pages, order submission, chatbot, multi-language (Google Translate)
 - **Admin dashboard** — order review (accept/reject), machine CRUD, notifications, image upload
+- **AI Chatbot** — Google Gemini-powered assistant with RAG for product information
 - **API** — REST routes under `app/api/`
+
+## ⚠️ AI Chatbot Setup Required
+
+The AI chatbot requires a Gemini API key to function. Without it, you'll see an error message.
+
+### Quick Setup (5 minutes):
+
+1. **Get FREE API key:** https://aistudio.google.com/app/apikey
+2. **Add to `.env`:**
+   ```env
+   GEMINI_API_KEY=your_actual_api_key_here
+   ```
+3. **Restart server:**
+   ```bash
+   npm run dev
+   ```
+
+**📖 Full Guide:** See [CHATBOT_SETUP.md](./CHATBOT_SETUP.md) for detailed instructions and troubleshooting.
+
+**✅ Verify Setup:**
+```bash
+node scripts/verify-chatbot-setup.js
+```
 
 ## Project structure
 
@@ -84,6 +108,7 @@ Default credentials (change in production via `.env`):
 | Endpoint                        | Method     | Auth   | Purpose                    |
 | ------------------------------- | ---------- | ------ | -------------------------- |
 | `/api/send-order`               | POST       | Public | Submit customer order      |
+| `/api/chat`                     | POST       | Public | AI chatbot (Gemini)        |
 | `/api/machines`                 | GET        | Public | List machines              |
 | `/api/machines`                 | POST       | Admin  | Create machine             |
 | `/api/machines/[id]`            | PUT/DELETE | Admin  | Update/delete machine      |
