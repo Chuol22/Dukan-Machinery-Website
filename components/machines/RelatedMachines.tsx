@@ -1,14 +1,22 @@
 "use client";
 
-// RelatedMachines — same-category machine suggestions grid
-import React from "react";
+// RelatedMachines — same-category machine suggestions fetched live from the database
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ChevronRight } from "lucide-react";
-import { getRelatedMachines } from "@/data/machinesData";
+
+interface RelatedMachine {
+  id: string | number;
+  slug: string;
+  name: string;
+  image: string;
+  category: string;
+  type: string;
+}
 
 interface RelatedMachinesProps {
-  currentMachineId: number;
+  currentMachineId: string | number;
   category: string;
 }
 
@@ -16,8 +24,31 @@ export default function RelatedMachines({
   currentMachineId,
   category,
 }: RelatedMachinesProps) {
-  // Fetch related machines excluding current
-  const relatedMachines = getRelatedMachines(currentMachineId, category);
+  const [relatedMachines, setRelatedMachines] = useState<RelatedMachine[]>([]);
+
+  useEffect(() => {
+    if (!category) return;
+
+    fetch("/api/machines")
+      .then(async (res) => {
+        if (!res.ok) throw new Error("API error");
+        const data = await res.json();
+        if (Array.isArray(data.machines)) {
+          const related = (data.machines as RelatedMachine[])
+            .filter(
+              (m) =>
+                m.category === category &&
+                String(m.id) !== String(currentMachineId),
+            )
+            .slice(0, 3);
+          setRelatedMachines(related);
+        }
+      })
+      .catch(() => {
+        // If API is unavailable, show nothing rather than crashing
+        setRelatedMachines([]);
+      });
+  }, [currentMachineId, category]);
 
   if (relatedMachines.length === 0) return null;
 
@@ -40,15 +71,22 @@ export default function RelatedMachines({
             >
               <Link href={`/machines/${machine.slug}`}>
                 <div className="relative h-48 overflow-hidden">
-                  {machine.image && (machine.image.endsWith(".mp4") || machine.image.endsWith(".webm")) ? (
+                  {machine.image &&
+                  (machine.image.endsWith(".mp4") ||
+                    machine.image.endsWith(".webm")) ? (
                     <video
                       src={machine.image}
                       muted
                       playsInline
                       loop
                       preload="none"
-                      onMouseEnter={(e) => e.currentTarget.play().catch(() => {})}
-                      onMouseLeave={(e) => { e.currentTarget.pause(); e.currentTarget.currentTime = 0; }}
+                      onMouseEnter={(e) =>
+                        e.currentTarget.play().catch(() => {})
+                      }
+                      onMouseLeave={(e) => {
+                        e.currentTarget.pause();
+                        e.currentTarget.currentTime = 0;
+                      }}
                       className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-500"
                     />
                   ) : machine.image ? (

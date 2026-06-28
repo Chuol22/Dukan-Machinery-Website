@@ -1,8 +1,9 @@
 "use client";
 
-// Machine detail page — gallery, specs tabs, and related machines
-import React, { useState, use } from "react";
-import { notFound, useRouter } from "next/navigation";
+// Machine detail page — fetches live data from the database via API
+// Falls back to the static machinesData file if the API is unavailable
+import React, { useState, useEffect, use } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, ChevronRight } from "lucide-react";
@@ -11,10 +12,44 @@ import MachineSpecsTable from "@/components/machines/MachineSpecsTable";
 import ProcessDiagram from "@/components/machines/ProcessDiagram";
 import RelatedMachines from "@/components/machines/RelatedMachines";
 import AskQuestionButton from "@/components/AskQuestionButton";
-import { getMachineBySlug, getAllMachineSlugs } from "@/data/machinesData";
 import EnhancedVideo from "@/components/EnhancedVideo";
 
-// Tab components
+// Unified machine shape shared between DB response and static fallback
+export interface MachineDetail {
+  id: string | number;
+  slug: string;
+  name: string;
+  image: string;
+  gallery?: string[];
+  category: string;
+  type: string;
+  capacity: string;
+  power: string;
+  weight?: string;
+  dimensions?: string;
+  voltage?: string;
+  rpm?: string;
+  material?: string;
+  warranty?: string;
+  extractionRate?: string;
+  waterConsumption?: string;
+  fiberThickness?: string;
+  operation?: string;
+  noiseLevel?: string;
+  operators?: string;
+  input: string;
+  output: string;
+  process: string;
+  description?: string;
+  features?: string[];
+  applications?: string[];
+  price: string;
+  available?: boolean;
+  availability_status?: string;
+  motor_type?: string;
+}
+
+// Tab button sub-component
 interface TabButtonProps {
   active: boolean;
   onClick: () => void;
@@ -36,6 +71,29 @@ const TabButton = ({ active, onClick, children, icon }: TabButtonProps) => (
   </button>
 );
 
+// Loading skeleton shown while fetching machine data
+function MachineDetailSkeleton() {
+  return (
+    <div className="min-h-screen bg-white dark:bg-neutral-800 animate-pulse">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+        <div className="h-6 w-32 bg-neutral-200 dark:bg-neutral-700 rounded mb-8" />
+      </div>
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+        <div className="bg-neutral-200 dark:bg-neutral-700 rounded-2xl h-28" />
+      </section>
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          <div className="lg:col-span-5 bg-neutral-200 dark:bg-neutral-700 rounded-2xl h-64" />
+          <div className="lg:col-span-7 space-y-4">
+            <div className="h-8 bg-neutral-200 dark:bg-neutral-700 rounded" />
+            <div className="h-48 bg-neutral-200 dark:bg-neutral-700 rounded-xl" />
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
 export default function MachineDetailPage({
   params,
 }: {
@@ -43,14 +101,40 @@ export default function MachineDetailPage({
 }) {
   const router = useRouter();
   const { slug } = use(params);
-  const machine = getMachineBySlug(slug);
-  const [activeTab, setActiveTab] = useState("specifications"); // specs | process | features
 
-  if (!machine) {
-    notFound();
-  }
+  const [machine, setMachine] = useState<MachineDetail | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
+  const [activeTab, setActiveTab] = useState("specifications");
 
-  // Tab labels for specs, process flow, and features
+  // Fetch machine from database API on mount; static file is the server-side fallback
+  useEffect(() => {
+    if (!slug) return;
+
+    setLoading(true);
+    setNotFound(false);
+
+    fetch(`/api/machines/by-slug/${encodeURIComponent(slug)}`)
+      .then(async (res) => {
+        if (res.status === 404) {
+          setNotFound(true);
+          return;
+        }
+        if (!res.ok) throw new Error("API error");
+        const data = await res.json();
+        if (data.machine) {
+          setMachine(data.machine as MachineDetail);
+        } else {
+          setNotFound(true);
+        }
+      })
+      .catch(() => {
+        // Network error — redirect back rather than showing broken UI
+        setNotFound(true);
+      })
+      .finally(() => setLoading(false));
+  }, [slug]);
+
   const tabs = [
     {
       id: "specifications",
@@ -79,8 +163,31 @@ export default function MachineDetailPage({
     },
   ];
 
-  // Build list of distinct gallery items
-  const galleryImages = Array.from(new Set([machine.image, ...(machine.gallery || [])].filter(Boolean)));
+  if (loading) return <MachineDetailSkeleton />;
+
+  if (notFound || !machine) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-neutral-800 flex flex-col items-center justify-center px-4">
+        <h1 className="text-3xl font-black text-green-700 dark:text-white mb-4">
+          Machine Not Found
+        </h1>
+        <p className="text-neutral-500 mb-8 text-center">
+          This machine does not exist or has been removed.
+        </p>
+        <Link
+          href="/machines"
+          className="bg-orange-500 hover:bg-orange-600 text-white font-black px-8 py-3 rounded-full text-sm uppercase tracking-widest transition"
+        >
+          Browse Machines
+        </Link>
+      </div>
+    );
+  }
+
+  // Build the full gallery list (lead image + extras, no duplicates)
+  const galleryImages = Array.from(
+    new Set([machine.image, ...(machine.gallery || [])].filter(Boolean)),
+  );
 
   return (
     <div className="min-h-screen bg-white dark:bg-neutral-800">
@@ -114,13 +221,13 @@ export default function MachineDetailPage({
       {/* Main Details Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-          
+
           {/* Left Column: Media Gallery */}
           <div className="lg:col-span-5">
             <MachineGallery images={galleryImages} productName={machine.name} />
           </div>
 
-          {/* Right Column: specifications & tabs */}
+          {/* Right Column: Specifications & tabs */}
           <div className="lg:col-span-7 space-y-6">
             {/* Tabs Navigation */}
             <div className="border-b border-neutral-200 dark:border-neutral-700 overflow-x-auto">
@@ -331,8 +438,8 @@ export default function MachineDetailPage({
                         Lifetime Support
                       </h4>
                       <p className="text-sm text-neutral-600 dark:text-neutral-300">
-                        Free technical consultation and training for the lifetime of
-                        the machine.
+                        Free technical consultation and training for the lifetime
+                        of the machine.
                       </p>
                     </div>
                   </div>
@@ -340,7 +447,6 @@ export default function MachineDetailPage({
               )}
             </AnimatePresence>
           </div>
-
         </div>
       </section>
 
@@ -357,7 +463,7 @@ export default function MachineDetailPage({
               </p>
             </div>
             <div className="flex gap-3">
-              <AskQuestionButton 
+              <AskQuestionButton
                 machineId={machine.id}
                 machineName={machine.name}
                 className="w-auto"

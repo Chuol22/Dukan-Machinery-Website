@@ -77,6 +77,12 @@ frontend/
 └── utils/               # Chatbot AI logic
 ```
 
+## Prerequisites
+
+- Node.js 18+
+- PostgreSQL database ([Neon](https://neon.tech) recommended)
+- Gmail account with App Password (for email notifications)
+
 ## Getting started
 
 ```bash
@@ -102,6 +108,12 @@ Default credentials (change in production via `.env`):
 
 - Admin: `admin` / value of `ADMIN_PASSWORD`
 - Officer: `officer` / value of `OFFICER_PASSWORD`
+
+## Verify the order flow
+
+1. Submit an order from `/order`.
+2. Open `/admin/orders` — the order should appear as **Pending**.
+3. Accept or reject the order — the customer receives an email and the status updates in the dashboard.
 
 ## API routes
 
@@ -157,5 +169,4 @@ npm run lint     # ESLint
 | Document                                                   | Purpose                               |
 | ---------------------------------------------------------- | ------------------------------------- |
 | [../PRODUCT_DOCUMENTATION.md](../PRODUCT_DOCUMENTATION.md) | **Complete product handover for CTO** |
-| [SETUP.md](./SETUP.md)                                     | Local developer setup                 |
 | [DEPLOYMENT.md](./DEPLOYMENT.md)                           | Production deployment                 |
